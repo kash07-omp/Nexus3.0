@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nexus.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b85a8afa4bde464f7e91e43a4069304c4b4bd223")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b7e69e8b8b7a1da7f3591086dcb6aa04d9235af")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nexus.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nexus.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
