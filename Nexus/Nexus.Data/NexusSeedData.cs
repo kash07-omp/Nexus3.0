@@ -3,9 +3,9 @@ using System.Data.Entity;
 
 namespace Nexus.Data
 {
-    public class NexusSeedData : DropCreateDatabaseIfModelChanges<NexusEntities>
+    public class NexusSeedData : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
-        protected override void Seed(NexusEntities context)
+        protected override void Seed(ApplicationDbContext context)
         {
             GetResources().ForEach(r => context.Resources.Add(r));
 

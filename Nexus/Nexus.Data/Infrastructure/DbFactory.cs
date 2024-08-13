@@ -2,11 +2,11 @@
 {
     public class DbFactory : Disposable, IDbFactory
     {
-        private NexusEntities _dbContext;
+        private ApplicationDbContext _dbContext;
 
-        public NexusEntities Init()
+        public ApplicationDbContext Init()
         {
-            return _dbContext ?? (_dbContext = new NexusEntities());
+            return _dbContext ?? (_dbContext = new ApplicationDbContext());
         }
 
         protected override void DisposeCore()

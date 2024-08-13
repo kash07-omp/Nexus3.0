@@ -5,12 +5,12 @@ namespace Nexus.Data.Infrastructure
 {
     public abstract class RepositoryBase<T> where T : class
     {
-        private NexusEntities _dataContext;
+        private ApplicationDbContext _dataContext;
         private readonly IDbSet<T> _dbSet;
 
         protected IDbFactory DbFactory { get; private set; }
 
-        protected NexusEntities DbContext
+        protected ApplicationDbContext DbContext
         {
             get { return _dataContext ?? (_dataContext = DbFactory.Init()); }
         }
