@@ -8,6 +8,6 @@
         public string Description { get; set; }
 
         
-        public virtual ICollection<Mine> Mines { get; set; }
+        public virtual ICollection<Mine>? Mines { get; set; }
     }
 }
