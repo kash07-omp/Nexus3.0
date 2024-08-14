@@ -6,8 +6,8 @@
         public bool IsColonized { get; set; }
         public int? PlanetId { get; set; }
         public virtual Planet Planet { get; set; }
-        //public int? UserId { get; set; }
-        //public virtual User User { get; set; }
+        public string? UserId { get; set; }
+        public virtual User? User { get; set; }
 
         public virtual ICollection<RegionStructure> RegionStructures { get; set; }
     }
