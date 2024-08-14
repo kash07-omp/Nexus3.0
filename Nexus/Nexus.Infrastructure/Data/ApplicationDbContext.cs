@@ -27,6 +27,8 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new ResourceConfiguration());
             modelBuilder.ApplyConfiguration(new StructureConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            SeedData.Seed(modelBuilder);
         }
     }
 }
