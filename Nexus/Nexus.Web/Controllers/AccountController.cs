@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Nexus.Domain.Entities;
-using System.Threading.Tasks;
-using Nexus.Web.Models;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Nexus.Web.Services.UserRegister;
+using Nexus.Web.Models;
+using Nexus.Domain.Entities;
 
 namespace Nexus.Web.Controllers
 {
