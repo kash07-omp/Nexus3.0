@@ -9,6 +9,7 @@ namespace Nexus.Infrastructure.Data
         {
             SeedResources(modelBuilder);
             SeedUniverse(modelBuilder);
+            SeedDistrictsAndStructures(modelBuilder);
         }
 
 
@@ -73,5 +74,41 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.Entity<Planet>().HasData(planets);
             modelBuilder.Entity<Region>().HasData(regions);
         }
+        private static void SeedDistrictsAndStructures(ModelBuilder modelBuilder)
+        {
+            // Identificadores para los distritos
+            var civilDistrictId = 1;
+            var industrialDistrictId = 2;
+
+            // Agregar los distritos
+            var districts = new List<District>
+            {
+                new District { Id = civilDistrictId, Name = "Civil District", Description = "Manages the population and administrative functions of the region." },
+                new District { Id = industrialDistrictId, Name = "Industrial District", Description = "Handles the production of resources in the region." },
+            };
+
+            // Agregar las minas
+            var mines = new List<Mine>
+            {
+                new Mine { Id = 1, Code = "MINERALS_MINE", GainMultiplier = 200, ResourceId = 1 },
+                new Mine { Id = 2, Code = "MICROCHIPS_FACTORY", GainMultiplier = 200, ResourceId = 2 },
+                new Mine { Id = 3, Code = "HYDROGEN_MINE", GainMultiplier = 135, ResourceId = 3 }
+            };
+
+            // Agregar las estructuras
+            var structures = new List<Structure>
+            {
+                new Structure { Id = 1, Name = "Mina de Minerales", Description = "Extrae minerales de la corteza planetaria.", DistrictId = industrialDistrictId, MineId = 1 },
+                new Structure { Id = 2, Name = "Fábrica de Microchips", Description = "Produce microchips necesarios para tecnología avanzada.", DistrictId = industrialDistrictId, MineId = 2 },
+                new Structure { Id = 3, Name = "Mina de Hidrógeno", Description = "Extrae hidrógeno, utilizado como combustible para naves y energía.", DistrictId = industrialDistrictId, MineId = 3 },
+                new Structure { Id = 4, Name = "Centro de gestión del trabajo", Description = "Mejora la gestión del trabajo en la mina de minerales, aumentando en un 10% su eficiencia.", DistrictId = civilDistrictId }
+            };
+
+            // Aplicar los datos semilla al modelBuilder
+            modelBuilder.Entity<District>().HasData(districts);
+            modelBuilder.Entity<Mine>().HasData(mines);
+            modelBuilder.Entity<Structure>().HasData(structures);
+        }
+
     }
 }

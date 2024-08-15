@@ -23,6 +23,12 @@ namespace Nexus.Infrastructure.Configuration
                    .HasForeignKey(s => s.MineId)
                    .OnDelete(DeleteBehavior.SetNull);
 
+            // Configuración de la relación con District
+            builder.HasOne(s => s.District)
+                   .WithMany(d => d.Structures)
+                   .HasForeignKey(s => s.DistrictId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             builder.ToTable("Structures");
         }
     }

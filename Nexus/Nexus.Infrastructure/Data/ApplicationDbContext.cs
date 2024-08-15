@@ -29,6 +29,7 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new StructureConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new SolarSystemConfiguration());
+            modelBuilder.ApplyConfiguration(new DistrictConfiguration());
 
             SeedData.Seed(modelBuilder);
         }
