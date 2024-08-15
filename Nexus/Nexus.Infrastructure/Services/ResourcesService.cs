@@ -28,7 +28,6 @@ namespace Nexus.Infrastructure.Services
 
             var now = DateTime.UtcNow;
             var hoursElapsed = (now - region.UpdatedAt).TotalHours;
-            region.UpdatedAt = now;
 
             foreach (var regionStructure in region.RegionStructures)
             {
@@ -55,6 +54,7 @@ namespace Nexus.Infrastructure.Services
                 }
             }
 
+            region.UpdatedAt = now;
             await _context.SaveChangesAsync();
         }
 
