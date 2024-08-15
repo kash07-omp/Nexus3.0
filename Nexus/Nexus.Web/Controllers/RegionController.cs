@@ -43,6 +43,8 @@ namespace Nexus.Web.Controllers
                 .Include(r => r.Planet)
                 .Include(r => r.RegionStructures)
                     .ThenInclude(rs => rs.Structure)
+                .Include(r => r.RegionResources)
+                    .ThenInclude(rr => rr.Resource)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (region == null)
@@ -63,6 +65,18 @@ namespace Nexus.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> BuildOrUpgradeStructure(int regionId, int structureId)
+        {
+            var success = await _structureUpgradeService.BuildOrUpgradeStructureAsync(regionId, structureId);
+            if (!success)
+            {
+                TempData["ErrorMessage"] = "No hay recursos suficientes para construir o mejorar esta estructura.";
+            }
+
+            TempData["ToastMessage"] = "La estructura ha iniciado su construcción.";
+            return RedirectToAction(nameof(Detail), new { id = regionId });
         }
 
     }

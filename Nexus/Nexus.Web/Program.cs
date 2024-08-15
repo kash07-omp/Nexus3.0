@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Nexus.Domain.Entities;
 using Nexus.Infrastructure.Data;
+using Nexus.Infrastructure.Services;
 using Nexus.Services.EmailSender;
 using Nexus.Web.Models;
 using Nexus.Web.Services.UserRegister;
@@ -44,6 +45,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<IUserRegisterService, UserRegisterService>();
+builder.Services.AddScoped<ResourcesService>();
+builder.Services.AddScoped<StructureUpgradeService>();
+
 
 var app = builder.Build();
 

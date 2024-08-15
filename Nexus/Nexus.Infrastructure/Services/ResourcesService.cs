@@ -58,6 +58,31 @@ namespace Nexus.Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> SpendResourcesAsync(int regionId, List<RegionResource> requiredResources)
+        {
+            var region = await _context.Regions
+                .Include(r => r.RegionResources)
+                .FirstOrDefaultAsync(r => r.Id == regionId);
+
+            if (region == null)
+                throw new Exception("Region not found");
+
+            // Actualizar los recursos de la región antes de intentar gastarlos
+            await UpdateRegionResourcesAsync(regionId);
+
+            foreach (var requiredResource in requiredResources)
+            {
+                var regionResource = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == requiredResource.ResourceId);
+                if (regionResource == null || regionResource.Quantity < requiredResource.Quantity)
+                    return false; // No hay suficientes recursos
+
+                regionResource.Quantity -= requiredResource.Quantity;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         private int CalculateResourceGain(RegionStructure regionStructure, DateTime fromTime, DateTime toTime)
         {
             var totalGain = 0;
