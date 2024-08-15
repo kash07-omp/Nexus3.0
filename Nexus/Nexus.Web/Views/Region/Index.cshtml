@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Nexus.Domain.Entities.Region>
+
+<h2>Your Regions</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Planet</th>
+            <th>Is Colonized</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var region in Model)
+        {
+            <tr>
+                <td>@region.Planet.Id</td>
+                <td>@region.IsColonized</td>
+                <td>
+                    <a href="@Url.Action("Detail", new { id = region.Id })" class="btn btn-primary">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

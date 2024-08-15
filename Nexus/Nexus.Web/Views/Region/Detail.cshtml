@@ -1,0 +1,31 @@
+﻿@model Nexus.Domain.Entities.Region
+
+<h2>Region Details</h2>
+
+<div>
+    <h4>Planet ID: @Model.Planet.Id</h4>
+    <h4>Is Colonized: @Model.IsColonized</h4>
+</div>
+
+<h3>Districts and Structures</h3>
+
+@foreach (var district in Model.RegionStructures.Select(rs => rs.Structure.District).Distinct())
+{
+    <h4>@district.Name</h4>
+    <ul>
+        @foreach (var structure in Model.RegionStructures.Where(rs => rs.Structure.DistrictId == district.Id).Select(rs => rs.Structure))
+        {
+            <li>
+                @structure.Name - @structure.Description
+                @if (Model.RegionStructures.Any(rs => rs.StructureId == structure.Id))
+                {
+                    <button class="btn btn-secondary">Upgrade</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary">Build</button>
+                }
+            </li>
+        }
+    </ul>
+}
