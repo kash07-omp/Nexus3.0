@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Nexus.Infrastructure.Data;
 using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Nexus.Web.Models;
 
 namespace Nexus.Web.Controllers
 {
@@ -28,14 +29,12 @@ namespace Nexus.Web.Controllers
             return View(regions);
         }
 
-        // Método Detail para mostrar los detalles de una región
         public async Task<IActionResult> Detail(int id)
         {
             var region = await _context.Regions
                 .Include(r => r.Planet)
                 .Include(r => r.RegionStructures)
                     .ThenInclude(rs => rs.Structure)
-                        .ThenInclude(s => s.District)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (region == null)
@@ -43,7 +42,20 @@ namespace Nexus.Web.Controllers
                 return NotFound();
             }
 
-            return View(region);
+            var districts = await _context.Districts.ToListAsync();
+            var structures = await _context.Structures.ToListAsync();
+            var regionStructures = region.RegionStructures.ToList();
+
+            var viewModel = new RegionViewModel
+            {
+                Region = region,
+                Districts = districts,
+                Structures = structures,
+                RegionStructures = regionStructures
+            };
+
+            return View(viewModel);
         }
+
     }
 }
