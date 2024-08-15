@@ -4,6 +4,7 @@ using Nexus.Infrastructure.Data;
 using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Nexus.Web.Models;
+using Nexus.Infrastructure.Services;
 
 namespace Nexus.Web.Controllers
 {
@@ -11,11 +12,15 @@ namespace Nexus.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly ResourcesService _resourcesService;
+        private readonly StructureUpgradeService _structureUpgradeService;
 
-        public RegionController(ApplicationDbContext context, UserManager<User> userManager)
+        public RegionController(ApplicationDbContext context, UserManager<User> userManager, ResourcesService resourcesService, StructureUpgradeService structureUpgradeService)
         {
             _context = context;
             _userManager = userManager;
+            _resourcesService = resourcesService;
+            _structureUpgradeService = structureUpgradeService;
         }
 
         // Método Index para listar todas las regiones del jugador
@@ -31,6 +36,9 @@ namespace Nexus.Web.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
+            await _resourcesService.UpdateRegionResourcesAsync(id);
+            await _structureUpgradeService.ProcessCompletedUpgradesAsync(id);
+
             var region = await _context.Regions
                 .Include(r => r.Planet)
                 .Include(r => r.RegionStructures)

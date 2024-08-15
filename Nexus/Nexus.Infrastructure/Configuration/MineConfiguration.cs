@@ -15,7 +15,7 @@ namespace Nexus.Infrastructure.Configuration
                    .HasMaxLength(50);
 
             builder.Property(m => m.GainMultiplier)
-                   .HasPrecision(18, 2);
+                   .HasPrecision(18);
 
             builder.HasOne(m => m.Resource)
                    .WithMany(r => r.Mines)
