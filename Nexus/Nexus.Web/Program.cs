@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Nexus.Domain.Entities;
 using Nexus.Infrastructure.Data;
 using Nexus.Services.EmailSender;
+using Nexus.Web.Models;
+using Nexus.Web.Services.UserRegister;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Get UniverseSettings
+builder.Services.Configure<UniverseSettings>(builder.Configuration.GetSection("UniverseSettings"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,6 +42,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 });
+
+builder.Services.AddScoped<IUserRegisterService, UserRegisterService>();
 
 var app = builder.Build();
 

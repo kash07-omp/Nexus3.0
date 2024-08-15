@@ -4,6 +4,7 @@ using Nexus.Domain.Entities;
 using System.Threading.Tasks;
 using Nexus.Web.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Nexus.Web.Services.UserRegister;
 
 namespace Nexus.Web.Controllers
 {
@@ -12,12 +13,18 @@ namespace Nexus.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IUserRegisterService _userRegisterService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IEmailSender emailSender)
+        public AccountController(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IEmailSender emailSender,
+            IUserRegisterService userRegisterService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _userRegisterService = userRegisterService;
         }
 
         // Registro
@@ -37,6 +44,9 @@ namespace Nexus.Web.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Asignar el usuario a una región
+                    var assignedRegion = await _userRegisterService.AssignUserToRegionAsync(user);
+
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, email = user.Email }, Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Confirm your email", $"Please confirm your account by <a href='{confirmationLink}'>clicking here</a>.");
