@@ -23,16 +23,21 @@ namespace Nexus.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder); // Llamar a la base es importante para Identity
 
-            modelBuilder.ApplyConfiguration(new MineConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ResourceConfiguration());
+            modelBuilder.ApplyConfiguration(new SolarSystemConfiguration());
             modelBuilder.ApplyConfiguration(new PlanetConfiguration());
             modelBuilder.ApplyConfiguration(new RegionConfiguration());
-            modelBuilder.ApplyConfiguration(new RegionStructureConfiguration());
-            modelBuilder.ApplyConfiguration(new ResourceConfiguration());
-            modelBuilder.ApplyConfiguration(new StructureConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new SolarSystemConfiguration());
             modelBuilder.ApplyConfiguration(new DistrictConfiguration());
+            modelBuilder.ApplyConfiguration(new StructureConfiguration());
+            modelBuilder.ApplyConfiguration(new MineConfiguration());
+            modelBuilder.ApplyConfiguration(new RegionStructureConfiguration());
             modelBuilder.ApplyConfiguration(new RegionResourceConfiguration());
+            modelBuilder.ApplyConfiguration(new ResearchConfiguration());
+            modelBuilder.ApplyConfiguration(new StructureRequiredStructureConfiguration());
+            modelBuilder.ApplyConfiguration(new StructureRequiredResearchConfiguration());
+            modelBuilder.ApplyConfiguration(new ResearchRequiredStructureConfiguration());
+            modelBuilder.ApplyConfiguration(new ResearchRequiredResearchConfiguration());
 
             SeedData.Seed(modelBuilder);
         }
