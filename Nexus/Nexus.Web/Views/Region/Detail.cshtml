@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <h3>Districts and Structures</h3>
+    <h3>Districts</h3>
 
     <div class="accordion" id="districtsAccordion">
         @foreach (var district in Model.Districts)
@@ -51,7 +51,7 @@
                                                 <span class="badge bg-success rounded-pill">Level @regionStructure.Level</span>
                                             } else if (regionStructure != null && regionStructure.Level > 0)
                                             {
-                                                <span class="badge bg-success rounded-pill">Builded</span>
+                                                <span class="badge bg-success rounded-pill">Built</span>
                                             }
                                         </h5>
                                         <p class="mb-1">@structure.Description</p>
@@ -63,7 +63,7 @@
                                                 Upgrading until: @regionStructure.UpgradedAt.Value.ToLocalTime().ToString("g")
                                             </span>
                                         }
-                                        else if (regionStructure != null)
+                                        else if (regionStructure != null && regionStructure.Structure.Mine != null)
                                         {
                                             <form asp-action="BuildOrUpgradeStructure" method="post">
                                                 <input type="hidden" name="regionId" value="@Model.Region.Id" />
@@ -71,7 +71,7 @@
                                                 <button type="submit" class="btn btn-secondary btn-sm ms-2">Upgrade</button>
                                             </form>
                                         }
-                                        else
+                                        else if (regionStructure == null)
                                         {
                                             <form asp-action="BuildOrUpgradeStructure" method="post">
                                                 <input type="hidden" name="regionId" value="@Model.Region.Id" />

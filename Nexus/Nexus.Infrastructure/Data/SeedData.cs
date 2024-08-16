@@ -98,10 +98,23 @@ namespace Nexus.Infrastructure.Data
             // Agregar las estructuras
             var structures = new List<Structure>
             {
-                new Structure { Id = 1, Name = "Mina de Minerales", Description = "Extrae minerales de la corteza planetaria.", DistrictId = industrialDistrictId, MineId = 1 },
-                new Structure { Id = 2, Name = "Fábrica de Microchips", Description = "Produce microchips necesarios para tecnología avanzada.", DistrictId = industrialDistrictId, MineId = 2 },
-                new Structure { Id = 3, Name = "Mina de Hidrógeno", Description = "Extrae hidrógeno, utilizado como combustible para naves y energía.", DistrictId = industrialDistrictId, MineId = 3 },
-                new Structure { Id = 4, Name = "Centro de gestión del trabajo", Description = "Mejora la gestión del trabajo en la mina de minerales, aumentando en un 10% su eficiencia.", DistrictId = civilDistrictId }
+                // Civil District Structures
+                new Structure { Id = 5, Name = "Ayuntamiento", Description = "Central hub of the city where laws are enacted and the region is administered.", DistrictId = civilDistrictId },
+                new Structure { Id = 6, Name = "Zona residencial", Description = "A network of hive buildings where the majority of your population lives.", DistrictId = civilDistrictId },
+                new Structure { Id = 7, Name = "Sede de Hacienda", Description = "Bureaucrats work here to collect taxes from citizens.", DistrictId = civilDistrictId },
+                new Structure { Id = 8, Name = "Centro médico", Description = "Protects citizens from disease and heals troops.", DistrictId = civilDistrictId },
+                new Structure { Id = 9, Name = "Centro de medicina avanzada", Description = "Combines biotechnology and robotics to heal patients using nanobots.", DistrictId = civilDistrictId },
+                new Structure { Id = 10, Name = "Sistema de alcantarillado", Description = "Facilitates drainage and improves regional sanitation.", DistrictId = civilDistrictId },
+
+                // Industrial District Structures
+                new Structure { Id = 1, Name = "Mina de Minerales", Description = "Extracts minerals from the planetary crust.", DistrictId = industrialDistrictId, MineId = 1 },
+                new Structure { Id = 2, Name = "Fábrica de Microchips", Description = "Produces microchips necessary for advanced technology.", DistrictId = industrialDistrictId, MineId = 2 },
+                new Structure { Id = 3, Name = "Mina de Hidrógeno", Description = "Extracts hydrogen, used as fuel for ships and energy.", DistrictId = industrialDistrictId, MineId = 3 },
+                new Structure { Id = 4, Name = "Centro de gestión del trabajo", Description = "Improves work management in the mineral mine, increasing efficiency by 10%.", DistrictId = industrialDistrictId },
+                new Structure { Id = 11, Name = "Departamento de I+D", Description = "Heavy industry minds work here to improve microchip production by 10%.", DistrictId = industrialDistrictId },
+                new Structure { Id = 12, Name = "Red de tuberías de hidrógeno", Description = "Facilitates hydrogen processing, increasing extraction efficiency by 10%.", DistrictId = industrialDistrictId },
+                new Structure { Id = 13, Name = "Reactor nuclear", Description = "Provides energy to the region. Each level adds more energy points.", DistrictId = industrialDistrictId },
+                new Structure { Id = 14, Name = "Fábrica de autómatas", Description = "Modern assembly techniques and AI enable the construction of robots for work, increasing construction speed by 5%.", DistrictId = industrialDistrictId },
             };
 
             // Aplicar los datos semilla al modelBuilder
