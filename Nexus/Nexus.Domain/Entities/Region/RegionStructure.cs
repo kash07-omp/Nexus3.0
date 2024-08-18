@@ -30,6 +30,7 @@ namespace Nexus.Domain.Entities
             if (Level == 0)
                 return baseCost;
 
+            // Sustituir 1.5 por Structure.CostMultiplier
             return (int)Math.Round(baseCost * Math.Pow(1.5, Level + 1));
         }
     }
