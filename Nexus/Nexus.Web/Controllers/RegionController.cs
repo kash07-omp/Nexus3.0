@@ -71,9 +71,7 @@ namespace Nexus.Web.Controllers
         {
             var success = await _structureUpgradeService.BuildOrUpgradeStructureAsync(regionId, structureId);
             if (!success)
-            {
                 TempData["ErrorMessage"] = "No hay recursos suficientes para construir o mejorar esta estructura.";
-            }
 
             TempData["ToastMessage"] = "La estructura ha iniciado su construcción.";
             return RedirectToAction(nameof(Detail), new { id = regionId });

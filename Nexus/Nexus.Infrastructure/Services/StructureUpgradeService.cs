@@ -16,14 +16,28 @@ public class StructureUpgradeService
 
     public async Task<bool> BuildOrUpgradeStructureAsync(int regionId, int structureId)
     {
-        var regionStructure = await _context.RegionStructures
+        RegionStructure regionStructure = await _context.RegionStructures
             .FirstOrDefaultAsync(rs => rs.RegionId == regionId && rs.StructureId == structureId);
 
-        // Recursos requeridos para la mejora o construcción (1000 de MINERALS y 1000 de MICROCHIPS)
+        if (regionStructure == null)
+        {
+            regionStructure = new RegionStructure()
+            {
+                RegionId = regionId,
+                StructureId = structureId,
+                Level = 0,
+                Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId)
+            };
+        }
+
+        // Recursos requeridos para la mejora o construcción
         var requiredResources = new List<RegionResource>
         {
-            new RegionResource { ResourceId = 1, Quantity = 1000 }, // MINERALS
-            new RegionResource { ResourceId = 2, Quantity = 1000 }  // MICROCHIPS
+            new RegionResource { ResourceId = 1, Quantity = regionStructure.RequiredUpgradeMinerals }, // MINERALS
+            new RegionResource { ResourceId = 2, Quantity = regionStructure.RequiredUpgradeChips },  // MICROCHIPS
+            new RegionResource { ResourceId = 3, Quantity = regionStructure.RequiredUpgradeHydrogen },  // HYDROGEN
+            new RegionResource { ResourceId = 4, Quantity = regionStructure.RequiredUpgradeCredits },  // CREDITS
+            new RegionResource { ResourceId = 5, Quantity = regionStructure.RequiredUpgradeEnergy }  // ENERGY
         };
 
         // Verificar y gastar recursos

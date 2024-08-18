@@ -49,15 +49,26 @@
                                             @if (regionStructure != null && regionStructure.Level > 0 && regionStructure.Structure.Mine != null)
                                             {
                                                 <span class="badge bg-success rounded-pill">Level @regionStructure.Level</span>
-                                            } else if (regionStructure != null && regionStructure.Level > 0)
+                                            }
+                                            else if (regionStructure != null && regionStructure.Level > 0)
                                             {
                                                 <span class="badge bg-success rounded-pill">Built</span>
                                             }
                                         </h5>
                                         <p class="mb-1">@structure.Description</p>
+                                        <p class="text-muted">
+                                            Costs to <span>@(regionStructure == null ? "Build" : "Upgrade")</span>
+                                            <ul class="list-unstyled">
+                                                <li>Minerals: @(regionStructure?.RequiredUpgradeMinerals ?? structure.BaseMinerales)</li>
+                                                <li>Microchips: @(regionStructure?.RequiredUpgradeChips ?? structure.BaseChips)</li>
+                                                <li>Hydrogen: @(regionStructure?.RequiredUpgradeHydrogen ?? structure.BaseHydrogen)</li>
+                                                <li>Credits: @(regionStructure?.RequiredUpgradeCredits ?? structure.BaseCredits)</li>
+                                                <li>Energy: @(regionStructure?.RequiredUpgradeEnergy ?? structure.BaseEnergy)</li>
+                                            </ul>
+                                        </p>
                                     </div>
-                                    <div>
-                                        @if (regionStructure != null && regionStructure.UpgradedAt.HasValue)
+                            <div>
+                                @if (regionStructure != null && regionStructure.UpgradedAt.HasValue)
                                         {
                                             <span class="badge bg-warning text-dark rounded-pill">
                                                 Upgrading until: @regionStructure.UpgradedAt.Value.ToLocalTime().ToString("g")

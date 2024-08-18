@@ -18,6 +18,24 @@ namespace Nexus.Infrastructure.Configuration
                    .IsRequired()
                    .HasMaxLength(500);
 
+            builder.Property(s => s.CanLevelUp)
+                   .IsRequired();
+
+            builder.Property(s => s.BaseMinerales)
+                   .IsRequired();
+
+            builder.Property(s => s.BaseChips)
+                   .IsRequired();
+
+            builder.Property(s => s.BaseHydrogen)
+                   .IsRequired();
+
+            builder.Property(s => s.BaseEnergy)
+                   .IsRequired();
+
+            builder.Property(s => s.BaseCredits)
+                   .IsRequired();
+
             builder.HasOne(s => s.Mine)
                    .WithMany() // No necesitamos una colección de Structures en Mine
                    .HasForeignKey(s => s.MineId)
