@@ -1,4 +1,5 @@
-﻿@model Nexus.Web.Models.RegionViewModel
+﻿@using Nexus.Domain.Entities
+@model Nexus.Web.Models.RegionViewModel
 
 <div class="container">
     <h2 class="mt-4">Region Details</h2>
@@ -38,62 +39,15 @@
                 </h2>
                 <div id="collapse-@district.Id" class="accordion-collapse collapse" aria-labelledby="heading-@district.Id" data-bs-parent="#districtsAccordion">
                     <div class="accordion-body">
-                        <ul class="list-group">
+                        <div class="row">
                             @foreach (var structure in Model.Structures.Where(s => s.DistrictId == district.Id))
                             {
-                                var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id);
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h5 class="mb-1">
-                                            @structure.Name
-                                            @if (regionStructure != null && regionStructure.Level > 0 && regionStructure.Structure.Mine != null)
-                                            {
-                                                <span class="badge bg-success rounded-pill">Level @regionStructure.Level</span>
-                                            }
-                                            else if (regionStructure != null && regionStructure.Level > 0)
-                                            {
-                                                <span class="badge bg-success rounded-pill">Built</span>
-                                            }
-                                        </h5>
-                                        <p class="mb-1">@structure.Description</p>
-                                        <p class="text-muted">
-                                            Costs to <span>@(regionStructure == null ? "Build" : "Upgrade")</span>
-                                            <ul class="list-unstyled">
-                                                <li>Minerals: @(regionStructure?.RequiredUpgradeMinerals ?? structure.BaseMinerales)</li>
-                                                <li>Microchips: @(regionStructure?.RequiredUpgradeChips ?? structure.BaseChips)</li>
-                                                <li>Hydrogen: @(regionStructure?.RequiredUpgradeHydrogen ?? structure.BaseHydrogen)</li>
-                                                <li>Credits: @(regionStructure?.RequiredUpgradeCredits ?? structure.BaseCredits)</li>
-                                                <li>Energy: @(regionStructure?.RequiredUpgradeEnergy ?? structure.BaseEnergy)</li>
-                                            </ul>
-                                        </p>
-                                    </div>
-                            <div>
-                                @if (regionStructure != null && regionStructure.UpgradedAt.HasValue)
-                                        {
-                                            <span class="badge bg-warning text-dark rounded-pill">
-                                                Upgrading until: @regionStructure.UpgradedAt.Value.ToLocalTime().ToString("g")
-                                            </span>
-                                        }
-                                        else if (regionStructure != null && regionStructure.Structure.Mine != null)
-                                        {
-                                            <form asp-action="BuildOrUpgradeStructure" method="post">
-                                                <input type="hidden" name="regionId" value="@Model.Region.Id" />
-                                                <input type="hidden" name="structureId" value="@structure.Id" />
-                                                <button type="submit" class="btn btn-secondary btn-sm ms-2">Upgrade</button>
-                                            </form>
-                                        }
-                                        else if (regionStructure == null)
-                                        {
-                                            <form asp-action="BuildOrUpgradeStructure" method="post">
-                                                <input type="hidden" name="regionId" value="@Model.Region.Id" />
-                                                <input type="hidden" name="structureId" value="@structure.Id" />
-                                                <button type="submit" class="btn btn-primary btn-sm ms-2">Build</button>
-                                            </form>
-                                        }
-                                    </div>
-                                </li>
+                                var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id) ?? new RegionStructure { Structure = structure, RegionId = Model.Region.Id };
+                                <div class="col-md-4">
+                                    @await Html.PartialAsync("_RegionStructureCard", regionStructure)
+                                </div>
                             }
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
