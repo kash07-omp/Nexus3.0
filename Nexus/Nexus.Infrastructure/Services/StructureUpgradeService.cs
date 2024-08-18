@@ -19,7 +19,9 @@ public class StructureUpgradeService
         RegionStructure regionStructure = await _context.RegionStructures
             .FirstOrDefaultAsync(rs => rs.RegionId == regionId && rs.StructureId == structureId);
 
-        if (regionStructure == null)
+        bool newStructure = regionStructure == null;
+
+        if (newStructure)
         {
             regionStructure = new RegionStructure()
             {
@@ -29,6 +31,9 @@ public class StructureUpgradeService
                 Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId)
             };
         }
+
+        if (!newStructure && !regionStructure.Structure.CanLevelUp)
+            return false;
 
         // Recursos requeridos para la mejora o construcción
         var requiredResources = new List<RegionResource>
@@ -45,31 +50,10 @@ public class StructureUpgradeService
         if (!canSpendResources)
             return false; // No hay suficientes recursos
 
-        if (regionStructure == null)
-        {
-            // Construir nueva estructura
-            regionStructure = new RegionStructure
-            {
-                RegionId = regionId,
-                StructureId = structureId,
-                Level = 0,
-                UpgradedAt = DateTime.UtcNow.AddHours(1)
-            };
+        regionStructure.UpgradedAt = DateTime.UtcNow.AddHours(1);
+
+        if (newStructure)
             _context.RegionStructures.Add(regionStructure);
-        }
-        else
-        {
-            if (regionStructure.Structure.Mine != null && !regionStructure.UpgradedAt.HasValue)
-            {
-                // Mejorar estructura existente
-                regionStructure.UpgradedAt = DateTime.UtcNow.AddHours(1);
-            }
-            else if (regionStructure.Structure.Mine == null)
-            {
-                // Estructura sin mina no se puede mejorar
-                return false;
-            }
-        }
 
         await _context.SaveChangesAsync();
         return true;
