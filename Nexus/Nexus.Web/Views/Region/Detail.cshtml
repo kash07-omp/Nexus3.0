@@ -30,7 +30,7 @@
     <div class="row">
         @foreach (var structure in Model.Structures)
         {
-            var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id) ?? new RegionStructure { Structure = structure, RegionId = Model.Region.Id };
+            var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id) ?? new RegionStructure { Structure = structure, RegionId = Model.Region.Id, StructureId = structure.Id };
             <div class="col-md-4 mb-4">
                 @await Html.PartialAsync("_RegionStructureCard", regionStructure)
             </div>
