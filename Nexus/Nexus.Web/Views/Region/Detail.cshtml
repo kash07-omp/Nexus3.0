@@ -26,30 +26,13 @@
         </div>
     </div>
 
-    <h3>Districts</h3>
-
-    <div class="accordion" id="districtsAccordion">
-        @foreach (var district in Model.Districts)
+    <h3>Structures</h3>
+    <div class="row">
+        @foreach (var structure in Model.Structures)
         {
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-@district.Id">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@district.Id" aria-expanded="false" aria-controls="collapse-@district.Id">
-                        @district.Name
-                    </button>
-                </h2>
-                <div id="collapse-@district.Id" class="accordion-collapse collapse" aria-labelledby="heading-@district.Id" data-bs-parent="#districtsAccordion">
-                    <div class="accordion-body">
-                        <div class="row">
-                            @foreach (var structure in Model.Structures.Where(s => s.DistrictId == district.Id))
-                            {
-                                var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id) ?? new RegionStructure { Structure = structure, RegionId = Model.Region.Id };
-                                <div class="col-md-4">
-                                    @await Html.PartialAsync("_RegionStructureCard", regionStructure)
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
+            var regionStructure = Model.RegionStructures.FirstOrDefault(rs => rs.StructureId == structure.Id) ?? new RegionStructure { Structure = structure, RegionId = Model.Region.Id };
+            <div class="col-md-4 mb-4">
+                @await Html.PartialAsync("_RegionStructureCard", regionStructure)
             </div>
         }
     </div>

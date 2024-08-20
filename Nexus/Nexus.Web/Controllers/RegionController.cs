@@ -52,14 +52,12 @@ namespace Nexus.Web.Controllers
                 return NotFound();
             }
 
-            var districts = await _context.Districts.ToListAsync();
             var structures = await _context.Structures.ToListAsync();
             var regionStructures = region.RegionStructures.ToList();
 
             var viewModel = new RegionViewModel
             {
                 Region = region,
-                Districts = districts,
                 Structures = structures,
                 RegionStructures = regionStructures
             };

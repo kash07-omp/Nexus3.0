@@ -16,7 +16,6 @@ namespace Nexus.Infrastructure.Data
         public DbSet<Resource> Resources { get; set; }
         public DbSet<RegionStructure> RegionStructures { get; set; }
         public DbSet<SolarSystem> SolarSystems { get; set; }
-        public DbSet<District> Districts { get; set; }
         public DbSet<RegionResource> RegionResources { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,7 +27,6 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new SolarSystemConfiguration());
             modelBuilder.ApplyConfiguration(new PlanetConfiguration());
             modelBuilder.ApplyConfiguration(new RegionConfiguration());
-            modelBuilder.ApplyConfiguration(new DistrictConfiguration());
             modelBuilder.ApplyConfiguration(new StructureConfiguration());
             modelBuilder.ApplyConfiguration(new MineConfiguration());
             modelBuilder.ApplyConfiguration(new RegionStructureConfiguration());

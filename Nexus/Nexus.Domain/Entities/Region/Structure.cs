@@ -7,17 +7,15 @@
         public required string Description { get; set; }
         public bool CanLevelUp { get; set; }
         public short? MineId { get; set; }
-        public int DistrictId { get; set; }
 
         public int BaseMinerales { get; set; }
         public int BaseChips { get; set; }
         public int BaseHydrogen { get; set; }
         public int BaseEnergy { get; set; }
         public int BaseCredits { get; set; }
-        // NEW: Terminar de definir esto. La idea es que cada structure suba de nivel con la formula Coste = CosteBase * CostMultiplier^Level
-        public int CostMultiplier { get; set; }
+        // TODO: Terminar de definir esto. La idea es que cada structure suba de nivel con la formula Coste = CosteBase * CostMultiplier^Level
+        //public int CostMultiplier { get; set; }
 
         public virtual Mine Mine { get; set; }
-        public virtual District District { get; set; }
     }
 }
