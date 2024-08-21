@@ -2,62 +2,73 @@
 using Nexus.Domain.Entities;
 using Nexus.Domain.Entities.Enums;
 using Nexus.Infrastructure.Data;
-using Nexus.Infrastructure.Services;
+using Nexus.Infrastructure.Services.Interfaces;
 
-public class StructureUpgradeService
+public class StructureUpgradeService : IStructureUpgradeService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ResourcesService _resourcesService;
+    private readonly IResourceService _resourceService;
+    private readonly IResourceCostCalculator _resourceCostCalculator;
 
-    public StructureUpgradeService(ApplicationDbContext context, ResourcesService resourcesService)
+    public StructureUpgradeService(
+        ApplicationDbContext context,
+        IResourceService resourceService,
+        IResourceCostCalculator resourceCostCalculator)
     {
-        _context = context;
-        _resourcesService = resourcesService;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
+        _resourceCostCalculator = resourceCostCalculator ?? throw new ArgumentNullException(nameof(resourceCostCalculator));
     }
-    
+
     public async Task<bool> BuildOrUpgradeStructureAsync(int regionId, int structureId)
     {
-        RegionStructure regionStructure = await _context.RegionStructures
+        var regionStructure = await _context.RegionStructures
             .Include(rs => rs.Structure)
             .Include(rs => rs.Region)
             .FirstOrDefaultAsync(rs => rs.RegionId == regionId && rs.StructureId == structureId);
 
-        bool newStructure = regionStructure == null;
+        bool isNewStructure = regionStructure == null;
 
-        if (newStructure)
+        if (isNewStructure)
         {
-            regionStructure = new RegionStructure()
+            var structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId);
+            var region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == regionId);
+
+            if (structure == null || region == null)
+                return false; // TODO: Handle error
+
+            regionStructure = new RegionStructure
             {
                 RegionId = regionId,
                 StructureId = structureId,
                 Level = 0,
-                Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
-                Region = await _context.Regions.FirstOrDefaultAsync(s => s.Id == structureId)
+                Structure = structure,
+                Region = region
             };
         }
 
-        if (!newStructure && !regionStructure.Structure.CanLevelUp)
+        if (!isNewStructure && !regionStructure.Structure.CanLevelUp)
             return false;
 
-        // Recursos requeridos para la mejora o construcción
         var requiredResources = new List<RegionResource>
         {
-            new RegionResource { ResourceId = 1, Quantity = regionStructure.RequiredUpgradeMinerals }, // MINERALS
-            new RegionResource { ResourceId = 2, Quantity = regionStructure.RequiredUpgradeChips },  // MICROCHIPS
-            new RegionResource { ResourceId = 3, Quantity = regionStructure.RequiredUpgradeHydrogen },  // HYDROGEN
-            //new RegionResource { ResourceId = 6, Quantity = regionStructure.RequiredUpgradeCredits },  // CREDITS
-            //new RegionResource { ResourceId = 7, Quantity = regionStructure.RequiredUpgradeEnergy }  // ENERGY
+            new RegionResource { ResourceId = (int)EResource.MINERALS, Quantity = regionStructure.RequiredUpgradeMinerals },
+            new RegionResource { ResourceId = (int)EResource.MICROCHIPS, Quantity = regionStructure.RequiredUpgradeChips },
+            new RegionResource { ResourceId = (int)EResource.HYDROGEN, Quantity = regionStructure.RequiredUpgradeHydrogen },
+            //new RegionResource { ResourceId = (int)EResource.CREDITS, Quantity = regionStructure.RequiredUpgradeCredits },
+            //new RegionResource { ResourceId = (int)EResource.ENERGY, Quantity = regionStructure.RequiredUpgradeEnergy }
         };
 
-        var canSpendResources = await _resourcesService.SpendResourcesAsync(regionId, requiredResources);
+        bool canSpendResources = await _resourceService.SpendResourcesAsync(regionId, requiredResources);
         if (!canSpendResources)
-            return false; // No hay suficientes recursos
+            return false;
 
-        int totalCost = GetTotalCost(requiredResources);
+        int totalCost = _resourceCostCalculator.GetTotalCost(requiredResources);
         int upgradeSeconds = await GetUpgradeSeconds(regionStructure, totalCost);
+
         regionStructure.UpgradedAt = DateTime.UtcNow.AddSeconds(upgradeSeconds);
 
-        if (newStructure)
+        if (isNewStructure)
             _context.RegionStructures.Add(regionStructure);
 
         await _context.SaveChangesAsync();
@@ -84,42 +95,13 @@ public class StructureUpgradeService
     public async Task<int> GetUpgradeSeconds(RegionStructure regionStructure, int totalCost)
     {
         int timeDivider = 3500;
-        int upgradeHours = 0;
-        
-        upgradeHours = totalCost / timeDivider;
+        int upgradeHours = totalCost / timeDivider;
 
-        // TODO: Sustituir esto por aplicar bonus de cartas de region que mejoren la velocidad de construcción a esta structure
+        // TODO: Replace with cards
         if (regionStructure.Region != null)
             upgradeHours -= (int)Math.Round(upgradeHours * 0.25);
 
         return upgradeHours * 60 * 60;
     }
-
-    /// <summary>
-    /// Gets the "total cost" of all resources
-    /// </summary>
-    /// <param name="requiredResources"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    private int GetTotalCost(List<RegionResource> requiredResources)
-    {
-        var costMultipliers = new Dictionary<EResource, double>
-        {
-            { EResource.MINERALS, 1.0 },
-            { EResource.MICROCHIPS, 1.2 },
-            { EResource.HYDROGEN, 1.5 },
-            { EResource.FOOD, 0.5 },
-            { EResource.POPULATION, 1.0 },
-            { EResource.CREDITS, 0.8 },
-            { EResource.ENERGY, 1.0 }
-        };
-
-        int totalCost = 0;
-
-        foreach (var resource in requiredResources)
-            totalCost += (int)(resource.Quantity * costMultipliers[(EResource)resource.ResourceId]);
-
-        return totalCost;
-    }
-
 }
+

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nexus.Domain.Entities;
 using Nexus.Infrastructure.Data;
-using System;
+using Nexus.Infrastructure.Services.Interfaces;
 
 namespace Nexus.Infrastructure.Services
 {
-    public class ResourcesService
+    public class ResourcesService : IResourceService
     {
         private readonly ApplicationDbContext _context;
 
