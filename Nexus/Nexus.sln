@@ -5,11 +5,16 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus.Web", "Nexus.Web\Nexus.Web.csproj", "{3B7881A6-E0F3-457E-96BD-1124A7976E02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Domain", "Nexus.Domain\Nexus.Domain.csproj", "{DFA03353-D403-4504-B1D5-26E5A18988DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus.Domain", "Nexus.Domain\Nexus.Domain.csproj", "{DFA03353-D403-4504-B1D5-26E5A18988DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Application", "Nexus.Application\Nexus.Application.csproj", "{DFB9BA6B-0C00-4B9F-B3D9-316B5C6F7AA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus.Application", "Nexus.Application\Nexus.Application.csproj", "{DFB9BA6B-0C00-4B9F-B3D9-316B5C6F7AA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Infrastructure", "Nexus.Infrastructure\Nexus.Infrastructure.csproj", "{98A22AF7-DC75-468F-A534-320BD2FFA3F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nexus.Infrastructure", "Nexus.Infrastructure\Nexus.Infrastructure.csproj", "{98A22AF7-DC75-468F-A534-320BD2FFA3F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CEE3F073-1AF5-4E4C-9244-5B0714167167}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
