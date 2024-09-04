@@ -51,8 +51,6 @@ builder.Services.AddScoped<IStructureUpgradeService, StructureUpgradeService>();
 builder.Services.AddScoped<IResourceService, ResourcesService>();
 builder.Services.AddScoped<IResourceCostCalculator, ResourceCostCalculator>();
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
