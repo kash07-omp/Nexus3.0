@@ -3,6 +3,12 @@
 
 <div class="container">
     <h2 class="mt-4">Region Details</h2>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mt-4">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
     <!-- Panel de recursos -->
     <div class="card bg-dark mb-4">
@@ -36,13 +42,7 @@
             </div>
         }
     </div>
-
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger mt-4">
-            @TempData["ErrorMessage"]
-        </div>
-    }
+    
     @if (TempData["ToastMessage"] != null)
     {
         <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">

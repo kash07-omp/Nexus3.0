@@ -5,6 +5,7 @@ using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Nexus.Web.Models;
 using Nexus.Infrastructure.Services;
+using Nexus.Infrastructure.Services.Interfaces;
 
 namespace Nexus.Web.Controllers
 {
@@ -12,10 +13,14 @@ namespace Nexus.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly ResourcesService _resourcesService;
-        private readonly StructureUpgradeService _structureUpgradeService;
+        private readonly IResourceService _resourcesService;
+        private readonly IStructureUpgradeService _structureUpgradeService;
 
-        public RegionController(ApplicationDbContext context, UserManager<User> userManager, ResourcesService resourcesService, StructureUpgradeService structureUpgradeService)
+        public RegionController(
+            ApplicationDbContext context, 
+            UserManager<User> userManager, 
+            IResourceService resourcesService, 
+            IStructureUpgradeService structureUpgradeService)
         {
             _context = context;
             _userManager = userManager;
