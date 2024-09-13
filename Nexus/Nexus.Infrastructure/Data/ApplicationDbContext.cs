@@ -20,7 +20,7 @@ namespace Nexus.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Llamar a la base es importante para Identity
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ResourceConfiguration());
@@ -36,6 +36,8 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new StructureRequiredResearchConfiguration());
             modelBuilder.ApplyConfiguration(new ResearchRequiredStructureConfiguration());
             modelBuilder.ApplyConfiguration(new ResearchRequiredResearchConfiguration());
+            modelBuilder.ApplyConfiguration(new CardConfiguration());
+            modelBuilder.ApplyConfiguration(new CardBonusConfiguration());
 
             SeedData.Seed(modelBuilder);
         }
