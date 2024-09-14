@@ -20,6 +20,9 @@ public class CardService : ICardService
             var rarity = GetRarityFromChest(chestType);
             var availableCards = await GetAvailableCardsAsync(rarity, user);
 
+            //TODO: si tienes todas las cartas de esta rareza hay que coger las de otra rareza y asi hasta saber si el jugador tiene todas las cartas
+            // Si tiene todas las cartas entonces NO DEBERIA LLEGAR HASTA AQUI. 
+            // Podemos controlar que NO pueda comprar cofres si su nº de cartas (sin contar temporales) es igual al nº de cartas no temporales existentes
             if (!availableCards.Any())
                 return Result<Card>.FailureResult($"You already own all {nameof(rarity)} cards.");
 
