@@ -2,7 +2,6 @@
 <div class="container">
     <h2>My Deck</h2>
 
-    <!-- Botones de compra de cofres -->
     <div class="row mb-4">
         <div class="col text-center">
             <button class="btn btn-primary" onclick="buyChest('Normal')">Buy Normal Chest (100 Credits)</button>
@@ -11,8 +10,7 @@
         </div>
     </div>
 
-    <!-- Listado de cartas en grid -->
-    <div class="row">
+    <div id="cardsgrid">
         @foreach (var card in Model)
         {
             <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
@@ -28,7 +26,6 @@
     </div>
 </div>
 
-<!-- Modal para mostrar la carta obtenida -->
 <div id="newCardModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -54,26 +51,35 @@
     function buyChest(chestType) {
         $.post('/Deck/BuyChest', { chestType }, function (response) {
             if (response.success) {
-
-                // Actualizar la imagen, el nombre y la descripción de la carta en el modal
+                // Actualiza el contenido del modal
                 $('#newCardImage').attr('src', '/images/' + response.card.imageUrl);
                 $('#newCardName').text(response.card.name);
                 $('#newCardDescription').text(response.card.description);
-
-                // Mostrar el modal
                 $('#newCardModal').modal('show');
 
-                // Actualizar el grid de cartas
-                setTimeout(function () {
-                    location.reload();  // Esperar antes de recargar para que el modal se muestre correctamente
-                }, 5000);  // Ajuste el tiempo si es necesario
+                // Añadir nueva carta al grid sin recargar
+                var newCardHtml = `
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                        <div class="card text-center">
+                            <img src="/images/${response.card.imageUrl}" class="card-img-top" alt="${response.card.name}" style="max-height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">${response.card.name}</h5>
+                                <p class="card-text">${response.card.description}</p>
+                            </div>
+                        </div>
+                    </div>`;
+
+                // Insertar la nueva carta en el grid
+                $('#cardsgrid').append(newCardHtml);
+
             } else {
                 alert(response.message);
-                console.log("Error: " + response.message);  // Log para verificar el error
+                console.log("Error: " + response.message);
             }
         }).fail(function (error) {
-            console.log("Error during request: ", error);  // Manejo de errores
+            console.log("Error during request: ", error);
         });
     }
+
 </script>
 
