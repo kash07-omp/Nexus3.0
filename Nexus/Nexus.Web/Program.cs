@@ -15,7 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<UniverseSettings>(builder.Configuration.GetSection("UniverseSettings"));
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
+
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
@@ -46,10 +52,10 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<IUserRegisterService, UserRegisterService>();
-builder.Services.AddScoped<StructureUpgradeService>();
 builder.Services.AddScoped<IStructureUpgradeService, StructureUpgradeService>();
 builder.Services.AddScoped<IResourceService, ResourcesService>();
 builder.Services.AddScoped<IResourceCostCalculator, ResourceCostCalculator>();
+builder.Services.AddScoped<ICardService, CardService>();
 
 var app = builder.Build();
 

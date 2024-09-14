@@ -14,6 +14,9 @@ namespace Nexus.Infrastructure.Configuration
                    .HasForeignKey(r => r.UserId)
                    .OnDelete(DeleteBehavior.SetNull);
 
+            builder.Property(u => u.Credits)
+                .HasDefaultValue(0);
+
             // Configuración de la tabla
             builder.ToTable("AspNetUsers");  // Usando la tabla por defecto de Identity
         }

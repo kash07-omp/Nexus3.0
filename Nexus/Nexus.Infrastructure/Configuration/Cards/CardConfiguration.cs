@@ -21,6 +21,8 @@ namespace Nexus.Infrastructure.Configuration
             builder.Property(c => c.CardType)
                 .IsRequired();
 
+            builder.Property(c => c.ImageUrl);
+
             builder.HasMany(c => c.CardBonuses)
                 .WithOne(cb => cb.Card)
                 .HasForeignKey(cb => cb.CardId);

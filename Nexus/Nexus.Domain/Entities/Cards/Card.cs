@@ -8,6 +8,7 @@
         public ECardType CardType { get; set; }
         public ECardRarity CardRarity { get; set; }
         public TimeSpan? Duration { get; set; }
+        public string ImageUrl { get; set; }
 
 
         public virtual ICollection<CardBonus> CardBonuses { get; set; }

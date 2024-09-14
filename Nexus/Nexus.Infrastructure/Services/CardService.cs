@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nexus.Domain.Entities;
+using Nexus.Infrastructure.Common;
 using Nexus.Infrastructure.Data;
 using Nexus.Infrastructure.Services.Interfaces;
 
@@ -12,16 +13,25 @@ public class CardService : ICardService
         _context = context;
     }
 
-    public async Task<Card> OpenChest(ChestType chestType)
+    public async Task<Result<Card>> OpenChest(ChestType chestType, User user)
     {
-        ECardRarity rarity = GetRarityFromChest(chestType);
-        Random random = new Random();
+        try
+        {
+            var rarity = GetRarityFromChest(chestType);
+            var availableCards = await GetAvailableCardsAsync(rarity, user);
 
-        List<Card> cards = await _context.Cards
-            .Where(c => c.CardRarity == rarity)
-            .ToListAsync();
+            if (!availableCards.Any())
+                return Result<Card>.FailureResult($"You already own all {nameof(rarity)} cards.");
 
-        return cards[random.Next(cards.Count)];
+            // Seleccionar carta aleatoria
+            var random = new Random();
+            var selectedCard = availableCards[random.Next(availableCards.Count)];
+
+            return Result<Card>.SuccessResult(selectedCard);
+        } catch (Exception ex)
+        {
+            return Result<Card>.FailureResult($"Ups! the gorgomits has break interfer in this action ({ex})");
+        }
     }
 
     public async Task AssignCardToUserAsync(User user, Card card)
@@ -36,6 +46,18 @@ public class CardService : ICardService
         return await _context.Users
             .Where(u => u.Id == userId)
             .SelectMany(u => u.Cards)
+            .ToListAsync();
+    }
+
+    private async Task<List<Card>> GetAvailableCardsAsync(ECardRarity rarity, User user)
+    {
+        var userCardIds = user.Cards
+            .Where(c => c.Duration == null)
+            .Select(c => c.Id)
+            .ToList();
+
+        return await _context.Cards
+            .Where(c => c.CardRarity == rarity && !userCardIds.Contains(c.Id))
             .ToListAsync();
     }
 
@@ -67,4 +89,3 @@ public enum ChestType
     Gold,
     Platinum
 }
-

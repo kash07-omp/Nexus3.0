@@ -121,12 +121,14 @@ namespace Nexus.Infrastructure.Data
                     Id = 1,
                     Name = "Kily Gavin",
                     Description = "A well-known governor focused on boosting production at all costs.",
+                    ImageUrl = "https://art.ngfiles.com/images/374000/374499_unknowndepths_sci-fi-card-template-example-01-rear.jpg?f1440462500"
                 },
                 new Card
                 {
                     Id = 2,
                     Name = "Faster Krate",
                     Description = "An efficient governor known for reducing the time to complete projects.",
+                    ImageUrl = "https://art.ngfiles.com/images/374000/374499_unknowndepths_sci-fi-card-template-example-01-rear.jpg?f1440462500"
                 }
             };
 

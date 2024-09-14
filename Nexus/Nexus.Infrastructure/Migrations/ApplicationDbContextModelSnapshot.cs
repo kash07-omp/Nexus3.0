@@ -178,6 +178,9 @@ namespace Nexus.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CardRarity")
+                        .HasColumnType("int");
+
                     b.Property<int>("CardType")
                         .HasColumnType("int");
 
@@ -185,6 +188,13 @@ namespace Nexus.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<TimeSpan?>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -199,15 +209,19 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            CardRarity = 0,
                             CardType = 0,
                             Description = "A well-known governor focused on boosting production at all costs.",
+                            ImageUrl = "https://art.ngfiles.com/images/374000/374499_unknowndepths_sci-fi-card-template-example-01-rear.jpg?f1440462500",
                             Name = "Kily Gavin"
                         },
                         new
                         {
                             Id = 2,
+                            CardRarity = 0,
                             CardType = 0,
                             Description = "An efficient governor known for reducing the time to complete projects.",
+                            ImageUrl = "https://art.ngfiles.com/images/374000/374499_unknowndepths_sci-fi-card-template-example-01-rear.jpg?f1440462500",
                             Name = "Faster Krate"
                         });
                 });
@@ -419,7 +433,7 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 8,
-                            SolarSystemId = 2
+                            SolarSystemId = 1
                         },
                         new
                         {
@@ -459,12 +473,12 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 16,
-                            SolarSystemId = 3
+                            SolarSystemId = 2
                         },
                         new
                         {
                             Id = 17,
-                            SolarSystemId = 3
+                            SolarSystemId = 2
                         },
                         new
                         {
@@ -479,7 +493,7 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 20,
-                            SolarSystemId = 4
+                            SolarSystemId = 3
                         },
                         new
                         {
@@ -494,32 +508,32 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 23,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 24,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 25,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 26,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 27,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 28,
-                            SolarSystemId = 5
+                            SolarSystemId = 4
                         },
                         new
                         {
@@ -559,32 +573,32 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 36,
-                            SolarSystemId = 6
+                            SolarSystemId = 7
                         },
                         new
                         {
                             Id = 37,
-                            SolarSystemId = 6
+                            SolarSystemId = 7
                         },
                         new
                         {
                             Id = 38,
-                            SolarSystemId = 6
+                            SolarSystemId = 7
                         },
                         new
                         {
                             Id = 39,
-                            SolarSystemId = 7
+                            SolarSystemId = 8
                         },
                         new
                         {
                             Id = 40,
-                            SolarSystemId = 7
+                            SolarSystemId = 8
                         },
                         new
                         {
                             Id = 41,
-                            SolarSystemId = 7
+                            SolarSystemId = 8
                         },
                         new
                         {
@@ -599,12 +613,12 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 44,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 45,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
@@ -629,21 +643,36 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 50,
-                            SolarSystemId = 10
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 51,
-                            SolarSystemId = 10
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 52,
-                            SolarSystemId = 10
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 53,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 54,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 55,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 56,
                             SolarSystemId = 10
                         });
                 });
@@ -1794,6 +1823,69 @@ namespace Nexus.Infrastructure.Migrations
                             IsColonized = false,
                             PlanetId = 53,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 160,
+                            IsColonized = false,
+                            PlanetId = 54,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 161,
+                            IsColonized = false,
+                            PlanetId = 54,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 162,
+                            IsColonized = false,
+                            PlanetId = 54,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 163,
+                            IsColonized = false,
+                            PlanetId = 55,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 164,
+                            IsColonized = false,
+                            PlanetId = 55,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 165,
+                            IsColonized = false,
+                            PlanetId = 55,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 166,
+                            IsColonized = false,
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 167,
+                            IsColonized = false,
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 168,
+                            IsColonized = false,
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -2294,6 +2386,11 @@ namespace Nexus.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Credits")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
