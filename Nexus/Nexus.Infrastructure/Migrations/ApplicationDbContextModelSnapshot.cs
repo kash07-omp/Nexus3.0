@@ -24,13 +24,13 @@ namespace Nexus.Infrastructure.Migrations
 
             modelBuilder.Entity("CardUser", b =>
                 {
-                    b.Property<int>("DeckId")
+                    b.Property<int>("CardsId")
                         .HasColumnType("int");
 
                     b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("DeckId", "UsersId");
+                    b.HasKey("CardsId", "UsersId");
 
                     b.HasIndex("UsersId");
 
@@ -414,7 +414,7 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 7,
-                            SolarSystemId = 2
+                            SolarSystemId = 1
                         },
                         new
                         {
@@ -479,7 +479,7 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 20,
-                            SolarSystemId = 3
+                            SolarSystemId = 4
                         },
                         new
                         {
@@ -494,22 +494,22 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 23,
-                            SolarSystemId = 4
+                            SolarSystemId = 5
                         },
                         new
                         {
                             Id = 24,
-                            SolarSystemId = 4
+                            SolarSystemId = 5
                         },
                         new
                         {
                             Id = 25,
-                            SolarSystemId = 4
+                            SolarSystemId = 5
                         },
                         new
                         {
                             Id = 26,
-                            SolarSystemId = 4
+                            SolarSystemId = 5
                         },
                         new
                         {
@@ -539,7 +539,7 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 32,
-                            SolarSystemId = 5
+                            SolarSystemId = 6
                         },
                         new
                         {
@@ -589,12 +589,12 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 42,
-                            SolarSystemId = 7
+                            SolarSystemId = 8
                         },
                         new
                         {
                             Id = 43,
-                            SolarSystemId = 7
+                            SolarSystemId = 8
                         },
                         new
                         {
@@ -609,76 +609,41 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 46,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 47,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 48,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 49,
-                            SolarSystemId = 8
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 50,
-                            SolarSystemId = 8
+                            SolarSystemId = 10
                         },
                         new
                         {
                             Id = 51,
-                            SolarSystemId = 9
+                            SolarSystemId = 10
                         },
                         new
                         {
                             Id = 52,
-                            SolarSystemId = 9
+                            SolarSystemId = 10
                         },
                         new
                         {
                             Id = 53,
-                            SolarSystemId = 9
-                        },
-                        new
-                        {
-                            Id = 54,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 55,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 56,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 57,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 58,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 59,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 60,
                             SolarSystemId = 10
                         });
                 });
@@ -1829,153 +1794,6 @@ namespace Nexus.Infrastructure.Migrations
                             IsColonized = false,
                             PlanetId = 53,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 160,
-                            IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 161,
-                            IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 162,
-                            IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 163,
-                            IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 164,
-                            IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 165,
-                            IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 166,
-                            IsColonized = false,
-                            PlanetId = 56,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 167,
-                            IsColonized = false,
-                            PlanetId = 56,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 168,
-                            IsColonized = false,
-                            PlanetId = 56,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 169,
-                            IsColonized = false,
-                            PlanetId = 57,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 170,
-                            IsColonized = false,
-                            PlanetId = 57,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 171,
-                            IsColonized = false,
-                            PlanetId = 57,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 172,
-                            IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 173,
-                            IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 174,
-                            IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 175,
-                            IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 176,
-                            IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 177,
-                            IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 178,
-                            IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 179,
-                            IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 180,
-                            IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -2534,7 +2352,7 @@ namespace Nexus.Infrastructure.Migrations
                 {
                     b.HasOne("Nexus.Domain.Entities.Card", null)
                         .WithMany()
-                        .HasForeignKey("DeckId")
+                        .HasForeignKey("CardsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

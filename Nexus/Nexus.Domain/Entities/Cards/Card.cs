@@ -6,6 +6,8 @@
         public required string Name { get; set; }
         public required string Description { get; set; }
         public ECardType CardType { get; set; }
+        public ECardRarity CardRarity { get; set; }
+        public TimeSpan? Duration { get; set; }
 
 
         public virtual ICollection<CardBonus> CardBonuses { get; set; }
@@ -18,5 +20,13 @@
         Admiral,
         General,
         Scientist
+    }
+
+    public enum ECardRarity
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary
     }
 }

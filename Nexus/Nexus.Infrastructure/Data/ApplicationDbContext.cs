@@ -11,6 +11,8 @@ namespace Nexus.Infrastructure.Data
 
         public DbSet<Planet> Planets { get; set; }
         public DbSet<Region> Regions { get; set; }
+        public DbSet<Card> Cards { get; set; }
+        public DbSet<CardBonus> CardBonus { get; set; }
         public DbSet<Structure> Structures { get; set; }
         public DbSet<Mine> Mines { get; set; }
         public DbSet<Resource> Resources { get; set; }
@@ -40,7 +42,7 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CardBonusConfiguration());
 
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Deck)
+                .HasMany(u => u.Cards)
                 .WithMany(c => c.Users)
                 .UsingEntity(j => j.ToTable("UserCards"));
 
