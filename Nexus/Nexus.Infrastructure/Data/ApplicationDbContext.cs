@@ -39,6 +39,11 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CardConfiguration());
             modelBuilder.ApplyConfiguration(new CardBonusConfiguration());
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Deck)
+                .WithMany(c => c.Users)
+                .UsingEntity(j => j.ToTable("UserCards"));
+
             SeedData.Seed(modelBuilder);
         }
     }
