@@ -2,6 +2,7 @@
 <div class="container">
     <h2>My Deck</h2>
 
+    <!-- Botones de compra de cofres -->
     <div class="row mb-4">
         <div class="col text-center">
             <button class="btn btn-primary" onclick="buyChest('Normal')">Buy Normal Chest (100 Credits)</button>
@@ -10,11 +11,12 @@
         </div>
     </div>
 
-    <div id="cardsgrid">
+    <!-- Grid de cartas -->
+    <div class="row" id="cardsgrid">
         @foreach (var card in Model)
         {
             <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
-                <div class="card text-center">
+                <div class="card fade-in text-center">
                     <img src="/images/@card.ImageUrl" class="card-img-top" alt="@card.Name" style="max-height: 200px; object-fit: cover;" />
                     <div class="card-body">
                         <h5 class="card-title">@card.Name</h5>
@@ -26,14 +28,13 @@
     </div>
 </div>
 
+<!-- Modal para mostrar la carta obtenida -->
 <div id="newCardModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">New Card Obtained!</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
             </div>
             <div class="modal-body text-center">
                 <img id="newCardImage" src="" class="img-fluid mb-3" alt="Card Image" style="max-height: 300px;" />
@@ -47,8 +48,10 @@
     </div>
 </div>
 
+
 <script>
     function buyChest(chestType) {
+        console.log("Buying chest of type: " + chestType);
         $.post('/Deck/BuyChest', { chestType }, function (response) {
             if (response.success) {
                 // Actualiza el contenido del modal
@@ -59,7 +62,7 @@
 
                 // Añadir nueva carta al grid sin recargar
                 var newCardHtml = `
-                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 fade-in">
                         <div class="card text-center">
                             <img src="/images/${response.card.imageUrl}" class="card-img-top" alt="${response.card.name}" style="max-height: 200px; object-fit: cover;" />
                             <div class="card-body">
@@ -68,10 +71,8 @@
                             </div>
                         </div>
                     </div>`;
-
-                // Insertar la nueva carta en el grid
+                
                 $('#cardsgrid').append(newCardHtml);
-
             } else {
                 alert(response.message);
                 console.log("Error: " + response.message);
@@ -80,6 +81,28 @@
             console.log("Error during request: ", error);
         });
     }
-
 </script>
 
+<style>
+    .fade-in {
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+    }
+
+    @@keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    .btn-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        opacity: 0.6;
+    }
+
+    .btn-close:hover {
+        opacity: 1;
+    }
+</style>
