@@ -77,72 +77,62 @@
         </div>
     </div>
 
-
     <!-- Toast for success message -->
-    @if (TempData["ToastMessage"] != null)
-    {
-        <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    @TempData["ToastMessage"]
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div id="successToast" class="toast align-items-center text-bg-success position-fixed bottom-0 end-0 m-3 border-0" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+        <div class="d-flex">
+            <div class="toast-body">
+                Governor assigned successfully!
             </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var toastElement = document.querySelector('.toast');
-                var toast = new bootstrap.Toast(toastElement);
-                toast.show();
+    </div>
+
+    <script>
+        let selectedGovernorId = null;
+
+        function selectGovernorCard(cardElement) {
+            // Remove the highlight from previously selected card
+            $('.governor-card').removeClass('selected-governor');
+
+            // Highlight the selected card
+            $(cardElement).addClass('selected-governor');
+
+            // Get the selected card's id
+            selectedGovernorId = $(cardElement).data('card-id');
+
+            // Enable the confirm button
+            $('#confirmGovernorBtn').prop('disabled', false);
+        }
+
+        function confirmGovernor() {
+            const regionId = @Model.Region.Id;
+
+            $.post('/Region/SetGovernor', { regionId: regionId, cardId: selectedGovernorId }, function (response) {
+                if (response.success) {
+                    // Close the modal
+                    $('#governorModal').modal('hide');
+
+                    // Show success toast
+                    $('#successToast').show();
+                    var toastElement = document.getElementById('successToast');
+                    var toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                } else {
+                    // Show error toast
+                    toastr.error(response.message);
+                }
+            }).fail(function (error) {
+                toastr.error('An error occurred while setting the governor.');
             });
-        </script>
-    }
-</div>
+        }
+    </script>
 
-<!-- JavaScript for selecting governor and submitting the form -->
-<script>
-    let selectedGovernorId = null;
+    <!-- Additional CSS for styling the modal and cards -->
+    <style>
+        #governorModal .governor-card-container { max-width: 100%; }
+        #governorModal .governor-card { width: 190px; cursor: pointer; transition: box-shadow 0.3s ease; }
+            #governorModal .governor-card img { max-height: 200px; object-fit: cover; width: 100%; border-radius: 15px; }
+            #governorModal .governor-card .card-body { padding: 10px; }
+            #governorModal .governor-card.selected-governor { box-shadow: 0px 0px 15px 5px rgba(0, 123, 255, 0.7); }
 
-    function selectGovernorCard(cardElement) {
-        // Remove the highlight from previously selected card
-        $('.governor-card').removeClass('selected-governor');
-
-        // Highlight the selected card
-        $(cardElement).addClass('selected-governor');
-
-        // Get the selected card's id
-        selectedGovernorId = $(cardElement).data('card-id');
-
-        // Enable the confirm button
-        $('#confirmGovernorBtn').prop('disabled', false);
-    }
-
-    function confirmGovernor() {
-        const regionId = @Model.Region.Id;
-
-        $.post('/Region/SetGovernor', { regionId: regionId, cardId: selectedGovernorId }, function (response) {
-            if (response.success) {
-                // Show success toast
-                toastr.success('Governor set successfully!');
-
-                // Close the modal
-                $('#governorModal').modal('hide');
-            } else {
-                // Show error toast
-                toastr.error(response.message);
-            }
-        }).fail(function (error) {
-            toastr.error('An error occurred while setting the governor.');
-        });
-    }
-</script>
-
-<style>
-    #governorModal .governor-card-container { max-width: 100%; }
-        #governorModal .governor-card { width: 190px;cursor: pointer; transition: box-shadow 0.3s ease; }
-        #governorModal .governor-card img { max-height: 200px; object-fit: cover; width: 100%; border-radius:15px; }
-        #governorModal .governor-card .card-body { padding:10px; }
-        #governorModal .governor-card.selected-governor { box-shadow: 0px 0px 15px 5px rgba(0, 123, 255, 0.7); }
-    #governorModal .modal-body { display: flex; justify-content: center; }
-        #governorModal .modal-body .governor-card-container { display: flex; justify-content: center; flex-wrap: wrap; }
-</style>
+        #successToast { position: fixed; bottom: 20px; right: 20px; z-index: 1055; }</style>
