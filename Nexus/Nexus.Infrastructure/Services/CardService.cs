@@ -7,10 +7,12 @@ using Nexus.Infrastructure.Services.Interfaces;
 public class CardService : ICardService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IResourceService _resourceService;
 
-    public CardService(ApplicationDbContext context)
+    public CardService(ApplicationDbContext context, IResourceService resourceService)
     {
         _context = context;
+        _resourceService = resourceService;
     }
 
     public async Task<Result<Card>> OpenChest(ChestType chestType, User user)
@@ -33,7 +35,7 @@ public class CardService : ICardService
             return Result<Card>.SuccessResult(selectedCard);
         } catch (Exception ex)
         {
-            return Result<Card>.FailureResult($"Ups! the gorgomits has break interfer in this action ({ex})");
+            return Result<Card>.FailureResult($"Ups! the gorgomits have cursed this action ({ex})");
         }
     }
 
@@ -51,6 +53,30 @@ public class CardService : ICardService
             .SelectMany(u => u.Cards)
             .ToListAsync();
     }
+
+    public async Task<Result<object>> SetRegionGovernor(int regionId, int cardId, string userId)
+    {
+        var region = await _context.Regions
+            .Include(r => r.User)
+            .FirstOrDefaultAsync(r => r.Id == regionId && r.UserId == userId);
+
+        if (region == null)
+            return Result<object>.FailureResult("This region does not exist or does not belong to the user.");
+
+        var governorCard = await _context.Cards
+            .Include(c => c.Users)
+            .FirstOrDefaultAsync(c => c.Id == cardId && c.Users.Any(u => u.Id == userId) && c.CardType == ECardType.Governor);
+
+        if (governorCard == null)
+            return Result<object>.FailureResult("This card is either not owned by the user or is not a valid Governor.");
+
+        region.GovernorCardId = cardId;
+        _context.Regions.Update(region);
+        await _context.SaveChangesAsync();
+
+        return Result<object>.SuccessResult("Governor assigned successfully.");
+    }
+
 
     private async Task<List<Card>> GetAvailableCardsAsync(ECardRarity rarity, User user)
     {

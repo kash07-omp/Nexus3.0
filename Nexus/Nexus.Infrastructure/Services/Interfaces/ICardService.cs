@@ -8,5 +8,6 @@ namespace Nexus.Infrastructure.Services.Interfaces
         Task<Result<Card>> OpenChest(ChestType chestType, User user);
         Task AssignCardToUserAsync(User user, Card card);
         Task<List<Card>> GetUserCardsAsync(string userId);
+        Task<Result<object>> SetRegionGovernor(int regionId, int cardId, string userId);
     }
 }

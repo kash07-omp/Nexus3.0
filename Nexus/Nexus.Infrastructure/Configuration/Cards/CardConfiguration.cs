@@ -23,7 +23,7 @@ namespace Nexus.Infrastructure.Configuration
 
             builder.Property(c => c.ImageUrl);
 
-            builder.HasMany(c => c.CardBonuses)
+            builder.HasMany(c => c.Bonuses)
                 .WithOne(cb => cb.Card)
                 .HasForeignKey(cb => cb.CardId);
 

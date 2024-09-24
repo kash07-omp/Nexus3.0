@@ -11,7 +11,7 @@
         public string ImageUrl { get; set; }
 
 
-        public virtual ICollection<CardBonus> CardBonuses { get; set; }
+        public virtual ICollection<CardBonus> Bonuses { get; set; }
         public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 

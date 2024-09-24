@@ -15,20 +15,21 @@ namespace Nexus.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IResourceService _resourcesService;
         private readonly IStructureUpgradeService _structureUpgradeService;
+        private readonly ICardService _cardService;
 
         public RegionController(
             ApplicationDbContext context, 
             UserManager<User> userManager, 
             IResourceService resourcesService, 
-            IStructureUpgradeService structureUpgradeService)
+            IStructureUpgradeService structureUpgradeService,
+            ICardService cardService)
         {
             _context = context;
             _userManager = userManager;
             _resourcesService = resourcesService;
             _structureUpgradeService = structureUpgradeService;
+            _cardService = cardService;
         }
-
-        // Método Index para listar todas las regiones del jugador
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -79,6 +80,5 @@ namespace Nexus.Web.Controllers
             TempData["ToastMessage"] = "La estructura ha iniciado su construcción.";
             return RedirectToAction(nameof(Detail), new { id = regionId });
         }
-
     }
 }
