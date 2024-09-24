@@ -27,8 +27,8 @@
 
     <div class="card mt-4 mb-4">
         <div class="card-body">
-            <h4 class="card-title">Planet: @Model.Region.Planet.Id</h4>
-            <p class="card-text"><strong>Colonized:</strong> @Model.Region.IsColonized</p>
+            <!-- Button to trigger the Set Governor modal -->
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#governorModal">Set Governor</button>
         </div>
     </div>
 
@@ -43,9 +43,6 @@
         }
     </div>
 
-    <!-- Button to trigger the Set Governor modal -->
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#governorModal">Set Governor</button>
-
     <!-- Modal for selecting a governor card -->
     <div class="modal fade" id="governorModal" tabindex="-1" aria-labelledby="governorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -54,19 +51,21 @@
                     <h5 class="modal-title" id="governorModalLabel">Select Governor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
+                <div class="modal-body d-flex justify-content-center">
+                    <div class="governor-card-container d-flex justify-content-center flex-wrap">
                         @foreach (Card card in Model.GovernorCards)
                         {
-                            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
-                                <div class="card governor-card" data-card-id="@card.Id" onclick="selectGovernorCard(this)">
-                                    <img src="/images/@card.ImageUrl" class="card-img-top" alt="@card.Name" style="max-height: 200px; object-fit: cover;" />
-                                    <div class="card-body">
-                                        <h5 class="card-title">@card.Name</h5>
-                                        <p class="card-text">@card.Description</p>
-                                    </div>
+                            <div class="governor-card mx-2 mb-4" data-card-id="@card.Id" onclick="selectGovernorCard(this)">
+                                <img src="/images/@card.ImageUrl" class="card-img-top" alt="@card.Name" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@card.Name</h5>
+                                    <p class="card-text">@card.Description</p>
                                 </div>
                             </div>
+                        }
+                        @if (!Model.GovernorCards.Any())
+                        {
+                            <p>No available Governor cards</p>
                         }
                     </div>
                 </div>
@@ -77,6 +76,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Toast for success message -->
     @if (TempData["ToastMessage"] != null)
@@ -137,9 +137,12 @@
     }
 </script>
 
-<!-- Additional CSS for styling the selected card -->
 <style>
-    .governor-card { cursor: pointer; transition: box-shadow 0.3s ease; }
-
-        .governor-card.selected-governor { box-shadow: 0px 0px 15px 5px rgba(0, 123, 255, 0.7); }
+    #governorModal .governor-card-container { max-width: 100%; }
+        #governorModal .governor-card { width: 190px;cursor: pointer; transition: box-shadow 0.3s ease; }
+        #governorModal .governor-card img { max-height: 200px; object-fit: cover; width: 100%; border-radius:15px; }
+        #governorModal .governor-card .card-body { padding:10px; }
+        #governorModal .governor-card.selected-governor { box-shadow: 0px 0px 15px 5px rgba(0, 123, 255, 0.7); }
+    #governorModal .modal-body { display: flex; justify-content: center; }
+        #governorModal .modal-body .governor-card-container { display: flex; justify-content: center; flex-wrap: wrap; }
 </style>
