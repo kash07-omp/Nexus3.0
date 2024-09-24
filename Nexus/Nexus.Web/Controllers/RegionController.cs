@@ -58,6 +58,11 @@ namespace Nexus.Web.Controllers
                 return NotFound();
             }
 
+            var user = await _userManager.GetUserAsync(User);
+            var governorCards = await _context.Cards
+                .Where(c => c.Users.Any(u => u.Id == user.Id) && c.CardType == ECardType.Governor)
+                .ToListAsync();
+
             var structures = await _context.Structures.ToListAsync();
             var regionStructures = region.RegionStructures.ToList();
 
@@ -65,7 +70,8 @@ namespace Nexus.Web.Controllers
             {
                 Region = region,
                 Structures = structures,
-                RegionStructures = regionStructures
+                RegionStructures = regionStructures,
+                GovernorCards = governorCards
             };
 
             return View(viewModel);
@@ -80,5 +86,23 @@ namespace Nexus.Web.Controllers
             TempData["ToastMessage"] = "La estructura ha iniciado su construcción.";
             return RedirectToAction(nameof(Detail), new { id = regionId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SetGovernor(int regionId, int cardId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _cardService.SetRegionGovernor(regionId, cardId, user.Id);
+
+            if (result.Success)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = result.ErrorMessage });
+            }
+        }
+
     }
 }

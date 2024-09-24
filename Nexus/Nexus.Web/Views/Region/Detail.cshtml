@@ -42,7 +42,43 @@
             </div>
         }
     </div>
-    
+
+    <!-- Button to trigger the Set Governor modal -->
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#governorModal">Set Governor</button>
+
+    <!-- Modal for selecting a governor card -->
+    <div class="modal fade" id="governorModal" tabindex="-1" aria-labelledby="governorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="governorModalLabel">Select Governor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @foreach (Card card in Model.GovernorCards)
+                        {
+                            <div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+                                <div class="card governor-card" data-card-id="@card.Id" onclick="selectGovernorCard(this)">
+                                    <img src="/images/@card.ImageUrl" class="card-img-top" alt="@card.Name" style="max-height: 200px; object-fit: cover;" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">@card.Name</h5>
+                                        <p class="card-text">@card.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="confirmGovernorBtn" class="btn btn-primary" disabled onclick="confirmGovernor()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast for success message -->
     @if (TempData["ToastMessage"] != null)
     {
         <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -62,3 +98,48 @@
         </script>
     }
 </div>
+
+<!-- JavaScript for selecting governor and submitting the form -->
+<script>
+    let selectedGovernorId = null;
+
+    function selectGovernorCard(cardElement) {
+        // Remove the highlight from previously selected card
+        $('.governor-card').removeClass('selected-governor');
+
+        // Highlight the selected card
+        $(cardElement).addClass('selected-governor');
+
+        // Get the selected card's id
+        selectedGovernorId = $(cardElement).data('card-id');
+
+        // Enable the confirm button
+        $('#confirmGovernorBtn').prop('disabled', false);
+    }
+
+    function confirmGovernor() {
+        const regionId = @Model.Region.Id;
+
+        $.post('/Region/SetGovernor', { regionId: regionId, cardId: selectedGovernorId }, function (response) {
+            if (response.success) {
+                // Show success toast
+                toastr.success('Governor set successfully!');
+
+                // Close the modal
+                $('#governorModal').modal('hide');
+            } else {
+                // Show error toast
+                toastr.error(response.message);
+            }
+        }).fail(function (error) {
+            toastr.error('An error occurred while setting the governor.');
+        });
+    }
+</script>
+
+<!-- Additional CSS for styling the selected card -->
+<style>
+    .governor-card { cursor: pointer; transition: box-shadow 0.3s ease; }
+
+        .governor-card.selected-governor { box-shadow: 0px 0px 15px 5px rgba(0, 123, 255, 0.7); }
+</style>

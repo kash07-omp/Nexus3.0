@@ -7,5 +7,6 @@ namespace Nexus.Web.Models
         public Region Region { get; set; }
         public List<Structure> Structures { get; set; }
         public List<RegionStructure> RegionStructures { get; set; }
+        public List<Card> GovernorCards { get; set; } = new List<Card>();
     }
 }
