@@ -93,15 +93,10 @@ namespace Nexus.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             var result = await _cardService.SetRegionGovernor(regionId, cardId, user.Id);
-
             if (result.Success)
-            {
                 return Json(new { success = true });
-            }
-            else
-            {
-                return Json(new { success = false, message = result.ErrorMessage });
-            }
+
+            return Json(new { success = false, message = result.ErrorMessage });
         }
 
     }

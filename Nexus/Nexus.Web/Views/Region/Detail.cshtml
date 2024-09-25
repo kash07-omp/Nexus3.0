@@ -91,16 +91,9 @@
         let selectedGovernorId = null;
 
         function selectGovernorCard(cardElement) {
-            // Remove the highlight from previously selected card
             $('.governor-card').removeClass('selected-governor');
-
-            // Highlight the selected card
             $(cardElement).addClass('selected-governor');
-
-            // Get the selected card's id
             selectedGovernorId = $(cardElement).data('card-id');
-
-            // Enable the confirm button
             $('#confirmGovernorBtn').prop('disabled', false);
         }
 
@@ -109,16 +102,13 @@
 
             $.post('/Region/SetGovernor', { regionId: regionId, cardId: selectedGovernorId }, function (response) {
                 if (response.success) {
-                    // Close the modal
                     $('#governorModal').modal('hide');
 
-                    // Show success toast
                     $('#successToast').show();
                     var toastElement = document.getElementById('successToast');
                     var toast = new bootstrap.Toast(toastElement);
                     toast.show();
                 } else {
-                    // Show error toast
                     toastr.error(response.message);
                 }
             }).fail(function (error) {
