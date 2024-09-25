@@ -91,7 +91,8 @@ namespace Nexus.Infrastructure.Data
                             Id = regionIdCounter++,
                             IsColonized = false,
                             PlanetId = planet.Id,
-                            UserId = null
+                            UserId = null,
+                            UpdatedAt = DateTime.UtcNow,
                         };
 
                         regions.Add(region);
