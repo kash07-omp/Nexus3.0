@@ -32,9 +32,11 @@ namespace Nexus.Infrastructure.Data
             var planets = new List<Planet>();
             var asteroidFields = new List<AsteroidField>();
             var jumpGates = new List<JumpGate>();
+            var regions = new List<Region>();
             var random = new Random();
 
             int planetIdCounter = 1;
+            int regionIdCounter = 1;
 
             // Crear nombres para los sistemas solares
             var solarSystemNames = new List<string>
@@ -50,16 +52,14 @@ namespace Nexus.Infrastructure.Data
                 var solarSystem = new SolarSystem
                 {
                     Id = i,
-                    Name = solarSystemNames[i - 1],
-                    GridSizeX = size,
-                    GridSizeY = size
+                    Name = solarSystemNames[i - 1]
                 };
 
                 solarSystems.Add(solarSystem);
 
                 var occupiedCoordinates = new HashSet<(int x, int y)>
                 {
-                    (size / 2 + 1, size / 2 + 1) // La estrella está siempre en el centro
+                    (size / 2, size / 2) // La estrella está siempre en el centro
                 };
 
                 // Crear planetas
@@ -82,6 +82,20 @@ namespace Nexus.Infrastructure.Data
                     };
 
                     planets.Add(planet);
+
+                    // Crear regiones para cada planeta (3 regiones por planeta)
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        var region = new Region
+                        {
+                            Id = regionIdCounter++,
+                            IsColonized = false,
+                            PlanetId = planet.Id,
+                            UserId = null
+                        };
+
+                        regions.Add(region);
+                    }
                 }
 
                 // Crear campos de asteroides (0-3)
@@ -121,6 +135,7 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.Entity<Planet>().HasData(planets);
             modelBuilder.Entity<AsteroidField>().HasData(asteroidFields);
             modelBuilder.Entity<JumpGate>().HasData(jumpGates);
+            modelBuilder.Entity<Region>().HasData(regions); // Agregar las regiones
         }
 
         // Función para generar coordenadas válidas para un planeta, campo de asteroides o puerta de salto
@@ -154,6 +169,7 @@ namespace Nexus.Infrastructure.Data
                 occupiedCoordinates.Add((adjacentX, adjacentY));
             }
         }
+
 
         private static void SeedDistrictsAndStructures(ModelBuilder modelBuilder)
         {
