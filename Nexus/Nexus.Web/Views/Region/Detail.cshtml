@@ -30,6 +30,10 @@
             <!-- Button to trigger the Set Governor modal -->
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#governorModal">Set Governor</button>
         </div>
+        <!-- Botón para ver el sistema solar -->
+        <a href="@Url.Action("Detail", "SolarSystem", new { id = Model.Region.Planet.SolarSystemId })" class="btn btn-info mb-4">
+            Ver Sistema Solar
+        </a>
     </div>
 
     <h3>Structures</h3>
