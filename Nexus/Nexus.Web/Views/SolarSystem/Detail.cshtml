@@ -63,6 +63,19 @@
             }
         }
     </div>
+
+    <!-- Menú contextual -->
+    <div id="contextMenu" class="context-menu">
+        <ul>
+            <li id="action-view-planet" onclick="reloadPage()">Ver planeta</li>
+            <li id="action-mine-asteroid" onclick="reloadPage()">Minar</li>
+            <li id="action-jump-gate" onclick="reloadPage()">Saltar</li>
+            <li id="action-view-fleet" onclick="reloadPage()">Ver flota</li>
+            <li id="action-spy-fleet" onclick="reloadPage()">Espiar</li>
+            <li id="action-attack-fleet" onclick="reloadPage()">Atacar</li>
+            <li id="action-move-fleet" onclick="reloadPage()">Mover flota</li>
+        </ul>
+    </div>
 </div>
 
 @section Styles {
@@ -75,24 +88,118 @@
 
         /* Estilos de las celdas del grid */
         .solar-system-cell { height: 75px; border: 1px solid #ffffff80; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); text-align: center; color: white; }
+        
+        /* Estilo para planetas */
+        .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
 
-            /* Estilo para planetas */
-            .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
+        /* Estilo especial para planetas del usuario */
+        .solar-system-cell.planet-own { color: green; font-weight: bold; }
 
-            /* Estilo especial para planetas del usuario */
-            .solar-system-cell.planet-own { color: green; font-weight: bold; }
+        /* Estilo para campos de asteroides */
+        .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
 
-            /* Estilo para campos de asteroides */
-            .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
+        /* Estilo para puertas de salto */
+        .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
 
-            /* Estilo para puertas de salto */
-            .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
+        /* Estilo especial para la estrella */
+        .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
 
-            /* Estilo especial para la estrella */
-            .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
+        /* Estilos para flotas */
+        .solar-system-cell.fleet-own { color: green; }
+        .solar-system-cell.fleet-enemy { color: red; }
+        /* Efecto de respiración */
+        .fleet-selected {
+            animation: breathing 1s infinite alternate;
+        }
+        @@keyframes breathing {
+            from { color: white; }
+            to { color: green; }
+        }
 
-            /* Estilos para flotas */
-            .solar-system-cell.fleet-own { color: green; }
-            .solar-system-cell.fleet-enemy { color: red; }
+        /* Menú contextual */
+        .context-menu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            background-color: #333;
+            color: white;
+            border: 1px solid #999;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .context-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .context-menu li {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .context-menu li:hover {
+            background-color: #555;
+        }
     </style>
+}
+
+@section Scripts {
+    <script>
+        let selectedFleet = null;
+        let contextMenu = document.getElementById('contextMenu');
+
+        // Evento para seleccionar una flota con clic izquierdo
+        document.querySelectorAll('.fleet-own').forEach(fleetElement => {
+            fleetElement.addEventListener('click', function() {
+                if (selectedFleet) {
+                    selectedFleet.classList.remove('fleet-selected');
+                }
+                selectedFleet = this;
+                this.classList.add('fleet-selected');
+            });
+        });
+
+        // Evento para deseleccionar cuando se hace clic en otro lugar
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.fleet-own') && selectedFleet) {
+                selectedFleet.classList.remove('fleet-selected');
+                selectedFleet = null;
+            }
+        });
+
+        // Evento para mostrar el menú contextual con clic derecho
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            const target = event.target.closest('.solar-system-cell');
+            if (!target) return;
+
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = event.pageX + 'px';
+            contextMenu.style.top = event.pageY + 'px';
+
+            // Mostrar opciones según el contenido de la celda
+            document.getElementById('action-view-planet').style.display = target.classList.contains('planet') ? 'block' : 'none';
+            document.getElementById('action-mine-asteroid').style.display = target.classList.contains('asteroidfield') ? 'block' : 'none';
+            document.getElementById('action-jump-gate').style.display = target.classList.contains('jumppoint') ? 'block' : 'none';
+
+            const fleetEnemy = target.classList.contains('fleet-enemy');
+            const fleetOwn = target.classList.contains('fleet-own');
+            document.getElementById('action-view-fleet').style.display = fleetOwn ? 'block' : 'none';
+            document.getElementById('action-spy-fleet').style.display = fleetEnemy ? 'block' : 'none';
+            document.getElementById('action-attack-fleet').style.display = selectedFleet && fleetEnemy ? 'block' : 'none';
+            document.getElementById('action-move-fleet').style.display = selectedFleet && !target.classList.contains('estrella') ? 'block' : 'none';
+        });
+
+        // Ocultar el menú contextual al hacer clic fuera
+        document.addEventListener('click', function() {
+            contextMenu.style.display = 'none';
+        });
+
+        // Función temporal para recargar la página
+        function reloadPage() {
+            location.reload();
+        }
+    </script>
 }
