@@ -31,6 +31,11 @@
                         cellClass += " planet";
                         cellContent = "Planeta";
                         dataItemId = planet.Id.ToString();
+
+                        // Si el planeta pertenece al usuario actual
+                        var userPlanet = planet.Regions.FirstOrDefault(r => r.UserId == Model.CurrentUser.Id);
+                        if (userPlanet != null)
+                            cellClass += " planet-own";
                     }
                     else if (asteroid != null)
                     {
@@ -72,21 +77,22 @@
         .solar-system-cell { height: 75px; border: 1px solid #ffffff80; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); text-align: center; color: white; }
 
             /* Estilo para planetas */
-            .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); /* Fondo azul claro */ }
+            .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
+
+            /* Estilo especial para planetas del usuario */
+            .solar-system-cell.planet-own { color: green; font-weight: bold; }
 
             /* Estilo para campos de asteroides */
-            .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); /* Fondo gris */ }
+            .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
 
             /* Estilo para puertas de salto */
-            .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); /* Fondo naranja */ }
+            .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
 
             /* Estilo especial para la estrella */
-            .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); /* Fondo amarillo claro */ }
+            .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
 
             /* Estilos para flotas */
             .solar-system-cell.fleet-own { color: green; }
-            /* Flota propia */
             .solar-system-cell.fleet-enemy { color: red; }
-        /* Flota enemiga */
     </style>
 }

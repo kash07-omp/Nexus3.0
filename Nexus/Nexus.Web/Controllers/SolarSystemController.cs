@@ -29,6 +29,7 @@ namespace Nexus.Web.Controllers
         {
             var solarSystem = await _context.SolarSystems
                 .Include(ss => ss.Planets)
+                    .ThenInclude(p => p.Regions)
                 .Include(ss => ss.AsteroidFields)
                 .Include(ss => ss.JumpGates)
                 .Include(ss => ss.Fleets)
