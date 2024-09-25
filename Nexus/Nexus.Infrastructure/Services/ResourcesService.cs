@@ -17,6 +17,8 @@ namespace Nexus.Infrastructure.Services
         public async Task UpdateRegionResourcesAsync(int regionId)
         {
             var region = await _context.Regions
+                .Include(r => r.GovernorCard)
+                    .ThenInclude(c => c.Bonuses)
                 .Include(r => r.RegionResources)
                 .Include(r => r.RegionStructures)
                     .ThenInclude(rs => rs.Structure)
@@ -33,7 +35,7 @@ namespace Nexus.Infrastructure.Services
             {
                 if (regionStructure.Structure.Mine != null)
                 {
-                    var resourceGain = CalculateResourceGain(regionStructure, region.UpdatedAt, now);
+                    var resourceGain = CalculateResourceGain(regionStructure, region.UpdatedAt, now, region.GovernorCard);
 
                     var regionResource = region.RegionResources
                         .FirstOrDefault(rr => rr.ResourceId == regionStructure.Structure.Mine.ResourceId);
@@ -83,35 +85,45 @@ namespace Nexus.Infrastructure.Services
             return true;
         }
 
-        private int CalculateResourceGain(RegionStructure regionStructure, DateTime fromTime, DateTime toTime)
+        private int CalculateResourceGain(RegionStructure regionStructure, DateTime fromTime, DateTime toTime, Card? governor)
         {
             var totalGain = 0;
             var upgradedAt = regionStructure.UpgradedAt;
 
             if (upgradedAt.HasValue && upgradedAt > fromTime && upgradedAt < toTime)
             {
-                // Gain before upgrade
                 var hoursBeforeUpgrade = (upgradedAt.Value - fromTime).TotalHours;
-                totalGain += CalculateGain(regionStructure, hoursBeforeUpgrade, regionStructure.Level - 1);
+                totalGain += CalculateGain(regionStructure, hoursBeforeUpgrade, regionStructure.Level - 1, governor);
 
-                // Gain after upgrade
                 var hoursAfterUpgrade = (toTime - upgradedAt.Value).TotalHours;
-                totalGain += CalculateGain(regionStructure, hoursAfterUpgrade, regionStructure.Level);
+                totalGain += CalculateGain(regionStructure, hoursAfterUpgrade, regionStructure.Level, governor);
             }
             else
             {
-                // Gain with the current level
                 var hoursElapsed = (toTime - fromTime).TotalHours;
-                totalGain += CalculateGain(regionStructure, hoursElapsed, regionStructure.Level);
+                totalGain += CalculateGain(regionStructure, hoursElapsed, regionStructure.Level, governor);
             }
 
             return totalGain;
         }
 
-        private int CalculateGain(RegionStructure regionStructure, double hoursElapsed, int level)
+        private int CalculateGain(RegionStructure regionStructure, double hoursElapsed, int level, Card? governor)
         {
             var mine = regionStructure.Structure.Mine;
             var gainPerHour = mine.GainMultiplier * level * Math.Pow(1.1, level);
+
+            // Si hay un gobernador, verificar si tiene un bono de tipo ResourceProductionBoost
+            if (governor != null)
+            {
+                foreach (var bonus in governor.Bonuses)
+                {
+                    if (bonus.BonusType == EBonusType.ResourceProductionBoost)
+                    {
+                        gainPerHour += gainPerHour * (bonus.Percentage / 100.0); // Aumentar el valor en función del porcentaje del bono
+                    }
+                }
+            }
+
             return (int)(gainPerHour * hoursElapsed);
         }
     }
