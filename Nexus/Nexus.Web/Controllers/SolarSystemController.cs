@@ -5,6 +5,7 @@ using Nexus.Domain.Entities;
 using Nexus.Web.Models;
 using Microsoft.AspNet.Identity;
 using Nexus.Web.Services.UserRegister;
+using Microsoft.AspNetCore.Identity;
 
 namespace Nexus.Web.Controllers
 {
@@ -12,13 +13,16 @@ namespace Nexus.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IUserRegisterService _userRegisterService;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
 
         public SolarSystemController(
             ApplicationDbContext context,
-            IUserRegisterService userRegisterService)
+            IUserRegisterService userRegisterService,
+            Microsoft.AspNetCore.Identity.UserManager<User> userManager)
         {
             _context = context;
             _userRegisterService = userRegisterService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -27,6 +31,7 @@ namespace Nexus.Web.Controllers
                 .Include(ss => ss.Planets)
                 .Include(ss => ss.AsteroidFields)
                 .Include(ss => ss.JumpGates)
+                .Include(ss => ss.Fleets)
                 .FirstOrDefaultAsync(ss => ss.Id == id);
 
             if (solarSystem == null)
@@ -36,7 +41,8 @@ namespace Nexus.Web.Controllers
 
             var viewModel = new SolarSystemViewModel
             {
-                SolarSystem = solarSystem
+                SolarSystem = solarSystem,
+                CurrentUser = await _userManager.GetUserAsync(User)
             };
 
             return View(viewModel);

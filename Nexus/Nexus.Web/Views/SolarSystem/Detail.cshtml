@@ -20,10 +20,11 @@
                 }
                 else
                 {
-                    // Planetas, campos de asteroides y puertas de salto
+                    // Planetas, campos de asteroides, puertas de salto, y flotas
                     var planet = Model.SolarSystem.Planets.FirstOrDefault(p => p.CoordinateX == x && p.CoordinateY == y);
                     var asteroid = Model.SolarSystem.AsteroidFields.FirstOrDefault(a => a.CoordinateX == x && a.CoordinateY == y);
                     var jumpGate = Model.SolarSystem.JumpGates.FirstOrDefault(j => j.CoordinateX == x && j.CoordinateY == y);
+                    var fleet = Model.SolarSystem.Fleets.FirstOrDefault(f => f.CoordinateX == x && f.CoordinateY == y);
 
                     if (planet != null)
                     {
@@ -42,6 +43,12 @@
                         cellClass += " jumppoint";
                         cellContent = "Puerta de salto";
                         dataItemId = jumpGate.Id.ToString();
+                    }
+                    else if (fleet != null)
+                    {
+                        cellContent = fleet.Name;
+                        dataItemId = fleet.Id.ToString();
+                        cellClass += fleet.UserId == Model.CurrentUser.Id ? " fleet-own" : " fleet-enemy";
                     }
                 }
 
@@ -75,5 +82,11 @@
 
             /* Estilo especial para la estrella */
             .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); /* Fondo amarillo claro */ }
+
+            /* Estilos para flotas */
+            .solar-system-cell.fleet-own { color: green; }
+            /* Flota propia */
+            .solar-system-cell.fleet-enemy { color: red; }
+        /* Flota enemiga */
     </style>
 }
