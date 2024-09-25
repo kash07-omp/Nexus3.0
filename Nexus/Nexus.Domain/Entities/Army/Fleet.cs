@@ -10,6 +10,9 @@
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
+        public int? SolarSystemId { get; set; }
+        public virtual SolarSystem SolarSystem { get; set; }
+
         public int? AdmiralCardId { get; set; }
         public virtual Card? AdmiralCard { get; set; }
 

@@ -18,6 +18,21 @@ namespace Nexus.Infrastructure.Configuration
                    .HasForeignKey(p => p.SolarSystemId)
                    .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(s => s.Fleets)
+                   .WithOne(f => f.SolarSystem)
+                   .HasForeignKey(f => f.SolarSystemId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(s => s.AsteroidFields)
+                   .WithOne(a => a.SolarSystem)
+                   .HasForeignKey(a => a.SolarSystemId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(s => s.JumpGates)
+                   .WithOne(j => j.SolarSystem)
+                   .HasForeignKey(j => j.SolarSystemId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             builder.ToTable("SolarSystems");
         }
     }

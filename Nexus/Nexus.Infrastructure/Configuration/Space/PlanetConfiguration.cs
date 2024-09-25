@@ -8,16 +8,21 @@ namespace Nexus.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Planet> builder)
         {
-            // Configuración de la clave primaria
             builder.HasKey(p => p.Id);
 
-            // Configuración de la relación uno-a-muchos con Regions
+            builder.Property(p => p.CoordinateX).IsRequired();
+            builder.Property(p => p.CoordinateY).IsRequired();
+
             builder.HasMany(p => p.Regions)
                    .WithOne(r => r.Planet)
                    .HasForeignKey(r => r.PlanetId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            // Configuración de la tabla
+            builder.HasOne(p => p.SolarSystem)
+                   .WithMany(s => s.Planets)
+                   .HasForeignKey(p => p.SolarSystemId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             builder.ToTable("Planets");
         }
     }
