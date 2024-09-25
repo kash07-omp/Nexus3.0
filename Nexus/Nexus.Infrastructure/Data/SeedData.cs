@@ -50,14 +50,16 @@ namespace Nexus.Infrastructure.Data
                 var solarSystem = new SolarSystem
                 {
                     Id = i,
-                    Name = solarSystemNames[i - 1]
+                    Name = solarSystemNames[i - 1],
+                    GridSizeX = size,
+                    GridSizeY = size
                 };
 
                 solarSystems.Add(solarSystem);
 
                 var occupiedCoordinates = new HashSet<(int x, int y)>
                 {
-                    (size / 2, size / 2) // La estrella está siempre en el centro
+                    (size / 2 + 1, size / 2 + 1) // La estrella está siempre en el centro
                 };
 
                 // Crear planetas
