@@ -26,57 +26,133 @@ namespace Nexus.Infrastructure.Data
                 new Resource { Id = 7, Code = "ENERGY", Name = "Energy", Description = "The total energy of the region. This energy powers all the region buildings." }
             );
         }
-
         private static void SeedUniverse(ModelBuilder modelBuilder)
         {
             var solarSystems = new List<SolarSystem>();
             var planets = new List<Planet>();
-            var regions = new List<Region>();
+            var asteroidFields = new List<AsteroidField>();
+            var jumpGates = new List<JumpGate>();
             var random = new Random();
 
             int planetIdCounter = 1;
-            int regionIdCounter = 1;
 
+            // Crear nombres para los sistemas solares
+            var solarSystemNames = new List<string>
+            {
+                "Alpha Centauri", "Betelgeuse", "Sirius", "Vega", "Rigel",
+                "Orion", "Cassiopeia", "Draco", "Andromeda", "Taurus"
+            };
+
+            // Crear 10 sistemas solares
             for (int i = 1; i <= 10; i++)
             {
+                int size = random.Next(0, 3) == 0 ? 7 : random.Next(0, 2) == 0 ? 9 : 11; // Tamaño del sistema solar (7x7, 9x9, o 11x11)
                 var solarSystem = new SolarSystem
                 {
                     Id = i,
-                    Name = $"Solar System {i}"
+                    Name = solarSystemNames[i - 1]
                 };
 
                 solarSystems.Add(solarSystem);
 
-                int numberOfPlanets = random.Next(3, 10);
-                for (int j = 1; j <= numberOfPlanets; j++)
+                var occupiedCoordinates = new HashSet<(int x, int y)>
                 {
+                    (size / 2, size / 2) // La estrella está siempre en el centro
+                };
+
+                // Crear planetas
+                int maxPlanets = size - 2;
+                int minPlanets = size - 5;
+                int numberOfPlanets = random.Next(minPlanets, maxPlanets + 1);
+
+                for (int j = 0; j < numberOfPlanets; j++)
+                {
+                    var planetCoordinates = GenerateValidCoordinates(size, occupiedCoordinates, random);
+                    occupiedCoordinates.Add(planetCoordinates);
+                    AddAdjacentCoordinates(planetCoordinates, occupiedCoordinates);
+
                     var planet = new Planet
                     {
                         Id = planetIdCounter++,
-                        SolarSystemId = i
+                        SolarSystemId = solarSystem.Id,
+                        CoordinateX = planetCoordinates.x,
+                        CoordinateY = planetCoordinates.y
                     };
 
                     planets.Add(planet);
-
-                    for (int k = 1; k <= 3; k++)
-                    {
-                        var region = new Region
-                        {
-                            Id = regionIdCounter++,
-                            IsColonized = false,
-                            PlanetId = planet.Id,
-                            UserId = null
-                        };
-
-                        regions.Add(region);
-                    }
                 }
+
+                // Crear campos de asteroides (0-3)
+                int numberOfAsteroidFields = random.Next(0, 4);
+                for (int j = 0; j < numberOfAsteroidFields; j++)
+                {
+                    var asteroidCoordinates = GenerateValidCoordinates(size, occupiedCoordinates, random);
+                    occupiedCoordinates.Add(asteroidCoordinates);
+
+                    var asteroidField = new AsteroidField
+                    {
+                        Id = planetIdCounter++,
+                        SolarSystemId = solarSystem.Id,
+                        CoordinateX = asteroidCoordinates.x,
+                        CoordinateY = asteroidCoordinates.y
+                    };
+
+                    asteroidFields.Add(asteroidField);
+                }
+
+                // Crear una puerta de salto
+                var jumpGateCoordinates = GenerateValidCoordinates(size, occupiedCoordinates, random);
+                occupiedCoordinates.Add(jumpGateCoordinates);
+
+                var jumpGate = new JumpGate
+                {
+                    Id = i,
+                    SolarSystemId = solarSystem.Id,
+                    CoordinateX = jumpGateCoordinates.x,
+                    CoordinateY = jumpGateCoordinates.y
+                };
+
+                jumpGates.Add(jumpGate);
             }
 
             modelBuilder.Entity<SolarSystem>().HasData(solarSystems);
             modelBuilder.Entity<Planet>().HasData(planets);
-            modelBuilder.Entity<Region>().HasData(regions);
+            modelBuilder.Entity<AsteroidField>().HasData(asteroidFields);
+            modelBuilder.Entity<JumpGate>().HasData(jumpGates);
         }
+
+        // Función para generar coordenadas válidas para un planeta, campo de asteroides o puerta de salto
+        private static (int x, int y) GenerateValidCoordinates(int size, HashSet<(int x, int y)> occupiedCoordinates, Random random)
+        {
+            int x, y;
+            do
+            {
+                x = random.Next(1, size + 1);
+                y = random.Next(1, size + 1);
+            } while (occupiedCoordinates.Contains((x, y)));
+
+            return (x, y);
+        }
+
+        // Función para marcar las coordenadas adyacentes como ocupadas
+        private static void AddAdjacentCoordinates((int x, int y) coordinates, HashSet<(int x, int y)> occupiedCoordinates)
+        {
+            // Definimos los desplazamientos como una lista de tuplas
+            (int x, int y)[] offsets =
+            {
+                (-1, -1), (-1, 0), (-1, 1),
+                (0, -1),         (0, 1),
+                (1, -1), (1, 0), (1, 1)
+            };
+
+            foreach (var offset in offsets)
+            {
+                int adjacentX = coordinates.x + offset.x;
+                int adjacentY = coordinates.y + offset.y;
+                occupiedCoordinates.Add((adjacentX, adjacentY));
+            }
+        }
+
         private static void SeedDistrictsAndStructures(ModelBuilder modelBuilder)
         {
             // Add Mines
