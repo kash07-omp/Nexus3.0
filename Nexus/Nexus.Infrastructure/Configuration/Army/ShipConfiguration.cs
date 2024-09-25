@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nexus.Domain.Entities;
 
-namespace Nexus.Infrastructure.Data.Configurations
+namespace Nexus.Infrastructure.Configuration
 {
     public class ShipConfiguration : IEntityTypeConfiguration<Ship>
     {
@@ -14,15 +14,24 @@ namespace Nexus.Infrastructure.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(s => s.Description)
-                .HasMaxLength(500);
-
             builder.Property(s => s.Function)
                 .IsRequired();
 
-            builder.HasOne(s => s.Fleet)
-                .WithMany(f => f.Ships)
-                .HasForeignKey(s => s.FleetId);
+            builder.Property(s => s.Strenght).IsRequired();
+            builder.Property(s => s.Shields).IsRequired();
+            builder.Property(s => s.Health).IsRequired();
+            builder.Property(s => s.Maniobrability).IsRequired();
+            builder.Property(s => s.Ability).IsRequired();
+            builder.Property(s => s.Speed).IsRequired();
+            builder.Property(s => s.CargoCapacity).IsRequired();
+
+            // Costes
+            builder.Property(s => s.MineralsCost).IsRequired();
+            builder.Property(s => s.MicrochipsCost).IsRequired();
+            builder.Property(s => s.HydrogenCost).IsRequired();
+            builder.Property(s => s.CreditsCost).IsRequired();
+
+            builder.ToTable("Ships");
         }
     }
 }

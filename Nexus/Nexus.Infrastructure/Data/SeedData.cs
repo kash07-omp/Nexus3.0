@@ -11,6 +11,7 @@ namespace Nexus.Infrastructure.Data
             SeedUniverse(modelBuilder);
             SeedDistrictsAndStructures(modelBuilder);
             SeedCards(modelBuilder);
+            SeedArmy(modelBuilder);
         }
 
 
@@ -276,5 +277,64 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.Entity<Card>().HasData(cards);
             modelBuilder.Entity<CardBonus>().HasData(cardBonuses);
         }
+
+        private static void SeedArmy(ModelBuilder modelBuilder)
+        {
+            // Crear flotas
+            var fleets = new List<Fleet>
+            {
+                new Fleet
+                {
+                    Id = 1,
+                    Name = "Alpha Fleet",
+                    CoordinateX = 2,
+                    CoordinateY = 3,
+                    UserId = "33b576ef-5997-4fe9-b93e-c0ad1cabf6e5",
+                    SolarSystemId = 1
+                },
+                new Fleet
+                {
+                    Id = 2,
+                    Name = "Beta Fleet",
+                    CoordinateX = 5,
+                    CoordinateY = 6,
+                    UserId = "33b576ef-5997-4fe9-b93e-c0ad1cabf6e5",
+                    SolarSystemId = 1
+                }
+            };
+
+            modelBuilder.Entity<Fleet>().HasData(fleets);
+
+            // Crear naves
+            var ships = new List<Ship>
+            {
+                new Ship { Id = 1, Name = "Lanzadera", Function = EShipFunction.Transport, Strenght = 50, Shields = 30, Health = 200, Maniobrability = 10, Ability = 5, Speed = 8, CargoCapacity = 1000, MineralsCost = 500, MicrochipsCost = 100, HydrogenCost = 50, CreditsCost = 1000 },
+                new Ship { Id = 2, Name = "Carguero", Function = EShipFunction.Transport, Strenght = 40, Shields = 20, Health = 300, Maniobrability = 8, Ability = 6, Speed = 7, CargoCapacity = 2000, MineralsCost = 700, MicrochipsCost = 150, HydrogenCost = 100, CreditsCost = 1500 },
+                new Ship { Id = 3, Name = "Dron de ataque", Function = EShipFunction.FastAttack, Strenght = 100, Shields = 40, Health = 80, Maniobrability = 20, Ability = 15, Speed = 12, CargoCapacity = 50, MineralsCost = 300, MicrochipsCost = 50, HydrogenCost = 30, CreditsCost = 500 },
+                new Ship { Id = 4, Name = "Caza clase K", Function = EShipFunction.Attack, Strenght = 120, Shields = 50, Health = 150, Maniobrability = 18, Ability = 20, Speed = 10, CargoCapacity = 80, MineralsCost = 600, MicrochipsCost = 120, HydrogenCost = 80, CreditsCost = 1200 },
+                new Ship { Id = 5, Name = "Caza clase Vengador", Function = EShipFunction.Attack, Strenght = 180, Shields = 80, Health = 180, Maniobrability = 17, Ability = 25, Speed = 12, CargoCapacity = 100, MineralsCost = 800, MicrochipsCost = 150, HydrogenCost = 100, CreditsCost = 2000 },
+                new Ship { Id = 6, Name = "Fragata ligera", Function = EShipFunction.Attack, Strenght = 200, Shields = 100, Health = 300, Maniobrability = 15, Ability = 30, Speed = 9, CargoCapacity = 150, MineralsCost = 1000, MicrochipsCost = 200, HydrogenCost = 150, CreditsCost = 3000 },
+                new Ship { Id = 7, Name = "Fragata pesada", Function = EShipFunction.Heavy, Strenght = 250, Shields = 120, Health = 400, Maniobrability = 12, Ability = 35, Speed = 8, CargoCapacity = 200, MineralsCost = 1500, MicrochipsCost = 300, HydrogenCost = 200, CreditsCost = 4000 },
+                new Ship { Id = 8, Name = "Destructor", Function = EShipFunction.Heavy, Strenght = 300, Shields = 150, Health = 500, Maniobrability = 10, Ability = 40, Speed = 7, CargoCapacity = 250, MineralsCost = 2000, MicrochipsCost = 400, HydrogenCost = 300, CreditsCost = 5000 },
+                new Ship { Id = 9, Name = "Crucero", Function = EShipFunction.Heavy, Strenght = 350, Shields = 180, Health = 600, Maniobrability = 9, Ability = 45, Speed = 6, CargoCapacity = 300, MineralsCost = 2500, MicrochipsCost = 500, HydrogenCost = 400, CreditsCost = 7000 },
+                new Ship { Id = 10, Name = "Acorazado", Function = EShipFunction.Mothership, Strenght = 400, Shields = 200, Health = 800, Maniobrability = 8, Ability = 50, Speed = 5, CargoCapacity = 500, MineralsCost = 3000, MicrochipsCost = 600, HydrogenCost = 500, CreditsCost = 10000 }
+            };
+
+            modelBuilder.Entity<Ship>().HasData(ships);
+
+            // Crear flotas con naves
+            var fleetShips = new List<FleetShip>
+            {
+                new FleetShip { FleetId = 1, ShipId = 4, Quantity = 32 }, // 32 Cazas clase K en la flota Alpha
+                new FleetShip { FleetId = 1, ShipId = 6, Quantity = 10 }, // 10 Fragatas ligeras en la flota Alpha
+                new FleetShip { FleetId = 2, ShipId = 5, Quantity = 24 }, // 24 Cazas clase Vengador en la flota Beta
+                new FleetShip { FleetId = 2, ShipId = 8, Quantity = 8 },  // 8 Destructores en la flota Beta
+                new FleetShip { FleetId = 2, ShipId = 10, Quantity = 1 }  // 1 Acorazado en la flota Beta
+            };
+
+            modelBuilder.Entity<FleetShip>().HasData(fleetShips);
+        }
+
+
     }
 }

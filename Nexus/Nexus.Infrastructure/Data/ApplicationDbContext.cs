@@ -40,6 +40,9 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new ResearchRequiredResearchConfiguration());
             modelBuilder.ApplyConfiguration(new CardConfiguration());
             modelBuilder.ApplyConfiguration(new CardBonusConfiguration());
+            modelBuilder.ApplyConfiguration(new ShipConfiguration());
+            modelBuilder.ApplyConfiguration(new FleetConfiguration());
+            modelBuilder.ApplyConfiguration(new FleetShipConfiguration());
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Cards)

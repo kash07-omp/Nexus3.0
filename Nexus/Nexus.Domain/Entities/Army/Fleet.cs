@@ -16,6 +16,6 @@
         public int? AdmiralCardId { get; set; }
         public virtual Card? AdmiralCard { get; set; }
 
-        public virtual ICollection<Ship> Ships { get; set; } = new List<Ship>();
+        public virtual ICollection<FleetShip> FleetShips { get; set; } = new List<FleetShip>();
     }
 }
