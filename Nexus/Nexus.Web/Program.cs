@@ -56,6 +56,7 @@ builder.Services.AddScoped<IStructureUpgradeService, StructureUpgradeService>();
 builder.Services.AddScoped<IResourceService, ResourcesService>();
 builder.Services.AddScoped<IResourceCostCalculator, ResourceCostCalculator>();
 builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<IFleetMovementService, FleetMovementService>();
 
 var app = builder.Build();
 

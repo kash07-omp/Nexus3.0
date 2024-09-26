@@ -9,14 +9,14 @@
             @for (int x = 1; x <= Model.SolarSystem.GridSizeX; x++)
             {
                 var cellClass = "solar-system-cell";
-                var cellContent = "";
                 var dataItemId = "";
+                var cellContent = new List<string>();
 
                 // Estrella en el centro del sistema solar
                 if (x == Model.SolarSystem.GridSizeX / 2 + 1 && y == Model.SolarSystem.GridSizeY / 2 + 1)
                 {
                     cellClass += " estrella";
-                    cellContent = "Estrella";
+                    cellContent.Add("Estrella");
                 }
                 else
                 {
@@ -24,12 +24,12 @@
                     var planet = Model.SolarSystem.Planets.FirstOrDefault(p => p.CoordinateX == x && p.CoordinateY == y);
                     var asteroid = Model.SolarSystem.AsteroidFields.FirstOrDefault(a => a.CoordinateX == x && a.CoordinateY == y);
                     var jumpGate = Model.SolarSystem.JumpGates.FirstOrDefault(j => j.CoordinateX == x && j.CoordinateY == y);
-                    var fleet = Model.SolarSystem.Fleets.FirstOrDefault(f => f.CoordinateX == x && f.CoordinateY == y);
+                    var fleets = Model.SolarSystem.Fleets.Where(f => f.CoordinateX == x && f.CoordinateY == y).ToList();
 
                     if (planet != null)
                     {
                         cellClass += " planet";
-                        cellContent = "Planeta";
+                        cellContent.Add("Planeta");
                         dataItemId = planet.Id.ToString();
 
                         // Si el planeta pertenece al usuario actual
@@ -40,25 +40,32 @@
                     else if (asteroid != null)
                     {
                         cellClass += " asteroidfield";
-                        cellContent = "Campo de asteroides";
+                        cellContent.Add("Campo de asteroides");
                         dataItemId = asteroid.Id.ToString();
                     }
                     else if (jumpGate != null)
                     {
                         cellClass += " jumppoint";
-                        cellContent = "Puerta de salto";
+                        cellContent.Add("Puerta de salto");
                         dataItemId = jumpGate.Id.ToString();
                     }
-                    else if (fleet != null)
+
+                    // Mostrar todas las flotas en la celda
+                    foreach (var fleet in fleets)
                     {
-                        cellContent = fleet.Name;
-                        dataItemId = fleet.Id.ToString();
-                        cellClass += fleet.UserId == Model.CurrentUser.Id ? " fleet-own" : " fleet-enemy";
+                        var fleetClass = fleet.UserId == Model.CurrentUser.Id ? " fleet-own" : " fleet-enemy";
+                        var fleetName = fleet.Name;
+
+                        // Verificar si la flota tiene movimientos pendientes en FleetMovementPaths
+                        if (fleet.FleetMovementPaths.Any())
+                            fleetName += "*";
+
+                        cellContent.Add($"<span class='{fleetClass}' data-item-id='{fleet.Id}'>{fleetName}</span>");
                     }
                 }
 
                 <div class="@cellClass" data-item-id="@dataItemId">
-                    @cellContent
+                    @Html.Raw(string.Join("<br/>", cellContent))
                 </div>
             }
         }
@@ -87,7 +94,7 @@
         #solarSystemGrid { display: grid; grid-template-columns: repeat(@Model.SolarSystem.GridSizeX, 1fr); grid-template-rows: repeat(@Model.SolarSystem.GridSizeY, 1fr); }
 
         /* Estilos de las celdas del grid */
-        .solar-system-cell { height: 75px; border: 1px solid #ffffff80; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); text-align: center; color: white; }
+        .solar-system-cell { height: 75px; border: 1px solid #ffffff80; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); text-align: center; color: white; flex-direction: column; }
         
         /* Estilo para planetas */
         .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
@@ -105,12 +112,14 @@
         .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
 
         /* Estilos para flotas */
-        .solar-system-cell.fleet-own { color: green; }
-        .solar-system-cell.fleet-enemy { color: red; }
+        .fleet-own { color: green; }
+        .fleet-enemy { color: red; }
+
         /* Efecto de respiración */
         .fleet-selected {
             animation: breathing 1s infinite alternate;
         }
+
         @@keyframes breathing {
             from { color: white; }
             to { color: green; }

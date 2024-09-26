@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nexus.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Nexus.Infrastructure.Data;
 namespace Nexus.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240926144617_FleetMapMove")]
+    partial class FleetMapMove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,107 +199,128 @@ namespace Nexus.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 16,
-                            CoordinateX = 3.0,
-                            CoordinateY = 6.0,
-                            SolarSystemId = 3
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CoordinateX = 7.0,
-                            CoordinateY = 8.0,
-                            SolarSystemId = 3
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CoordinateX = 9.0,
-                            CoordinateY = 9.0,
-                            SolarSystemId = 3
-                        },
-                        new
-                        {
-                            Id = 24,
+                            Id = 7,
                             CoordinateX = 5.0,
+                            CoordinateY = 2.0,
+                            SolarSystemId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CoordinateX = 7.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CoordinateX = 2.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CoordinateX = 5.0,
+                            CoordinateY = 6.0,
+                            SolarSystemId = 2
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CoordinateX = 7.0,
+                            CoordinateY = 1.0,
+                            SolarSystemId = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CoordinateX = 4.0,
+                            CoordinateY = 4.0,
+                            SolarSystemId = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CoordinateX = 6.0,
                             CoordinateY = 7.0,
-                            SolarSystemId = 4
+                            SolarSystemId = 3
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CoordinateX = 7.0,
+                            CoordinateY = 1.0,
+                            SolarSystemId = 3
                         },
                         new
                         {
                             Id = 30,
-                            CoordinateX = 5.0,
-                            CoordinateY = 5.0,
-                            SolarSystemId = 5
-                        },
-                        new
-                        {
-                            Id = 31,
-                            CoordinateX = 8.0,
-                            CoordinateY = 9.0,
-                            SolarSystemId = 5
-                        },
-                        new
-                        {
-                            Id = 38,
-                            CoordinateX = 1.0,
-                            CoordinateY = 1.0,
-                            SolarSystemId = 6
-                        },
-                        new
-                        {
-                            Id = 39,
-                            CoordinateX = 4.0,
-                            CoordinateY = 5.0,
-                            SolarSystemId = 6
-                        },
-                        new
-                        {
-                            Id = 40,
-                            CoordinateX = 5.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 6
-                        },
-                        new
-                        {
-                            Id = 50,
-                            CoordinateX = 5.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 8
-                        },
-                        new
-                        {
-                            Id = 51,
-                            CoordinateX = 4.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 8
-                        },
-                        new
-                        {
-                            Id = 52,
                             CoordinateX = 2.0,
+                            CoordinateY = 5.0,
+                            SolarSystemId = 4
+                        },
+                        new
+                        {
+                            Id = 46,
+                            CoordinateX = 8.0,
+                            CoordinateY = 7.0,
+                            SolarSystemId = 7
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CoordinateX = 6.0,
                             CoordinateY = 1.0,
                             SolarSystemId = 8
                         },
                         new
                         {
-                            Id = 56,
+                            Id = 54,
+                            CoordinateX = 1.0,
+                            CoordinateY = 2.0,
+                            SolarSystemId = 8
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CoordinateX = 5.0,
+                            CoordinateY = 1.0,
+                            SolarSystemId = 8
+                        },
+                        new
+                        {
+                            Id = 63,
+                            CoordinateX = 4.0,
+                            CoordinateY = 8.0,
+                            SolarSystemId = 9
+                        },
+                        new
+                        {
+                            Id = 64,
+                            CoordinateX = 8.0,
+                            CoordinateY = 2.0,
+                            SolarSystemId = 9
+                        },
+                        new
+                        {
+                            Id = 65,
                             CoordinateX = 7.0,
-                            CoordinateY = 7.0,
+                            CoordinateY = 1.0,
                             SolarSystemId = 9
                         },
                         new
                         {
-                            Id = 57,
-                            CoordinateX = 6.0,
+                            Id = 73,
+                            CoordinateX = 1.0,
+                            CoordinateY = 6.0,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 74,
+                            CoordinateX = 11.0,
                             CoordinateY = 4.0,
-                            SolarSystemId = 9
-                        },
-                        new
-                        {
-                            Id = 67,
-                            CoordinateX = 3.0,
-                            CoordinateY = 11.0,
                             SolarSystemId = 10
                         });
                 });
@@ -462,6 +486,9 @@ namespace Nexus.Infrastructure.Migrations
                     b.Property<int?>("SolarSystemId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SolarSystemId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -471,6 +498,8 @@ namespace Nexus.Infrastructure.Migrations
                     b.HasIndex("AdmiralCardId");
 
                     b.HasIndex("SolarSystemId");
+
+                    b.HasIndex("SolarSystemId1");
 
                     b.HasIndex("UserId");
 
@@ -610,71 +639,71 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CoordinateX = 6.0,
-                            CoordinateY = 1.0,
+                            CoordinateX = 9.0,
+                            CoordinateY = 9.0,
                             SolarSystemId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CoordinateX = 8.0,
-                            CoordinateY = 5.0,
+                            CoordinateX = 1.0,
+                            CoordinateY = 4.0,
                             SolarSystemId = 2
                         },
                         new
                         {
                             Id = 3,
-                            CoordinateX = 2.0,
-                            CoordinateY = 4.0,
+                            CoordinateX = 1.0,
+                            CoordinateY = 1.0,
                             SolarSystemId = 3
                         },
                         new
                         {
                             Id = 4,
-                            CoordinateX = 1.0,
-                            CoordinateY = 1.0,
+                            CoordinateX = 2.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 4
                         },
                         new
                         {
                             Id = 5,
-                            CoordinateX = 5.0,
-                            CoordinateY = 8.0,
+                            CoordinateX = 3.0,
+                            CoordinateY = 4.0,
                             SolarSystemId = 5
                         },
                         new
                         {
                             Id = 6,
-                            CoordinateX = 5.0,
-                            CoordinateY = 2.0,
+                            CoordinateX = 8.0,
+                            CoordinateY = 3.0,
                             SolarSystemId = 6
                         },
                         new
                         {
                             Id = 7,
-                            CoordinateX = 8.0,
-                            CoordinateY = 7.0,
+                            CoordinateX = 6.0,
+                            CoordinateY = 2.0,
                             SolarSystemId = 7
                         },
                         new
                         {
                             Id = 8,
-                            CoordinateX = 1.0,
-                            CoordinateY = 1.0,
+                            CoordinateX = 4.0,
+                            CoordinateY = 3.0,
                             SolarSystemId = 8
                         },
                         new
                         {
                             Id = 9,
-                            CoordinateX = 7.0,
-                            CoordinateY = 3.0,
+                            CoordinateX = 1.0,
+                            CoordinateY = 1.0,
                             SolarSystemId = 9
                         },
                         new
                         {
                             Id = 10,
-                            CoordinateX = 6.0,
-                            CoordinateY = 4.0,
+                            CoordinateX = 2.0,
+                            CoordinateY = 8.0,
                             SolarSystemId = 10
                         });
                 });
@@ -777,365 +806,393 @@ namespace Nexus.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CoordinateX = 1.0,
-                            CoordinateY = 4.0,
+                            CoordinateX = 9.0,
+                            CoordinateY = 5.0,
                             SolarSystemId = 1
                         },
                         new
                         {
                             Id = 2,
                             CoordinateX = 6.0,
-                            CoordinateY = 4.0,
+                            CoordinateY = 9.0,
                             SolarSystemId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CoordinateX = 3.0,
-                            CoordinateY = 6.0,
+                            CoordinateX = 9.0,
+                            CoordinateY = 1.0,
                             SolarSystemId = 1
                         },
                         new
                         {
                             Id = 4,
-                            CoordinateX = 9.0,
-                            CoordinateY = 8.0,
-                            SolarSystemId = 2
+                            CoordinateX = 3.0,
+                            CoordinateY = 5.0,
+                            SolarSystemId = 1
                         },
                         new
                         {
                             Id = 5,
-                            CoordinateX = 2.0,
-                            CoordinateY = 10.0,
-                            SolarSystemId = 2
+                            CoordinateX = 1.0,
+                            CoordinateY = 7.0,
+                            SolarSystemId = 1
                         },
                         new
                         {
                             Id = 6,
-                            CoordinateX = 7.0,
-                            CoordinateY = 8.0,
-                            SolarSystemId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
                             CoordinateX = 6.0,
-                            CoordinateY = 1.0,
-                            SolarSystemId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CoordinateX = 1.0,
-                            CoordinateY = 5.0,
-                            SolarSystemId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CoordinateX = 11.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 2
+                            CoordinateY = 6.0,
+                            SolarSystemId = 1
                         },
                         new
                         {
                             Id = 10,
-                            CoordinateX = 1.0,
-                            CoordinateY = 8.0,
+                            CoordinateX = 3.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 2
                         },
                         new
                         {
                             Id = 11,
-                            CoordinateX = 6.0,
-                            CoordinateY = 11.0,
+                            CoordinateX = 1.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 2
                         },
                         new
                         {
                             Id = 12,
-                            CoordinateX = 8.0,
+                            CoordinateX = 2.0,
                             CoordinateY = 2.0,
-                            SolarSystemId = 3
+                            SolarSystemId = 2
                         },
                         new
                         {
                             Id = 13,
                             CoordinateX = 5.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 2
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CoordinateX = 3.0,
+                            CoordinateY = 2.0,
+                            SolarSystemId = 3
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CoordinateX = 4.0,
                             CoordinateY = 6.0,
                             SolarSystemId = 3
                         },
                         new
                         {
-                            Id = 14,
-                            CoordinateX = 2.0,
-                            CoordinateY = 9.0,
-                            SolarSystemId = 3
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CoordinateX = 7.0,
+                            Id = 18,
+                            CoordinateX = 6.0,
                             CoordinateY = 5.0,
                             SolarSystemId = 3
                         },
                         new
                         {
                             Id = 19,
-                            CoordinateX = 7.0,
-                            CoordinateY = 7.0,
-                            SolarSystemId = 4
-                        },
-                        new
-                        {
-                            Id = 20,
-                            CoordinateX = 4.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 4
-                        },
-                        new
-                        {
-                            Id = 21,
-                            CoordinateX = 5.0,
+                            CoordinateX = 2.0,
                             CoordinateY = 5.0,
-                            SolarSystemId = 4
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CoordinateX = 1.0,
-                            CoordinateY = 6.0,
-                            SolarSystemId = 4
+                            SolarSystemId = 3
                         },
                         new
                         {
                             Id = 23,
-                            CoordinateX = 3.0,
-                            CoordinateY = 5.0,
+                            CoordinateX = 7.0,
+                            CoordinateY = 9.0,
+                            SolarSystemId = 4
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CoordinateX = 2.0,
+                            CoordinateY = 1.0,
                             SolarSystemId = 4
                         },
                         new
                         {
                             Id = 25,
-                            CoordinateX = 5.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 5
+                            CoordinateX = 9.0,
+                            CoordinateY = 2.0,
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 26,
-                            CoordinateX = 1.0,
-                            CoordinateY = 2.0,
-                            SolarSystemId = 5
+                            CoordinateX = 5.0,
+                            CoordinateY = 6.0,
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 27,
-                            CoordinateX = 3.0,
-                            CoordinateY = 7.0,
-                            SolarSystemId = 5
+                            CoordinateX = 6.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 28,
-                            CoordinateX = 8.0,
-                            CoordinateY = 1.0,
-                            SolarSystemId = 5
+                            CoordinateX = 5.0,
+                            CoordinateY = 9.0,
+                            SolarSystemId = 4
                         },
                         new
                         {
                             Id = 29,
-                            CoordinateX = 1.0,
+                            CoordinateX = 8.0,
+                            CoordinateY = 7.0,
+                            SolarSystemId = 4
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CoordinateX = 3.0,
                             CoordinateY = 6.0,
                             SolarSystemId = 5
                         },
                         new
                         {
                             Id = 32,
-                            CoordinateX = 5.0,
-                            CoordinateY = 7.0,
-                            SolarSystemId = 6
+                            CoordinateX = 6.0,
+                            CoordinateY = 5.0,
+                            SolarSystemId = 5
                         },
                         new
                         {
                             Id = 33,
-                            CoordinateX = 3.0,
-                            CoordinateY = 7.0,
+                            CoordinateX = 8.0,
+                            CoordinateY = 5.0,
                             SolarSystemId = 6
                         },
                         new
                         {
                             Id = 34,
-                            CoordinateX = 7.0,
-                            CoordinateY = 3.0,
+                            CoordinateX = 2.0,
+                            CoordinateY = 4.0,
                             SolarSystemId = 6
                         },
                         new
                         {
                             Id = 35,
-                            CoordinateX = 3.0,
-                            CoordinateY = 2.0,
+                            CoordinateX = 4.0,
+                            CoordinateY = 7.0,
                             SolarSystemId = 6
                         },
                         new
                         {
                             Id = 36,
-                            CoordinateX = 9.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 6
-                        },
-                        new
-                        {
-                            Id = 37,
-                            CoordinateX = 7.0,
+                            CoordinateX = 4.0,
                             CoordinateY = 1.0,
                             SolarSystemId = 6
                         },
                         new
                         {
+                            Id = 37,
+                            CoordinateX = 4.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 7
+                        },
+                        new
+                        {
+                            Id = 38,
+                            CoordinateX = 11.0,
+                            CoordinateY = 6.0,
+                            SolarSystemId = 7
+                        },
+                        new
+                        {
+                            Id = 39,
+                            CoordinateX = 6.0,
+                            CoordinateY = 10.0,
+                            SolarSystemId = 7
+                        },
+                        new
+                        {
+                            Id = 40,
+                            CoordinateX = 3.0,
+                            CoordinateY = 8.0,
+                            SolarSystemId = 7
+                        },
+                        new
+                        {
                             Id = 41,
-                            CoordinateX = 7.0,
-                            CoordinateY = 9.0,
+                            CoordinateX = 11.0,
+                            CoordinateY = 11.0,
                             SolarSystemId = 7
                         },
                         new
                         {
                             Id = 42,
-                            CoordinateX = 4.0,
-                            CoordinateY = 2.0,
+                            CoordinateX = 6.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 7
                         },
                         new
                         {
                             Id = 43,
-                            CoordinateX = 4.0,
-                            CoordinateY = 9.0,
+                            CoordinateX = 11.0,
+                            CoordinateY = 4.0,
                             SolarSystemId = 7
                         },
                         new
                         {
                             Id = 44,
-                            CoordinateX = 1.0,
-                            CoordinateY = 7.0,
+                            CoordinateX = 3.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 7
                         },
                         new
                         {
                             Id = 45,
                             CoordinateX = 1.0,
-                            CoordinateY = 2.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 7
                         },
                         new
                         {
-                            Id = 46,
-                            CoordinateX = 4.0,
-                            CoordinateY = 5.0,
-                            SolarSystemId = 8
-                        },
-                        new
-                        {
                             Id = 47,
-                            CoordinateX = 7.0,
-                            CoordinateY = 3.0,
+                            CoordinateX = 1.0,
+                            CoordinateY = 8.0,
                             SolarSystemId = 8
                         },
                         new
                         {
                             Id = 48,
-                            CoordinateX = 2.0,
-                            CoordinateY = 3.0,
+                            CoordinateX = 4.0,
+                            CoordinateY = 6.0,
                             SolarSystemId = 8
                         },
                         new
                         {
                             Id = 49,
-                            CoordinateX = 6.0,
+                            CoordinateX = 8.0,
                             CoordinateY = 5.0,
                             SolarSystemId = 8
                         },
                         new
                         {
-                            Id = 53,
-                            CoordinateX = 4.0,
+                            Id = 50,
+                            CoordinateX = 2.0,
+                            CoordinateY = 4.0,
+                            SolarSystemId = 8
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CoordinateX = 8.0,
+                            CoordinateY = 1.0,
+                            SolarSystemId = 8
+                        },
+                        new
+                        {
+                            Id = 52,
+                            CoordinateX = 8.0,
+                            CoordinateY = 3.0,
+                            SolarSystemId = 8
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CoordinateX = 2.0,
+                            CoordinateY = 10.0,
+                            SolarSystemId = 9
+                        },
+                        new
+                        {
+                            Id = 57,
+                            CoordinateX = 3.0,
                             CoordinateY = 4.0,
                             SolarSystemId = 9
                         },
                         new
                         {
-                            Id = 54,
-                            CoordinateX = 4.0,
-                            CoordinateY = 1.0,
-                            SolarSystemId = 9
-                        },
-                        new
-                        {
-                            Id = 55,
-                            CoordinateX = 2.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 9
-                        },
-                        new
-                        {
                             Id = 58,
-                            CoordinateX = 10.0,
-                            CoordinateY = 3.0,
-                            SolarSystemId = 10
+                            CoordinateX = 2.0,
+                            CoordinateY = 7.0,
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 59,
-                            CoordinateX = 3.0,
-                            CoordinateY = 6.0,
-                            SolarSystemId = 10
+                            CoordinateX = 8.0,
+                            CoordinateY = 4.0,
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 60,
-                            CoordinateX = 3.0,
-                            CoordinateY = 1.0,
-                            SolarSystemId = 10
+                            CoordinateX = 6.0,
+                            CoordinateY = 5.0,
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 61,
-                            CoordinateX = 9.0,
+                            CoordinateX = 5.0,
                             CoordinateY = 1.0,
-                            SolarSystemId = 10
+                            SolarSystemId = 9
                         },
                         new
                         {
                             Id = 62,
-                            CoordinateX = 6.0,
+                            CoordinateX = 7.0,
+                            CoordinateY = 7.0,
+                            SolarSystemId = 9
+                        },
+                        new
+                        {
+                            Id = 66,
+                            CoordinateX = 10.0,
+                            CoordinateY = 11.0,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 67,
+                            CoordinateX = 5.0,
+                            CoordinateY = 11.0,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 68,
+                            CoordinateX = 9.0,
                             CoordinateY = 2.0,
                             SolarSystemId = 10
                         },
                         new
                         {
-                            Id = 63,
+                            Id = 69,
                             CoordinateX = 7.0,
+                            CoordinateY = 11.0,
+                            SolarSystemId = 10
+                        },
+                        new
+                        {
+                            Id = 70,
+                            CoordinateX = 4.0,
                             CoordinateY = 9.0,
                             SolarSystemId = 10
                         },
                         new
                         {
-                            Id = 64,
-                            CoordinateX = 10.0,
-                            CoordinateY = 8.0,
+                            Id = 71,
+                            CoordinateX = 7.0,
+                            CoordinateY = 2.0,
                             SolarSystemId = 10
                         },
                         new
                         {
-                            Id = 65,
-                            CoordinateX = 6.0,
-                            CoordinateY = 6.0,
-                            SolarSystemId = 10
-                        },
-                        new
-                        {
-                            Id = 66,
-                            CoordinateX = 1.0,
-                            CoordinateY = 8.0,
+                            Id = 72,
+                            CoordinateX = 3.0,
+                            CoordinateY = 3.0,
                             SolarSystemId = 10
                         });
                 });
@@ -1179,1092 +1236,1176 @@ namespace Nexus.Infrastructure.Migrations
                             Id = 1,
                             IsColonized = false,
                             PlanetId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7537)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5583)
                         },
                         new
                         {
                             Id = 2,
                             IsColonized = false,
                             PlanetId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7539)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5586)
                         },
                         new
                         {
                             Id = 3,
                             IsColonized = false,
                             PlanetId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7539)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5586)
                         },
                         new
                         {
                             Id = 4,
                             IsColonized = false,
                             PlanetId = 2,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7567)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5596)
                         },
                         new
                         {
                             Id = 5,
                             IsColonized = false,
                             PlanetId = 2,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7567)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5597)
                         },
                         new
                         {
                             Id = 6,
                             IsColonized = false,
                             PlanetId = 2,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7568)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5598)
                         },
                         new
                         {
                             Id = 7,
                             IsColonized = false,
                             PlanetId = 3,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7578)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5605)
                         },
                         new
                         {
                             Id = 8,
                             IsColonized = false,
                             PlanetId = 3,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7578)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5606)
                         },
                         new
                         {
                             Id = 9,
                             IsColonized = false,
                             PlanetId = 3,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7578)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5607)
                         },
                         new
                         {
                             Id = 10,
                             IsColonized = false,
                             PlanetId = 4,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7591)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5622)
                         },
                         new
                         {
                             Id = 11,
                             IsColonized = false,
                             PlanetId = 4,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7592)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5623)
                         },
                         new
                         {
                             Id = 12,
                             IsColonized = false,
                             PlanetId = 4,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7592)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5624)
                         },
                         new
                         {
                             Id = 13,
                             IsColonized = false,
                             PlanetId = 5,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7598)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5636)
                         },
                         new
                         {
                             Id = 14,
                             IsColonized = false,
                             PlanetId = 5,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7598)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5637)
                         },
                         new
                         {
                             Id = 15,
                             IsColonized = false,
                             PlanetId = 5,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7599)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5637)
                         },
                         new
                         {
                             Id = 16,
                             IsColonized = false,
                             PlanetId = 6,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7603)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5643)
                         },
                         new
                         {
                             Id = 17,
                             IsColonized = false,
                             PlanetId = 6,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7604)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5644)
                         },
                         new
                         {
                             Id = 18,
                             IsColonized = false,
                             PlanetId = 6,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7604)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5645)
                         },
                         new
                         {
                             Id = 19,
                             IsColonized = false,
-                            PlanetId = 7,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7609)
+                            PlanetId = 10,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5697)
                         },
                         new
                         {
                             Id = 20,
                             IsColonized = false,
-                            PlanetId = 7,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7609)
+                            PlanetId = 10,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5698)
                         },
                         new
                         {
                             Id = 21,
                             IsColonized = false,
-                            PlanetId = 7,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7609)
+                            PlanetId = 10,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5698)
                         },
                         new
                         {
                             Id = 22,
                             IsColonized = false,
-                            PlanetId = 8,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7615)
+                            PlanetId = 11,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5706)
                         },
                         new
                         {
                             Id = 23,
                             IsColonized = false,
-                            PlanetId = 8,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7616)
+                            PlanetId = 11,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5707)
                         },
                         new
                         {
                             Id = 24,
                             IsColonized = false,
-                            PlanetId = 8,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7616)
+                            PlanetId = 11,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5707)
                         },
                         new
                         {
                             Id = 25,
                             IsColonized = false,
-                            PlanetId = 9,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7620)
+                            PlanetId = 12,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5718)
                         },
                         new
                         {
                             Id = 26,
                             IsColonized = false,
-                            PlanetId = 9,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7620)
+                            PlanetId = 12,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5718)
                         },
                         new
                         {
                             Id = 27,
                             IsColonized = false,
-                            PlanetId = 9,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7621)
+                            PlanetId = 12,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5719)
                         },
                         new
                         {
                             Id = 28,
                             IsColonized = false,
-                            PlanetId = 10,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7643)
+                            PlanetId = 13,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5725)
                         },
                         new
                         {
                             Id = 29,
                             IsColonized = false,
-                            PlanetId = 10,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7644)
+                            PlanetId = 13,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5726)
                         },
                         new
                         {
                             Id = 30,
                             IsColonized = false,
-                            PlanetId = 10,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7644)
+                            PlanetId = 13,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5726)
                         },
                         new
                         {
                             Id = 31,
                             IsColonized = false,
-                            PlanetId = 11,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7649)
+                            PlanetId = 16,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5748)
                         },
                         new
                         {
                             Id = 32,
                             IsColonized = false,
-                            PlanetId = 11,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7650)
+                            PlanetId = 16,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5749)
                         },
                         new
                         {
                             Id = 33,
                             IsColonized = false,
-                            PlanetId = 11,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7650)
+                            PlanetId = 16,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5749)
                         },
                         new
                         {
                             Id = 34,
                             IsColonized = false,
-                            PlanetId = 12,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7659)
+                            PlanetId = 17,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5759)
                         },
                         new
                         {
                             Id = 35,
                             IsColonized = false,
-                            PlanetId = 12,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7659)
+                            PlanetId = 17,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5759)
                         },
                         new
                         {
                             Id = 36,
                             IsColonized = false,
-                            PlanetId = 12,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7659)
+                            PlanetId = 17,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5760)
                         },
                         new
                         {
                             Id = 37,
                             IsColonized = false,
-                            PlanetId = 13,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7665)
+                            PlanetId = 18,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5767)
                         },
                         new
                         {
                             Id = 38,
                             IsColonized = false,
-                            PlanetId = 13,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7665)
+                            PlanetId = 18,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5767)
                         },
                         new
                         {
                             Id = 39,
                             IsColonized = false,
-                            PlanetId = 13,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7666)
+                            PlanetId = 18,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5768)
                         },
                         new
                         {
                             Id = 40,
                             IsColonized = false,
-                            PlanetId = 14,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7670)
+                            PlanetId = 19,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5775)
                         },
                         new
                         {
                             Id = 41,
                             IsColonized = false,
-                            PlanetId = 14,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7670)
+                            PlanetId = 19,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5776)
                         },
                         new
                         {
                             Id = 42,
                             IsColonized = false,
-                            PlanetId = 14,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7670)
+                            PlanetId = 19,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5776)
                         },
                         new
                         {
                             Id = 43,
                             IsColonized = false,
-                            PlanetId = 15,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7674)
+                            PlanetId = 23,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5810)
                         },
                         new
                         {
                             Id = 44,
                             IsColonized = false,
-                            PlanetId = 15,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7674)
+                            PlanetId = 23,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5810)
                         },
                         new
                         {
                             Id = 45,
                             IsColonized = false,
-                            PlanetId = 15,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7675)
+                            PlanetId = 23,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5811)
                         },
                         new
                         {
                             Id = 46,
                             IsColonized = false,
-                            PlanetId = 19,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7690)
+                            PlanetId = 24,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5819)
                         },
                         new
                         {
                             Id = 47,
                             IsColonized = false,
-                            PlanetId = 19,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7690)
+                            PlanetId = 24,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5820)
                         },
                         new
                         {
                             Id = 48,
                             IsColonized = false,
-                            PlanetId = 19,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7691)
+                            PlanetId = 24,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5820)
                         },
                         new
                         {
                             Id = 49,
                             IsColonized = false,
-                            PlanetId = 20,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7713)
+                            PlanetId = 25,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5827)
                         },
                         new
                         {
                             Id = 50,
                             IsColonized = false,
-                            PlanetId = 20,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7713)
+                            PlanetId = 25,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5828)
                         },
                         new
                         {
                             Id = 51,
                             IsColonized = false,
-                            PlanetId = 20,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7714)
+                            PlanetId = 25,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5828)
                         },
                         new
                         {
                             Id = 52,
                             IsColonized = false,
-                            PlanetId = 21,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7719)
+                            PlanetId = 26,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5834)
                         },
                         new
                         {
                             Id = 53,
                             IsColonized = false,
-                            PlanetId = 21,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7720)
+                            PlanetId = 26,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5835)
                         },
                         new
                         {
                             Id = 54,
                             IsColonized = false,
-                            PlanetId = 21,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7720)
+                            PlanetId = 26,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5835)
                         },
                         new
                         {
                             Id = 55,
                             IsColonized = false,
-                            PlanetId = 22,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7724)
+                            PlanetId = 27,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5845)
                         },
                         new
                         {
                             Id = 56,
                             IsColonized = false,
-                            PlanetId = 22,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7724)
+                            PlanetId = 27,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5846)
                         },
                         new
                         {
                             Id = 57,
                             IsColonized = false,
-                            PlanetId = 22,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7725)
+                            PlanetId = 27,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5847)
                         },
                         new
                         {
                             Id = 58,
                             IsColonized = false,
-                            PlanetId = 23,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7729)
+                            PlanetId = 28,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5853)
                         },
                         new
                         {
                             Id = 59,
                             IsColonized = false,
-                            PlanetId = 23,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7730)
+                            PlanetId = 28,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5853)
                         },
                         new
                         {
                             Id = 60,
                             IsColonized = false,
-                            PlanetId = 23,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7730)
+                            PlanetId = 28,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5854)
                         },
                         new
                         {
                             Id = 61,
                             IsColonized = false,
-                            PlanetId = 25,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7740)
+                            PlanetId = 29,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5860)
                         },
                         new
                         {
                             Id = 62,
                             IsColonized = false,
-                            PlanetId = 25,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7740)
+                            PlanetId = 29,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5861)
                         },
                         new
                         {
                             Id = 63,
                             IsColonized = false,
-                            PlanetId = 25,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7741)
+                            PlanetId = 29,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5861)
                         },
                         new
                         {
                             Id = 64,
                             IsColonized = false,
-                            PlanetId = 26,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7746)
+                            PlanetId = 31,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5924)
                         },
                         new
                         {
                             Id = 65,
                             IsColonized = false,
-                            PlanetId = 26,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7747)
+                            PlanetId = 31,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5925)
                         },
                         new
                         {
                             Id = 66,
                             IsColonized = false,
-                            PlanetId = 26,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7758)
+                            PlanetId = 31,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5926)
                         },
                         new
                         {
                             Id = 67,
                             IsColonized = false,
-                            PlanetId = 27,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7763)
+                            PlanetId = 32,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5935)
                         },
                         new
                         {
                             Id = 68,
                             IsColonized = false,
-                            PlanetId = 27,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7763)
+                            PlanetId = 32,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5936)
                         },
                         new
                         {
                             Id = 69,
                             IsColonized = false,
-                            PlanetId = 27,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7763)
+                            PlanetId = 32,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5937)
                         },
                         new
                         {
                             Id = 70,
                             IsColonized = false,
-                            PlanetId = 28,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7767)
+                            PlanetId = 33,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5948)
                         },
                         new
                         {
                             Id = 71,
                             IsColonized = false,
-                            PlanetId = 28,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7767)
+                            PlanetId = 33,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5949)
                         },
                         new
                         {
                             Id = 72,
                             IsColonized = false,
-                            PlanetId = 28,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7768)
+                            PlanetId = 33,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5949)
                         },
                         new
                         {
                             Id = 73,
                             IsColonized = false,
-                            PlanetId = 29,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7774)
+                            PlanetId = 34,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5958)
                         },
                         new
                         {
                             Id = 74,
                             IsColonized = false,
-                            PlanetId = 29,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7774)
+                            PlanetId = 34,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5958)
                         },
                         new
                         {
                             Id = 75,
                             IsColonized = false,
-                            PlanetId = 29,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7774)
+                            PlanetId = 34,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5959)
                         },
                         new
                         {
                             Id = 76,
                             IsColonized = false,
-                            PlanetId = 32,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7784)
+                            PlanetId = 35,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5964)
                         },
                         new
                         {
                             Id = 77,
                             IsColonized = false,
-                            PlanetId = 32,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7784)
+                            PlanetId = 35,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5965)
                         },
                         new
                         {
                             Id = 78,
                             IsColonized = false,
-                            PlanetId = 32,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7785)
+                            PlanetId = 35,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5965)
                         },
                         new
                         {
                             Id = 79,
                             IsColonized = false,
-                            PlanetId = 33,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7788)
+                            PlanetId = 36,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5972)
                         },
                         new
                         {
                             Id = 80,
                             IsColonized = false,
-                            PlanetId = 33,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7789)
+                            PlanetId = 36,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5973)
                         },
                         new
                         {
                             Id = 81,
                             IsColonized = false,
-                            PlanetId = 33,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7789)
+                            PlanetId = 36,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(5973)
                         },
                         new
                         {
                             Id = 82,
                             IsColonized = false,
-                            PlanetId = 34,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7794)
+                            PlanetId = 37,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6042)
                         },
                         new
                         {
                             Id = 83,
                             IsColonized = false,
-                            PlanetId = 34,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7794)
+                            PlanetId = 37,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6043)
                         },
                         new
                         {
                             Id = 84,
                             IsColonized = false,
-                            PlanetId = 34,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7794)
+                            PlanetId = 37,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6043)
                         },
                         new
                         {
                             Id = 85,
                             IsColonized = false,
-                            PlanetId = 35,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7798)
+                            PlanetId = 38,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6051)
                         },
                         new
                         {
                             Id = 86,
                             IsColonized = false,
-                            PlanetId = 35,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7798)
+                            PlanetId = 38,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6052)
                         },
                         new
                         {
                             Id = 87,
                             IsColonized = false,
-                            PlanetId = 35,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7799)
+                            PlanetId = 38,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6052)
                         },
                         new
                         {
                             Id = 88,
                             IsColonized = false,
-                            PlanetId = 36,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7834)
+                            PlanetId = 39,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6058)
                         },
                         new
                         {
                             Id = 89,
                             IsColonized = false,
-                            PlanetId = 36,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7834)
+                            PlanetId = 39,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6059)
                         },
                         new
                         {
                             Id = 90,
                             IsColonized = false,
-                            PlanetId = 36,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7835)
+                            PlanetId = 39,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6060)
                         },
                         new
                         {
                             Id = 91,
                             IsColonized = false,
-                            PlanetId = 37,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7839)
+                            PlanetId = 40,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6066)
                         },
                         new
                         {
                             Id = 92,
                             IsColonized = false,
-                            PlanetId = 37,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7840)
+                            PlanetId = 40,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6066)
                         },
                         new
                         {
                             Id = 93,
                             IsColonized = false,
-                            PlanetId = 37,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7840)
+                            PlanetId = 40,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6067)
                         },
                         new
                         {
                             Id = 94,
                             IsColonized = false,
                             PlanetId = 41,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7850)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6077)
                         },
                         new
                         {
                             Id = 95,
                             IsColonized = false,
                             PlanetId = 41,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7850)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6078)
                         },
                         new
                         {
                             Id = 96,
                             IsColonized = false,
                             PlanetId = 41,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7850)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6078)
                         },
                         new
                         {
                             Id = 97,
                             IsColonized = false,
                             PlanetId = 42,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7856)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6087)
                         },
                         new
                         {
                             Id = 98,
                             IsColonized = false,
                             PlanetId = 42,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7856)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6088)
                         },
                         new
                         {
                             Id = 99,
                             IsColonized = false,
                             PlanetId = 42,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7856)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6088)
                         },
                         new
                         {
                             Id = 100,
                             IsColonized = false,
                             PlanetId = 43,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7860)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6095)
                         },
                         new
                         {
                             Id = 101,
                             IsColonized = false,
                             PlanetId = 43,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7861)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6096)
                         },
                         new
                         {
                             Id = 102,
                             IsColonized = false,
                             PlanetId = 43,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7861)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6096)
                         },
                         new
                         {
                             Id = 103,
                             IsColonized = false,
                             PlanetId = 44,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7866)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6103)
                         },
                         new
                         {
                             Id = 104,
                             IsColonized = false,
                             PlanetId = 44,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7866)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6104)
                         },
                         new
                         {
                             Id = 105,
                             IsColonized = false,
                             PlanetId = 44,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7866)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6104)
                         },
                         new
                         {
                             Id = 106,
                             IsColonized = false,
                             PlanetId = 45,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7873)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6110)
                         },
                         new
                         {
                             Id = 107,
                             IsColonized = false,
                             PlanetId = 45,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7873)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6111)
                         },
                         new
                         {
                             Id = 108,
                             IsColonized = false,
                             PlanetId = 45,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7874)
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6112)
                         },
                         new
                         {
                             Id = 109,
                             IsColonized = false,
-                            PlanetId = 46,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7909)
+                            PlanetId = 47,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6149)
                         },
                         new
                         {
                             Id = 110,
                             IsColonized = false,
-                            PlanetId = 46,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7909)
+                            PlanetId = 47,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6150)
                         },
                         new
                         {
                             Id = 111,
                             IsColonized = false,
-                            PlanetId = 46,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7910)
+                            PlanetId = 47,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6150)
                         },
                         new
                         {
                             Id = 112,
                             IsColonized = false,
-                            PlanetId = 47,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7915)
+                            PlanetId = 48,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6158)
                         },
                         new
                         {
                             Id = 113,
                             IsColonized = false,
-                            PlanetId = 47,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7915)
+                            PlanetId = 48,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6159)
                         },
                         new
                         {
                             Id = 114,
                             IsColonized = false,
-                            PlanetId = 47,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7915)
+                            PlanetId = 48,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6160)
                         },
                         new
                         {
                             Id = 115,
                             IsColonized = false,
-                            PlanetId = 48,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7920)
+                            PlanetId = 49,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6165)
                         },
                         new
                         {
                             Id = 116,
                             IsColonized = false,
-                            PlanetId = 48,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7920)
+                            PlanetId = 49,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6166)
                         },
                         new
                         {
                             Id = 117,
                             IsColonized = false,
-                            PlanetId = 48,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7921)
+                            PlanetId = 49,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6167)
                         },
                         new
                         {
                             Id = 118,
                             IsColonized = false,
-                            PlanetId = 49,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7925)
+                            PlanetId = 50,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6174)
                         },
                         new
                         {
                             Id = 119,
                             IsColonized = false,
-                            PlanetId = 49,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7925)
+                            PlanetId = 50,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6175)
                         },
                         new
                         {
                             Id = 120,
                             IsColonized = false,
-                            PlanetId = 49,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7925)
+                            PlanetId = 50,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6175)
                         },
                         new
                         {
                             Id = 121,
                             IsColonized = false,
-                            PlanetId = 53,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7936)
+                            PlanetId = 51,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6186)
                         },
                         new
                         {
                             Id = 122,
                             IsColonized = false,
-                            PlanetId = 53,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7936)
+                            PlanetId = 51,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6187)
                         },
                         new
                         {
                             Id = 123,
                             IsColonized = false,
-                            PlanetId = 53,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7937)
+                            PlanetId = 51,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6187)
                         },
                         new
                         {
                             Id = 124,
                             IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7942)
+                            PlanetId = 52,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6194)
                         },
                         new
                         {
                             Id = 125,
                             IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7942)
+                            PlanetId = 52,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6194)
                         },
                         new
                         {
                             Id = 126,
                             IsColonized = false,
-                            PlanetId = 54,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7942)
+                            PlanetId = 52,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6195)
                         },
                         new
                         {
                             Id = 127,
                             IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7947)
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6213)
                         },
                         new
                         {
                             Id = 128,
                             IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7947)
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6214)
                         },
                         new
                         {
                             Id = 129,
                             IsColonized = false,
-                            PlanetId = 55,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7948)
+                            PlanetId = 56,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6215)
                         },
                         new
                         {
                             Id = 130,
                             IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7973)
+                            PlanetId = 57,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6249)
                         },
                         new
                         {
                             Id = 131,
                             IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7974)
+                            PlanetId = 57,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6249)
                         },
                         new
                         {
                             Id = 132,
                             IsColonized = false,
-                            PlanetId = 58,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7974)
+                            PlanetId = 57,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6250)
                         },
                         new
                         {
                             Id = 133,
                             IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7979)
+                            PlanetId = 58,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6256)
                         },
                         new
                         {
                             Id = 134,
                             IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7979)
+                            PlanetId = 58,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6257)
                         },
                         new
                         {
                             Id = 135,
                             IsColonized = false,
-                            PlanetId = 59,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7979)
+                            PlanetId = 58,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6257)
                         },
                         new
                         {
                             Id = 136,
                             IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7984)
+                            PlanetId = 59,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6263)
                         },
                         new
                         {
                             Id = 137,
                             IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7984)
+                            PlanetId = 59,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6264)
                         },
                         new
                         {
                             Id = 138,
                             IsColonized = false,
-                            PlanetId = 60,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7984)
+                            PlanetId = 59,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6265)
                         },
                         new
                         {
                             Id = 139,
                             IsColonized = false,
-                            PlanetId = 61,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7989)
+                            PlanetId = 60,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6276)
                         },
                         new
                         {
                             Id = 140,
                             IsColonized = false,
-                            PlanetId = 61,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7989)
+                            PlanetId = 60,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6276)
                         },
                         new
                         {
                             Id = 141,
                             IsColonized = false,
-                            PlanetId = 61,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7990)
+                            PlanetId = 60,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6277)
                         },
                         new
                         {
                             Id = 142,
                             IsColonized = false,
-                            PlanetId = 62,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7995)
+                            PlanetId = 61,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6282)
                         },
                         new
                         {
                             Id = 143,
                             IsColonized = false,
-                            PlanetId = 62,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7996)
+                            PlanetId = 61,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6283)
                         },
                         new
                         {
                             Id = 144,
                             IsColonized = false,
-                            PlanetId = 62,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(7996)
+                            PlanetId = 61,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6284)
                         },
                         new
                         {
                             Id = 145,
                             IsColonized = false,
-                            PlanetId = 63,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8000)
+                            PlanetId = 62,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6292)
                         },
                         new
                         {
                             Id = 146,
                             IsColonized = false,
-                            PlanetId = 63,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8000)
+                            PlanetId = 62,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6292)
                         },
                         new
                         {
                             Id = 147,
                             IsColonized = false,
-                            PlanetId = 63,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8000)
+                            PlanetId = 62,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6293)
                         },
                         new
                         {
                             Id = 148,
                             IsColonized = false,
-                            PlanetId = 64,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8004)
+                            PlanetId = 66,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6312)
                         },
                         new
                         {
                             Id = 149,
                             IsColonized = false,
-                            PlanetId = 64,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8004)
+                            PlanetId = 66,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6312)
                         },
                         new
                         {
                             Id = 150,
                             IsColonized = false,
-                            PlanetId = 64,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8005)
+                            PlanetId = 66,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6313)
                         },
                         new
                         {
                             Id = 151,
                             IsColonized = false,
-                            PlanetId = 65,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8008)
+                            PlanetId = 67,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6347)
                         },
                         new
                         {
                             Id = 152,
                             IsColonized = false,
-                            PlanetId = 65,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8009)
+                            PlanetId = 67,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6348)
                         },
                         new
                         {
                             Id = 153,
                             IsColonized = false,
-                            PlanetId = 65,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8009)
+                            PlanetId = 67,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6349)
                         },
                         new
                         {
                             Id = 154,
                             IsColonized = false,
-                            PlanetId = 66,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8013)
+                            PlanetId = 68,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6354)
                         },
                         new
                         {
                             Id = 155,
                             IsColonized = false,
-                            PlanetId = 66,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8014)
+                            PlanetId = 68,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6355)
                         },
                         new
                         {
                             Id = 156,
                             IsColonized = false,
-                            PlanetId = 66,
-                            UpdatedAt = new DateTime(2024, 9, 26, 14, 55, 41, 339, DateTimeKind.Utc).AddTicks(8014)
+                            PlanetId = 68,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6355)
+                        },
+                        new
+                        {
+                            Id = 157,
+                            IsColonized = false,
+                            PlanetId = 69,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6362)
+                        },
+                        new
+                        {
+                            Id = 158,
+                            IsColonized = false,
+                            PlanetId = 69,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6362)
+                        },
+                        new
+                        {
+                            Id = 159,
+                            IsColonized = false,
+                            PlanetId = 69,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6363)
+                        },
+                        new
+                        {
+                            Id = 160,
+                            IsColonized = false,
+                            PlanetId = 70,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6374)
+                        },
+                        new
+                        {
+                            Id = 161,
+                            IsColonized = false,
+                            PlanetId = 70,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6375)
+                        },
+                        new
+                        {
+                            Id = 162,
+                            IsColonized = false,
+                            PlanetId = 70,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6375)
+                        },
+                        new
+                        {
+                            Id = 163,
+                            IsColonized = false,
+                            PlanetId = 71,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6381)
+                        },
+                        new
+                        {
+                            Id = 164,
+                            IsColonized = false,
+                            PlanetId = 71,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6382)
+                        },
+                        new
+                        {
+                            Id = 165,
+                            IsColonized = false,
+                            PlanetId = 71,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6383)
+                        },
+                        new
+                        {
+                            Id = 166,
+                            IsColonized = false,
+                            PlanetId = 72,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6389)
+                        },
+                        new
+                        {
+                            Id = 167,
+                            IsColonized = false,
+                            PlanetId = 72,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6389)
+                        },
+                        new
+                        {
+                            Id = 168,
+                            IsColonized = false,
+                            PlanetId = 72,
+                            UpdatedAt = new DateTime(2024, 9, 26, 14, 46, 17, 104, DateTimeKind.Utc).AddTicks(6390)
                         });
                 });
 
@@ -2710,7 +2851,7 @@ namespace Nexus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SolarSystems");
+                    b.ToTable("SolarSystems", (string)null);
 
                     b.HasData(
                         new
@@ -3182,9 +3323,13 @@ namespace Nexus.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Nexus.Domain.Entities.SolarSystem", "SolarSystem")
-                        .WithMany("Fleets")
+                        .WithMany()
                         .HasForeignKey("SolarSystemId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Nexus.Domain.Entities.SolarSystem", null)
+                        .WithMany("Fleets")
+                        .HasForeignKey("SolarSystemId1");
 
                     b.HasOne("Nexus.Domain.Entities.User", "User")
                         .WithMany("Fleets")

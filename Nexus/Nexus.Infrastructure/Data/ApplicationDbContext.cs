@@ -19,6 +19,10 @@ namespace Nexus.Infrastructure.Data
         public DbSet<RegionStructure> RegionStructures { get; set; }
         public DbSet<SolarSystem> SolarSystems { get; set; }
         public DbSet<RegionResource> RegionResources { get; set; }
+        public DbSet<Fleet> Fleets { get; set; }
+        public DbSet<Ship> Ships { get; set; }
+        public DbSet<FleetShip> FleetShips { get; set; }
+        public DbSet<FleetMovementPath> FleetMovementPaths { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
