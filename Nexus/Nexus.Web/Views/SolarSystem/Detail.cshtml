@@ -64,7 +64,7 @@
                     }
                 }
 
-                <div class="@cellClass" data-item-id="@dataItemId">
+                <div class="@cellClass" data-item-id="@dataItemId" data-item-x="@x" data-item-y="@y">
                     @Html.Raw(string.Join("<br/>", cellContent))
                 </div>
             }
@@ -80,7 +80,7 @@
             <li id="action-view-fleet" onclick="reloadPage()">Ver flota</li>
             <li id="action-spy-fleet" onclick="reloadPage()">Espiar</li>
             <li id="action-attack-fleet" onclick="reloadPage()">Atacar</li>
-            <li id="action-move-fleet" onclick="reloadPage()">Mover flota</li>
+            <li id="action-move-fleet" onclick="moveFleet()">Mover flota</li>
         </ul>
     </div>
 </div>
@@ -179,10 +179,14 @@
         });
 
         // Evento para mostrar el menú contextual con clic derecho
-        document.addEventListener('contextmenu', function(event) {
+        document.addEventListener('contextmenu', function (event) {
             event.preventDefault();
             const target = event.target.closest('.solar-system-cell');
             if (!target) return;
+
+            // Capturar las coordenadas X y Y de la celda clicada
+            contextMenu.dataset.itemX = target.getAttribute('data-item-x');
+            contextMenu.dataset.itemY = target.getAttribute('data-item-y');
 
             contextMenu.style.display = 'block';
             contextMenu.style.left = event.pageX + 'px';
@@ -201,6 +205,7 @@
             document.getElementById('action-move-fleet').style.display = selectedFleet && !target.classList.contains('estrella') ? 'block' : 'none';
         });
 
+
         // Ocultar el menú contextual al hacer clic fuera
         document.addEventListener('click', function() {
             contextMenu.style.display = 'none';
@@ -210,5 +215,52 @@
         function reloadPage() {
             location.reload();
         }
+
+        // Función para mover la flota
+        function moveFleet() {
+            if (!selectedFleet) {
+                alert("No hay flota seleccionada.");
+                return;
+            }
+
+            // Obtener ID de la flota seleccionada
+            const fleetId = selectedFleet.getAttribute('data-item-id');
+
+            // Obtener las coordenadas de destino de la celda clicada
+            const destinationX = contextMenu.dataset.itemX;
+            const destinationY = contextMenu.dataset.itemY;
+
+            if (!destinationX || !destinationY) {
+                alert("No se pudo determinar el destino.");
+                return;
+            }
+
+            // Enviar la solicitud AJAX para mover la flota
+            $.ajax({
+                url: '/SolarSystem/MoveFleet',
+                type: 'POST',
+                data: {
+                    fleetId: fleetId,
+                    destinationX: destinationX,
+                    destinationY: destinationY
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Actualizar el nombre de la flota para incluir el "*"
+                        const fleetElement = document.querySelector(`span[data-item-id='${fleetId}']`);
+                        if (fleetElement && !fleetElement.innerText.includes('*')) {
+                            fleetElement.innerText += "*";
+                        }
+                    } else {
+                        alert('No se pudo mover la flota.');
+                    }
+                },
+                error: function () {
+                    alert('Error al mover la flota.');
+                }
+            });
+        }
+
+
     </script>
 }

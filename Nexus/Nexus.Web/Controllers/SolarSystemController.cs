@@ -38,12 +38,16 @@ namespace Nexus.Web.Controllers
                 .Include(ss => ss.AsteroidFields)
                 .Include(ss => ss.JumpGates)
                 .Include(ss => ss.Fleets)
+                .ThenInclude(f => f.FleetMovementPaths)
                 .FirstOrDefaultAsync(ss => ss.Id == id);
 
             if (solarSystem == null)
             {
                 return NotFound();
             }
+
+            // Actualizar las posiciones de las flotas
+            await _fleetMovementService.UpdateFleetPositions(solarSystem.Fleets.ToList());
 
             var viewModel = new SolarSystemViewModel
             {
@@ -54,20 +58,29 @@ namespace Nexus.Web.Controllers
             return View(viewModel);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> MoveFleet(int fleetId, int destinationX, int destinationY)
         {
-            var fleet = await _context.Fleets.Include(f => f.SolarSystem).FirstOrDefaultAsync(f => f.Id == fleetId);
-            if (fleet == null) return NotFound();
+            // Obtener la flota con las relaciones necesarias
+            var fleet = await _context.Fleets
+                .Include(f => f.SolarSystem)
+                .Include(f => f.FleetShips)
+                    .ThenInclude(fs => fs.Ship)
+                .FirstOrDefaultAsync(f => f.Id == fleetId);
 
+            if (fleet == null)
+                return NotFound();
+
+            // Calcular la ruta de la flota
             var path = await _fleetMovementService.CalculatePath(fleet, (destinationX, destinationY));
 
-            if (path == null) return BadRequest("No valid path found.");
+            if (path == null)
+                return BadRequest("No valid path found.");
 
-            var slowestSpeed = fleet.FleetShips.Min(fs => fs.Ship.Speed); // Get slowest ship in the fleet
-            var travelTimePerStep = TimeSpan.FromSeconds(slowestSpeed * 10); // Calculate time per step
-
-            await _fleetMovementService.SaveFleetPath(fleet, path, travelTimePerStep);
+            // Guardar los movimientos de la flota en la base de datos
+            _context.FleetMovementPaths.AddRange(path);
+            await _context.SaveChangesAsync();
 
             return Json(new { success = true });
         }

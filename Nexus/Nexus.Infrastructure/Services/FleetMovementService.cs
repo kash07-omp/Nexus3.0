@@ -1,7 +1,7 @@
 ﻿using Nexus.Domain.Entities;
 using Nexus.Infrastructure.Data;
 using Nexus.Infrastructure.Services.Interfaces;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;  // Asegúrate de usar EF Core
 
 public class FleetMovementService : IFleetMovementService
 {
@@ -12,25 +12,25 @@ public class FleetMovementService : IFleetMovementService
         _context = context;
     }
 
-    public async Task<List<(int x, int y)>> CalculatePath(Fleet fleet, (int x, int y) destination)
+    public async Task<List<FleetMovementPath>> CalculatePath(Fleet fleet, (int x, int y) destination)
     {
         var start = (fleet.CoordinateX, fleet.CoordinateY);
         var gridSizeX = fleet.SolarSystem.GridSizeX;
         var gridSizeY = fleet.SolarSystem.GridSizeY;
 
-        // Obtener todas las flotas en el sistema solar, incluyendo las enemigas
+        // Obtener todas las flotas en el sistema solar
         var fleetsInSolarSystem = await _context.Fleets
             .Where(f => f.SolarSystemId == fleet.SolarSystemId)
             .ToListAsync();
 
-        // Crear un HashSet con las posiciones ocupadas por flotas enemigas para rápido acceso
+        // HashSet con posiciones ocupadas por flotas enemigas
         var occupiedPositions = new HashSet<(int x, int y)>(
             fleetsInSolarSystem
                 .Where(f => f.UserId != fleet.UserId)
                 .Select(f => (f.CoordinateX, f.CoordinateY))
         );
 
-        // Añadir la posición de la estrella al HashSet de posiciones ocupadas
+        // Añadir posición de la estrella
         occupiedPositions.Add((gridSizeX / 2 + 1, gridSizeY / 2 + 1));
 
         // Inicializamos las listas para el algoritmo A*
@@ -40,6 +40,13 @@ public class FleetMovementService : IFleetMovementService
         var startNode = new Node(start.CoordinateX, start.CoordinateY, null, 0, ManhattanDistance(start, destination));
         openList.Add(startNode);
 
+        // Obtener la velocidad mínima de la flota
+        var slowestSpeed = fleet.FleetShips.Min(fs => fs.Ship.Speed);
+
+        // Almacenar el resultado como FleetMovementPath
+        var pathList = new List<FleetMovementPath>();
+        var currentTime = DateTime.UtcNow;
+
         // Búsqueda A* con lista abierta y cerrada
         while (openList.Any())
         {
@@ -48,7 +55,33 @@ public class FleetMovementService : IFleetMovementService
             // Si llegamos al destino, construimos el camino
             if (currentNode.X == destination.x && currentNode.Y == destination.y)
             {
-                return BuildPath(currentNode);
+                var path = BuildPath(currentNode);
+
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    var from = path[i];
+                    var to = path[i + 1];
+
+                    // Calcular tiempo de viaje según si es movimiento horizontal/vertical o diagonal
+                    var movementCost = GetMovementCost(new Node(from.x, from.y), new Node(to.x, to.y));
+                    var travelTime = TimeSpan.FromSeconds((slowestSpeed * movementCost)/2);
+
+                    pathList.Add(new FleetMovementPath
+                    {
+                        FleetId = fleet.Id,
+                        FromX = from.x,
+                        FromY = from.y,
+                        ToX = to.x,
+                        ToY = to.y,
+                        DepartureTime = currentTime,
+                        ArrivalTime = currentTime.Add(travelTime)
+                    });
+
+                    // Actualizar la hora para la siguiente celda
+                    currentTime = currentTime.Add(travelTime);
+                }
+
+                return pathList;
             }
 
             openList.Remove(currentNode);
@@ -80,40 +113,63 @@ public class FleetMovementService : IFleetMovementService
         return null; // No path found
     }
 
-    public async Task SaveFleetPath(Fleet fleet, List<(int x, int y)> path, TimeSpan travelTimePerStep)
+    public async Task UpdateFleetPositions(List<Fleet> fleets)
     {
         var currentTime = DateTime.UtcNow;
-        var pathList = new List<FleetMovementPath>();
 
-        for (int i = 0; i < path.Count - 1; i++)
+        foreach (var fleet in fleets)
         {
-            pathList.Add(new FleetMovementPath
+            // Obtener todos los FleetMovementPaths ordenados por ArrivalTime
+            var movementPaths = await _context.FleetMovementPaths
+                .Where(fmp => fmp.FleetId == fleet.Id)
+                .OrderBy(fmp => fmp.ArrivalTime)
+                .ToListAsync();
+
+            if (!movementPaths.Any())
             {
-                FleetId = fleet.Id,
-                FromX = path[i].x,
-                FromY = path[i].y,
-                ToX = path[i + 1].x,
-                ToY = path[i + 1].y,
-                DepartureTime = currentTime,
-                ArrivalTime = currentTime.Add(travelTimePerStep)
-            });
-            currentTime = currentTime.Add(travelTimePerStep); // update current time for the next step
+                continue; // No hay movimientos pendientes, saltamos esta flota
+            }
+
+            // Buscar el último movimiento completado y actualizar la posición de la flota
+            var lastCompletedPath = movementPaths.LastOrDefault(fmp => fmp.ArrivalTime <= currentTime);
+
+            if (lastCompletedPath != null)
+            {
+                // Actualizar las coordenadas de la flota a la posición de destino del último movimiento completado
+                fleet.CoordinateX = lastCompletedPath.ToX;
+                fleet.CoordinateY = lastCompletedPath.ToY;
+            }
+
+            // Eliminar todos los FleetMovementPaths que ya han sido completados (ArrivalTime <= currentTime)
+            var completedPaths = movementPaths.Where(fmp => fmp.ArrivalTime <= currentTime).ToList();
+            _context.FleetMovementPaths.RemoveRange(completedPaths);
+
+            // Si aún quedan movimientos por completar, la flota está en el último punto del último movimiento no completado
+            var nextPath = movementPaths.FirstOrDefault(fmp => fmp.ArrivalTime > currentTime);
+            if (nextPath != null)
+            {
+                fleet.CoordinateX = nextPath.FromX;
+                fleet.CoordinateY = nextPath.FromY;
+            }
+
+            // Actualizar la flota
+            _context.Fleets.Update(fleet);
         }
 
-        _context.FleetMovementPaths.AddRange(pathList);
+        // Guardar todos los cambios en la base de datos
         await _context.SaveChangesAsync();
     }
+
 
 
     private List<Node> GetNeighbors(Node node, int gridSizeX, int gridSizeY)
     {
         var neighbors = new List<Node>();
 
-        // Definimos las direcciones para vecinos (vertical, horizontal, diagonal)
         var directions = new (int dx, int dy)[]
         {
-            (0, 1), (1, 0), (0, -1), (-1, 0), // Vertical y horizontal
-            (1, 1), (-1, 1), (1, -1), (-1, -1) // Diagonal
+            (0, 1), (1, 0), (0, -1), (-1, 0), // Horizontal y vertical
+            (1, 1), (-1, 1), (1, -1), (-1, -1) // Diagonales
         };
 
         foreach (var dir in directions)
@@ -152,7 +208,6 @@ public class FleetMovementService : IFleetMovementService
         return path;
     }
 }
-
 
 public class Node
 {
