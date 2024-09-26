@@ -72,18 +72,29 @@ namespace Nexus.Web.Controllers
             if (fleet == null)
                 return NotFound();
 
-            // Calcular la ruta de la flota
+            // Eliminar todos los registros de FleetMovementPaths asociados a la flota
+            var existingPaths = await _context.FleetMovementPaths
+                .Where(fmp => fmp.FleetId == fleetId)
+                .ToListAsync();
+
+            if (existingPaths.Any())
+            {
+                _context.FleetMovementPaths.RemoveRange(existingPaths);
+            }
+
+            // Calcular la nueva ruta de la flota
             var path = await _fleetMovementService.CalculatePath(fleet, (destinationX, destinationY));
 
             if (path == null)
                 return BadRequest("No valid path found.");
 
-            // Guardar los movimientos de la flota en la base de datos
+            // Guardar los nuevos movimientos de la flota en la base de datos
             _context.FleetMovementPaths.AddRange(path);
             await _context.SaveChangesAsync();
 
             return Json(new { success = true });
         }
+
 
     }
 }
