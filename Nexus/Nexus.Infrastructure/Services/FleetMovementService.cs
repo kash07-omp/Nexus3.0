@@ -188,7 +188,7 @@ public class FleetMovementService : IFleetMovementService
     private int GetMovementCost(Node from, Node to)
     {
         // Movimiento en diagonal cuesta 14, en línea recta cuesta 10
-        return (from.X != to.X && from.Y != to.Y) ? 14 : 10;
+        return (from.X != to.X && from.Y != to.Y) ? 7 : 5;
     }
 
     private int ManhattanDistance((int x, int y) from, (int x, int y) to)

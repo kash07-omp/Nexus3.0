@@ -6,5 +6,6 @@ namespace Nexus.Web.Models
     {
         public SolarSystem SolarSystem { get; set; }
         public User CurrentUser { get; set; }
+        public List<FleetMovementPath> FleetMovements { get; set; }
     }
 }

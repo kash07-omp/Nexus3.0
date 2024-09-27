@@ -261,6 +261,73 @@
             });
         }
 
+        // Update fleet position client-side
+        const fleetPaths = @Html.Raw(Json.Serialize(Model.FleetMovements));
+        console.log("fleetPaths: ", fleetPaths); // Verifica el contenido
+
+        function updateFleetPositions() {
+            if (!fleetPaths || fleetPaths.length === 0) {
+                console.log("No fleet paths found");
+                return;
+            }
+
+            const currentTime = new Date().getTime(); // Obtener tiempo actual en milisegundos
+            console.log("Current UTC time in ms: ", currentTime);
+
+            fleetPaths.forEach(path => {
+                console.log("path ", path);
+                if (!path.arrivalTime || !path.departureTime) {
+                    console.error("Skipping path due to missing arrivalTime or departureTime:", path);
+                    return;
+                }
+
+                // Asegurarse de que las fechas están en formato correcto
+                const arrivalTime = Date.parse(path.arrivalTime);
+                const departureTime = Date.parse(path.departureTime);
+
+                // Verificación de si las fechas fueron correctamente parseadas
+                if (isNaN(arrivalTime) || isNaN(departureTime)) {
+                    console.error("Error parsing arrivalTime or departureTime for path:", path);
+                    return;
+                }
+
+                console.log(`Checking path for fleetId ${path.fleetId}: currentTime: ${currentTime}, arrivalTime: ${arrivalTime}, departureTime: ${departureTime}`);
+
+                // Si estamos en la ventana de tiempo del movimiento
+                console.log("currentTime: ", currentTime);
+                console.log("departureTime: ", departureTime);
+                console.log("arrivalTime: ", arrivalTime);
+                console.log("currentTime (" + currentTime + ") >= departureTime (" + departureTime + ") && currentTime (" + currentTime + ") < arrivalTime (" + arrivalTime + ")");
+                if (currentTime >= departureTime && currentTime < arrivalTime) {
+                    const progress = (currentTime - departureTime) / (arrivalTime - departureTime);
+                    console.log(`Progress for fleet ${path.fleetId}: ${progress * 100}%`);
+                    const newX = path.fromX + progress * (path.toX - path.fromX);
+                    const newY = path.fromY + progress * (path.toY - path.fromY);
+                    console.log(`New position for fleet ${path.fleetId}: (${newX}, ${newY})`);
+                    moveFleetVisual(path.fleetId, newX, newY);
+                } else {
+                    console.log(`Fleet ${path.fleetId} is not in movement window.`);
+                }
+            });
+        }
+
+        function moveFleetVisual(fleetId, newX, newY) {
+            const fleetElement = document.querySelector(`span[data-item-id='${fleetId}']`);
+            if (fleetElement) {
+                const targetCell = document.querySelector(`.solar-system-cell[data-item-x='${Math.round(newX)}'][data-item-y='${Math.round(newY)}']`);
+                if (targetCell) {
+                    console.log(`Moving fleet ${fleetId} to new cell at (${Math.round(newX)}, ${Math.round(newY)})`);
+                    targetCell.appendChild(fleetElement);
+                }
+            }
+        }
+
+        setInterval(updateFleetPositions, 1000); // Actualizar cada segundo
+
+
+
+
+
 
     </script>
 }
