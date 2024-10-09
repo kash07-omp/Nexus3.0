@@ -160,8 +160,6 @@ public class FleetMovementService : IFleetMovementService
         await _context.SaveChangesAsync();
     }
 
-
-
     private List<Node> GetNeighbors(Node node, int gridSizeX, int gridSizeY)
     {
         var neighbors = new List<Node>();
