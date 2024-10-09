@@ -4,7 +4,6 @@ using Nexus.Infrastructure.Data;
 using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Nexus.Web.Models;
-using Nexus.Infrastructure.Services;
 using Nexus.Infrastructure.Services.Interfaces;
 
 namespace Nexus.Web.Controllers
@@ -54,15 +53,11 @@ namespace Nexus.Web.Controllers
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (region == null)
-            {
                 return NotFound();
-            }
 
             var user = await _userManager.GetUserAsync(User);
 
-            // Obtener todos los recursos del juego
             var allResources = await _context.Resources.ToListAsync();
-            // Obtener todos los recursos de la región, si faltan los agregamos con cantidad 0
             foreach (var resource in allResources)
             {
                 if (!region.RegionResources.Any(rr => rr.ResourceId == resource.Id))
@@ -76,9 +71,7 @@ namespace Nexus.Web.Controllers
                 }
             }
 
-            // Obtener todas las estructuras del juego
             var allStructures = await _context.Structures.ToListAsync();
-            // Obtener todas las estructuras de la región, si faltan las agregamos con nivel 0
             foreach (var structure in allStructures)
             {
                 if (!region.RegionStructures.Any(rs => rs.StructureId == structure.Id))
@@ -99,7 +92,7 @@ namespace Nexus.Web.Controllers
             var viewModel = new RegionViewModel
             {
                 Region = region,
-                Structures = allStructures,  // Mostrar todas las estructuras
+                Structures = allStructures,
                 RegionStructures = region.RegionStructures.ToList(),
                 GovernorCards = governorCards
             };
