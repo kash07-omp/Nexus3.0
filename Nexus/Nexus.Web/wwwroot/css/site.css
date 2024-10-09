@@ -1,22 +1,31 @@
-html {
-  font-size: 14px;
-}
+/* General Layout */
+html, body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #0f1a20; color: #d2d5db; }
+body div.layout { display: flex; height: 100vh; }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/* ----- Topbar  ----- */
+body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
+    body div.topbar div.topbar-left .logo { font-size: 1.5em; font-weight: bold; color: #79a04e; }
+    body div.topbar div.topbar-left { padding-left: 15px; }
+    body div.topbar div.topbar-right { display: flex; padding-right: 15px; align-items: center; }
+        body div.topbar div.topbar-right div.icon-container { display: flex; gap: 15px; align-items: center; }
+            body div.topbar div.topbar-right div.icon-container a.icon-link { color: #ffffff; font-size: 1.2em; padding: 5px; }
+            body div.topbar div.topbar-right div.icon-container a.icon-link:hover { color: #79a04e; }
+        body div.topbar div.topbar-right div.user-avatar { position: relative; margin-left: 20px; }
+            body div.topbar div.topbar-right div.user-avatar img.avatar-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid #79a04e; }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+/* Dropdown for User Menu */
+body div.topbar div.topbar-right div.user-avatar:hover div.user-menu-dropdown { display: block; }
+    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown { display: none; position: absolute; top: 50px; right: 0; background-color: #1a2b34; padding: 10px; border-radius: 5px; z-index: 1000; }
+    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button { background-color: transparent; color: #ffffff; border: none; cursor: pointer; padding: 10px 20px; text-align: left; }
+    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button:hover { background-color: #79a04e; }
+            body div.topbar div.topbar-right div.user-avatar div.user-menu a { margin-left: 10px; color: #ffffff; }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* Sidebar */
+body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding-top: 60px; position: fixed; bottom: 0; top: 50px; overflow-y: auto; }
+    body div.layout aside.sidebar nav.sidebar-nav ul { list-style-type: none; padding: 0; }
+        body div.layout aside.sidebar nav.sidebar-nav ul li a { display: block; padding: 15px; color: #d2d5db; text-decoration: none; font-size: 1.1em; }
+        body div.layout aside.sidebar nav.sidebar-nav ul li a:hover { background-color: #26343f; color: #79a04e; }
+    body div.layout aside.sidebar div.sidebar-footer { position: absolute; bottom: 0; width: 100%; padding: 10px; text-align: center; background-color: #15232d; }
 
-body {
-  margin-bottom: 60px;
-}
+/* Main Content */
+body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; }
