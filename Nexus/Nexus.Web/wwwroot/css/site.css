@@ -28,4 +28,19 @@ body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding
     body div.layout aside.sidebar div.sidebar-footer { position: absolute; bottom: 0; width: 100%; padding: 10px; text-align: center; background-color: #15232d; }
 
 /* Main Content */
-body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; }
+    body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; background-image: url('https://i.pinimg.com/originals/1a/ba/73/1aba73d7d0cf7299158082fab3d8bfa3.jpg'); background-size: cover; background-attachment: fixed; }
+
+
+    /* SOLAR SYSTEM */
+#solarsystem { display: flex; flex-direction:column; justify-content: center; align-items: center; }
+.solar-system-cell { height: 100px; width: 100px; border: 1px solid #ffffff30; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.6); text-align: center; color: white; flex-direction: column; }
+    .solar-system-cell:hover { background-color: rgba(0, 0, 0, 0.2); }
+    .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
+    .solar-system-cell.planet-own { color: green; font-weight: bold; }
+    .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
+    .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
+    .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
+
+/* Estilos para flotas */
+.fleet-own { color: green; }
+.fleet-enemy { color: red; }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Nexus.Web</title>
+    <title>Nexus</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/d93a7007a0.js" crossorigin="anonymous"></script>
     @RenderSection("Styles", required: false)
@@ -11,7 +11,7 @@
 <body>
     <div class="topbar">
         <div class="topbar-left">
-            <a class="logo" asp-controller="Home" asp-action="Index">Nexus.Web</a>
+            <a class="logo" asp-controller="Home" asp-action="Index">Nexus</a>
         </div>
         <div class="topbar-right">
             @if (User.Identity.IsAuthenticated)

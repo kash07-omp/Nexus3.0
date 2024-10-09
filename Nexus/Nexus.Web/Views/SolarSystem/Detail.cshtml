@@ -1,9 +1,9 @@
 ﻿@model Nexus.Web.Models.SolarSystemViewModel
 
-<div class="container">
+<div id="solarsystem" class="detail" data-item-id="@Model.SolarSystem.Id">
     <h2>Detalle del sistema solar: @Model.SolarSystem.Name</h2>
 
-    <div id="solarSystemGrid">
+    <div id="solarSystemGrid" style="">
         @for (int y = 1; y <= Model.SolarSystem.GridSizeY; y++)
         {
             @for (int x = 1; x <= Model.SolarSystem.GridSizeX; x++)
@@ -69,32 +69,6 @@
 
 @section Styles {
     <style>
-        /* Configuración general del fondo */
-        body { background-image: url('https://i.pinimg.com/originals/1a/ba/73/1aba73d7d0cf7299158082fab3d8bfa3.jpg'); background-size: cover; background-attachment: fixed; margin: 0; padding: 0; color: white; }
-
-        /* Estilos del contenedor del sistema solar */
-        #solarSystemGrid { display: grid; grid-template-columns: repeat(@Model.SolarSystem.GridSizeX, 1fr); grid-template-rows: repeat(@Model.SolarSystem.GridSizeY, 1fr); }
-
-        /* Estilos de las celdas del grid */
-        .solar-system-cell { height: 75px; border: 1px solid #ffffff80; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.5); text-align: center; color: white; flex-direction: column; }
-
-            /* Estilo para planetas */
-            .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
-
-            /* Estilo especial para planetas del usuario */
-            .solar-system-cell.planet-own { color: green; font-weight: bold; }
-
-            /* Estilo para campos de asteroides */
-            .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
-
-            /* Estilo para puertas de salto */
-            .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
-
-            /* Estilo especial para la estrella */
-            .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
-
-        /* Estilos para flotas */
-        .fleet-own { color: green; }
-        .fleet-enemy { color: red; }
+        #solarSystemGrid { display: grid; grid-template-columns: repeat(@Model.SolarSystem.GridSizeX, max-content); grid-template-rows: repeat(@Model.SolarSystem.GridSizeY, max-content); }
     </style>
 }
