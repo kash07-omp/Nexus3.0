@@ -59,23 +59,54 @@ namespace Nexus.Web.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+
+            // Obtener todos los recursos del juego
+            var allResources = await _context.Resources.ToListAsync();
+            // Obtener todos los recursos de la región, si faltan los agregamos con cantidad 0
+            foreach (var resource in allResources)
+            {
+                if (!region.RegionResources.Any(rr => rr.ResourceId == resource.Id))
+                {
+                    region.RegionResources.Add(new RegionResource
+                    {
+                        ResourceId = resource.Id,
+                        Quantity = 0,
+                        Resource = resource
+                    });
+                }
+            }
+
+            // Obtener todas las estructuras del juego
+            var allStructures = await _context.Structures.ToListAsync();
+            // Obtener todas las estructuras de la región, si faltan las agregamos con nivel 0
+            foreach (var structure in allStructures)
+            {
+                if (!region.RegionStructures.Any(rs => rs.StructureId == structure.Id))
+                {
+                    region.RegionStructures.Add(new RegionStructure
+                    {
+                        StructureId = structure.Id,
+                        Level = 0,
+                        Structure = structure
+                    });
+                }
+            }
+
             var governorCards = await _context.Cards
                 .Where(c => c.Users.Any(u => u.Id == user.Id) && c.CardType == ECardType.Governor)
                 .ToListAsync();
 
-            var structures = await _context.Structures.ToListAsync();
-            var regionStructures = region.RegionStructures.ToList();
-
             var viewModel = new RegionViewModel
             {
                 Region = region,
-                Structures = structures,
-                RegionStructures = regionStructures,
+                Structures = allStructures,  // Mostrar todas las estructuras
+                RegionStructures = region.RegionStructures.ToList(),
                 GovernorCards = governorCards
             };
 
             return View(viewModel);
         }
+
 
         public async Task<IActionResult> BuildOrUpgradeStructure(int regionId, int structureId)
         {

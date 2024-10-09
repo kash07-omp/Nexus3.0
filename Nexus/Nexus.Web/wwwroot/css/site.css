@@ -2,6 +2,21 @@
 html, body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #0f1a20; color: #d2d5db; }
 body div.layout { display: flex; height: 100vh; }
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+:root { 
+    --nx-text: #ccccd8; 
+    --nx-accent: yellowgreen; 
+    --nx-accent-second: #D70466; 
+    --nx-accent-wrong: #D70040; 
+    --nx-bg: rgba(08,17,30,1); 
+    --nx-bg-t: rgba(08,17,30,0.8); 
+    --nx-bg-light: rgba(23,32,55,1); 
+    --nx-bg-light-t: rgba(23,32,55,0.8); 
+    --nx-bg-gradient: linear-gradient(0deg, rgba(08,17,30,1) 0%, rgba(60,28,49,0.8) 100%); 
+    --nx-bg-gradient-accent: linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%); }
+
 /* ----- Topbar  ----- */
 body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
     body div.topbar div.topbar-left .logo { font-size: 1.5em; font-weight: bold; color: #79a04e; }
@@ -30,7 +45,6 @@ body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding
 /* Main Content */
     body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; background-image: url('https://i.pinimg.com/originals/1a/ba/73/1aba73d7d0cf7299158082fab3d8bfa3.jpg'); background-size: cover; background-attachment: fixed; }
 
-
     /* SOLAR SYSTEM */
 #solarsystem { display: flex; flex-direction:column; justify-content: center; align-items: center; }
 .solar-system-cell { height: 100px; width: 100px; border: 1px solid #ffffff30; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.6); text-align: center; color: white; flex-direction: column; }
@@ -44,3 +58,63 @@ body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding
 /* Estilos para flotas */
 .fleet-own { color: green; }
 .fleet-enemy { color: red; }
+
+/* ICONS */
+i.resource { width: 40px; height: 40px; display: inline-block; }
+    i.resource.litle { width: 30px; height: 30px; }
+i.resource-1 { background-image: url(/images/resources/prime.svg); }
+i.resource-2 { background-image: url(/images/resources/lithium.svg); }
+i.resource-3 { background-image: url(/images/resources/hydrogen.svg); }
+i.resource-4 { background-image: url(/images/resources/food.svg); }
+i.resource-5 { background-image: url(/images/resources/energy.svg); }
+i.resource-6 { background-image: url(/images/resources/population.svg); }
+i.resource-7 { background-image: url(/images/resources/credits.svg); }
+
+/* BASE PAGE */
+main.content > div.detail { border-radius: 20px; height: 100%; }
+    main.content > div.detail div.nx-header { }
+        main.content > div.detail div.nx-header ul.nx-menu { list-style: none; display: flex; padding: 0; margin: 0; }
+            main.content > div.detail div.nx-header ul.nx-menu > li { display: flex; width: 100%; height: 180px; background-size: cover; opacity: 0.6; font-size: 26px; color: var(--nx-accent); transition-duration: 0.1s; cursor: pointer; border-radius: 20px 0 0; }
+            main.content > div.detail div.nx-header ul.nx-menu.nx-menu-landscape > li { cursor: auto; opacity: 1; }
+            main.content > div.detail div.nx-header ul.nx-menu > li.fleet { background-image: url(/images/fleets.jpg); }
+            main.content > div.detail div.nx-header ul.nx-menu > li.army { background-image: url(/images/army.jpg); }
+            main.content > div.detail div.nx-header ul.nx-menu > li.city-resources { background-image: url(/images/city-landscape.jpg); }
+            main.content > div.detail div.nx-header ul.nx-menu > li.city-administrative { background-image: url(/images/city_administrative.jpg); }
+        main.content > div.detail div.nx-header ul.nx-submenu { list-style: none; display: flex; padding: 0; margin: 0; }
+            main.content > div.detail div.nx-header ul.nx-submenu li a { display: flex; align-items: center; text-decoration: none; height: 50px; background: transparent; outline: none; cursor: pointer; border: none; color: var(--nx-accent); opacity: 0.8; font-weight: 500; padding: 0 20px; background: var(--nx-bg-light); }
+            main.content > div.detail div.nx-header ul.nx-submenu li:last-child a { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+            main.content > div.detail div.nx-header ul.nx-submenu li a:hover { opacity: 1; }
+/*     BASE PAGE - DATA SECTION */
+    main.content > div.detail div.nx-header ul.nx-menu li.info-box { position: relative; }
+        main.content > div.detail div.nx-header ul.nx-menu li.info-box div { position: absolute; top: 0; left: 0; background: var(--nx-bg); opacity: 0.8; padding: 10px; border-bottom-right-radius: 20px; border-top-left-radius: 20px; }
+            main.content > div.detail div.nx-header ul.nx-menu li.info-box div ul { list-style: none; font-size: 16px; padding: 0; display: flex; gap: 20px; }
+                main.content > div.detail div.nx-header ul.nx-menu li.info-box div ul li { display: flex; align-items: center; gap: 10px; }
+    main.content > div.detail div.nx-header li.data-panel { width: 30% !important; min-width: 300px; font-family: Orbitron; display: block; position: relative; }
+        main.content > div.detail div.nx-header li.data-panel div.detail { width: 100%; height: 100%; padding: 0 20px; border-top-right-radius: 20px; cursor: auto; background: var(--nx-bg-light) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAG0lEQVQYV2P8//+/FCMj4zMGJMCIzIGxKRQEAJgPBAbJqUVTAAAAAElFTkSuQmCC) repeat; }
+            main.content > div.detail div.nx-header li.data-panel div.detail h1 { font-size: 20px; color: var(--nx-accent); }
+            main.content > div.detail div.nx-header li.data-panel div.detail ul { list-style: none; font-size: 16px; text-align: right; color: var(--nx-text); }
+                main.content > div.detail div.nx-header li.data-panel div.detail ul strong { list-style: none; font-size: 16px; text-align: right; color: var(--nx-accent-second); }
+        main.content > div.detail div.nx-header li.data-panel div.deck { background-image: url(/images/avatar.png); border-top-right-radius: 20px; cursor: pointer; opacity: 0.8; background-size: cover; width: 100px; height: 100px; position: absolute; bottom: 0; left: 0; }
+            main.content > div.detail div.nx-header li.data-panel div.deck:hover { opacity: 1; transition-duration: 0.2s; }
+
+/* Region */
+#region { background: var(--nx-bg); }
+#region h2 { margin-left: 30px; display: block; width: 100%; }
+#region section.structure-grid { display: flex; flex-wrap: wrap; justify-content: center; gap:30px; border-radius: 20px; padding:20px }
+    #region section.structure-grid p.structure { position: relative; opacity: 0.9; padding: 10px; margin:0px; width: 200px; height: 250px; background-size: cover; border-radius: 10px; cursor: pointer; }
+    #region section.structure-grid p.structure:hover { opacity: 1; }
+    #region section.structure-grid p.structure.prime { background-image: url(/images/prime.jpg); }
+    #region section.structure-grid p.structure.lithium { background-image: url(/images/lithium.jpg); }
+    #region section.structure-grid p.structure.hydrogen { background-image: url(/images/hydrogen.jpg); }
+    #region section.structure-grid p.structure.reactor { background-image: url(/images/reactor.jpg); }
+    #region section.structure-grid p.structure.barraks { background-image: url(/images/barraks.jpg); }
+    #region section.structure-grid p.structure.farm { background-image: url(/images/farm.jpg); }
+    #region section.structure-grid p.structure.city { background-image: url(/images/city.jpg); }
+    #region section.structure-grid p.structure.spaceport { background-image: url(/images/spaceport.jpg); }
+    #region section.structure-grid p.structure.academy { background-image: url(/images/academy.jpg); }
+    #region section.structure-grid p.structure.armory { background-image: url(/images/armory.jpg); }
+    #region section.structure-grid p.structure.command { background-image: url(/images/command.jpg); }
+        #region section.structure-grid p.structure span { font-size: 25px; text-shadow: 1px 1px 4px rgba(0,0,0,1); color: var(--nx-accent); }
+        #region section.structure-grid p.structure span.buildprogress { display: none; }
+        #region section.structure-grid p.structure.working span.buildprogress { position: absolute; top: 100%; left: 0; display: block; width: 100%; height: 100%; background-color: green; opacity: 0.6; }
+        #region section.structure-grid p.structure small { position: absolute; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; border-radius: 10px 0 0 0; font-size: 25px; color: var(--nx-accent-second); background: var(--nx-bg-gradient); }
