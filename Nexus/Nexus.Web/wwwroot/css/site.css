@@ -74,9 +74,9 @@ i.resource-1 { background-image: url(/images/resources/prime.svg); }
 i.resource-2 { background-image: url(/images/resources/lithium.svg); }
 i.resource-3 { background-image: url(/images/resources/hydrogen.svg); }
 i.resource-4 { background-image: url(/images/resources/food.svg); }
-i.resource-5 { background-image: url(/images/resources/energy.svg); }
-i.resource-6 { background-image: url(/images/resources/population.svg); }
-i.resource-7 { background-image: url(/images/resources/credits.svg); }
+i.resource-5 { background-image: url(/images/resources/population.svg); }
+i.resource-6 { background-image: url(/images/resources/credits.svg); }
+i.resource-7 { background-image: url(/images/resources/energy.svg); }
 
 /* BASE PAGE */
 main.content > div.detail { border-radius: 20px; height: 100%; }
