@@ -111,12 +111,12 @@ namespace Nexus.Web.Controllers
                 RegionStructureDialog vm = new()
                 {
                     Region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == id),
-                    Structure = await _context.RegionStructures.FirstOrDefaultAsync(s => s.StructureId == structureId && s.RegionId == id)
+                    RegionStructure = await _context.RegionStructures.FirstOrDefaultAsync(s => s.StructureId == structureId && s.RegionId == id)
                 };
 
-                if (vm.Structure == null)
+                if (vm.RegionStructure == null)
                 {
-                    vm.Structure = new RegionStructure
+                    vm.RegionStructure = new RegionStructure
                     {
                         StructureId = structureId,
                         Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
