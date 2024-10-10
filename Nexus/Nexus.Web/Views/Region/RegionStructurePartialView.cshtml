@@ -1,0 +1,58 @@
+﻿@using System.Globalization;
+@model RegionStructureDialog;
+
+<div class="structure-info" data-item-id="@Model.Structure.Structure.Id">
+    <h2>@Model.Structure.Structure.Name</h2>
+    <small>@Model.Structure.Level</small>
+    <p>@Model.Structure.Structure.Description</p>
+</div>
+<div class="structure-details">
+    @if (Model.Structure.Structure.MineId.HasValue)
+    {
+        <div class="resource-gain">
+            @* <h3 class="cyber-h">Ganancia de recursos</h3>
+            <ul>
+                <li>Ganancia por minuto: <span>@((Model.Structure.Structure.Mine. * 60).ToString("N2"))</span></li>
+                <li>Ganancia por hora: <span>@((Model.Structure.ResourceGain() * 120).ToString("N2"))</span></li>
+                <li>Ganancia por día: <span>@((Model.Structure.ResourceGain() * 120 * 24).ToString("N2"))</span></li>
+                <li>Ganancia por semana: <span>@((Model.Structure.ResourceGain() * 120 * 24 * 7).ToString("N2"))</span></li>
+            </ul> *@
+        </div>
+        
+    }
+    <div class="upgrade-data">
+        <h3 class="cyber-h">Coste de mejora</h3>
+        <ul>
+            @if (Model.Structure.Structure.BaseChips > 0)
+            {
+                <li><i class="resource litle resource-1"></i><span class="notenough">@Model.Structure.Structure.BaseChips.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            }
+            @if (Model.Structure.Structure.BaseChips > 0)
+            {
+                <li><i class="resource litle resource-2"></i> <span>@Model.Structure.Structure.BaseChips.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            }
+            @if (Model.Structure.Structure.BaseHydrogen > 0)
+            {
+                <li><i class="resource litle resource-3"></i> <span>@Model.Structure.Structure.BaseHydrogen.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            }
+            @if (Model.Structure.Structure.BaseCredits > 0)
+            {
+                <li><i class="resource litle resource-7"></i> <span>@Model.Structure.Structure.BaseCredits.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            }
+            @if (Model.Structure.Structure.BaseEnergy > 0)
+            {
+                <li><i class="resource litle resource-5"></i> <span>@Model.Structure.Structure.BaseEnergy.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            }
+        </ul>
+        <p>La actualización tardará: @Model.Structure.UpgradeTimeText()</p>
+
+    </div>
+    <div class="mine-actions@(Model.Structure.UpgradedAt.HasValue? " working" : string.Empty)")>
+        <h3 class="cyber-h">Acciones</h3>
+        <div class="actions">
+            <a class="nx-btn" style="margin-left:1px; margin-top:1px;"><span>Desmantelar</span><helper-1></helper-1><ripple></ripple></a>
+            <a class="nx-btn main" style="margin-left:1px; margin-top:1px;"><span>Subir de nivel</span><helper-1></helper-1><ripple></ripple></a>
+        </div>
+        <div class="countdown"></div>
+    </div>
+</div>

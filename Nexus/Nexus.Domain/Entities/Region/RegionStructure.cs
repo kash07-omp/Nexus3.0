@@ -33,5 +33,29 @@ namespace Nexus.Domain.Entities
             // Sustituir 1.5 por Structure.CostMultiplier
             return (int)Math.Round(baseCost * Math.Pow(1.5, Level + 1));
         }
+
+        public string UpgradeTimeText()
+        {
+            TimeSpan timeSpan = TimeSpan.FromMilliseconds(UpgradeTime());
+
+            int days = timeSpan.Days;
+            int hours = timeSpan.Hours;
+            int minutes = timeSpan.Minutes;
+            int seconds = timeSpan.Seconds;
+
+            if (days > 0)
+                return string.Format("{0} días, {1} horas, {2} minutos y {3} segundos", days, hours, minutes, seconds);
+            return string.Format("{0} horas, {1} minutos y {2} segundos", hours, minutes, seconds);
+        }
+
+        internal int UpgradeTime()
+        {
+            int creditsMiliseconds = Structure.BaseCredits * 4;
+            int primeMiliseconds = Structure.BaseMinerales * 3;
+            int chipsMiliseconds = Structure.BaseChips * 2;
+
+            double totalTime = (creditsMiliseconds + primeMiliseconds + chipsMiliseconds + Structure.BaseCredits) * 1.25;
+            return (int)Math.Round(totalTime);
+        }
     }
 }

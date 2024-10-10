@@ -5,6 +5,8 @@ using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Nexus.Web.Models;
 using Nexus.Infrastructure.Services.Interfaces;
+using System.Drawing;
+using System.Linq.Expressions;
 
 namespace Nexus.Web.Controllers
 {
@@ -98,6 +100,40 @@ namespace Nexus.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("regions/{id:int}/openstructuredialog")]
+        public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)
+        {
+            try
+            {
+                RegionStructureDialog vm = new()
+                {
+                    Region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == id),
+                    Structure = await _context.RegionStructures.FirstOrDefaultAsync(s => s.StructureId == structureId && s.RegionId == id)
+                };
+
+                if (vm.Structure == null)
+                {
+                    vm.Structure = new RegionStructure
+                    {
+                        StructureId = structureId,
+                        Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
+                        Region = vm.Region,
+                        RegionId = id,
+                        Level = 0
+                    };
+                }
+                return PartialView("~/Views/Region/RegionStructurePartialView.cshtml", vm);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return NotFound();
+
         }
 
 

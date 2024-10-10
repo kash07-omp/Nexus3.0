@@ -9,53 +9,100 @@
         </div>
     }
 
-    <div id="region" class="detail" data-item-id="@Model.Region.Id">
-        <div class="nx-header">
-            <ul class="nx-menu nx-menu-landscape">
-                <li class="city-resources active info-box">
-                    <div>
-                        <ul>
-                            @foreach (RegionResource resource in Model.Region.RegionResources)
-                            {
-                                <li><i class="resource resource-@resource.ResourceId"></i> @resource.Quantity.ToString("N0", new CultureInfo("es-ES"))</li>
-                            }
-                        </ul>
-                    </div>
-                </li>
-                <li class="data-panel cyber-razor-bottom">
-                    <div class="detail">
-                        <h1 class="cyber-h">New Horizon</h1>
-                        <ul>
-                            <li><strong>Población</strong> 131.650</li>
-                            <li><strong>Felicidad</strong> 08/10</li>
-                            <li><strong>Soldados</strong> 25.000</li>
-                            <li><strong>Naves militares</strong> 56</li>
-                            <li><strong>Naves civiles</strong> 13</li>
-                        </ul>
-                        <div class="deck" title="Gobernador de la región"></div>
-                    </div>
-                </li>
-            </ul>
-            <ul class="nx-submenu">
-                <li><a href="/armies/new" class="new">Renombrar ciudad</a></li>
-                <li><a href="/armies/new" class="new">Transporte de recursos</a></li>
-                <li><a href="/armies/new" class="new">Estadísticas</a></li>
-                <li><a href="/solarsystem/detail/@Model.Region.Planet.SolarSystemId" class="new">Sistema solar</a></li>
-            </ul>
-        </div>
-        <div class="nx-detail">
-            <section class="structure-grid">
-                @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
-                {
-                    <p class="structure @regionStructure.Structure.Name prime cybercard-small @(regionStructure.UpgradedAt.HasValue? "working" : string.Empty)")> <!-- data-item-id="@* @regionStructure.Structure.Id *@" @* @(regionStructure.UpgradedAt.HasValue ? "data-item-nextlevelat=" + structure.NextLevelAtUnix + *@ " data-item-nextlevelfrom=" + structure.NextLevelFromUnix : string.Empty)> -->
-                        <span>@regionStructure.Structure.Name</span>
-                        <small>@regionStructure.Level</small>
-                        <span class="buildprogress"></span>
-                    </p>
-                }
-            </section>
-        </div>
+<div id="region" class="detail" data-item-id="@Model.Region.Id">
+    <div class="nx-header">
+        <ul class="nx-menu nx-menu-landscape">
+            <li class="city-resources active info-box">
+                <div>
+                    <ul>
+                        @foreach (RegionResource resource in Model.Region.RegionResources)
+                        {
+                            <li><i class="resource resource-@resource.ResourceId"></i> @resource.Quantity.ToString("N0", new CultureInfo("es-ES"))</li>
+                        }
+                    </ul>
+                </div>
+            </li>
+            <li class="data-panel cyber-razor-bottom">
+                <div class="detail">
+                    <h1 class="cyber-h">New Horizon</h1>
+                    <ul>
+                        <li><strong>Población</strong> 131.650</li>
+                        <li><strong>Felicidad</strong> 08/10</li>
+                        <li><strong>Soldados</strong> 25.000</li>
+                        <li><strong>Naves militares</strong> 56</li>
+                        <li><strong>Naves civiles</strong> 13</li>
+                    </ul>
+                    <div class="deck" title="Gobernador de la región"></div>
+                </div>
+            </li>
+        </ul>
+        <ul class="nx-submenu">
+            <li><a href="/armies/new" class="new">Renombrar ciudad</a></li>
+            <li><a href="/armies/new" class="new">Transporte de recursos</a></li>
+            <li><a href="/armies/new" class="new">Estadísticas</a></li>
+            <li><a href="/solarsystem/detail/@Model.Region.Planet.SolarSystemId" class="new">Sistema solar</a></li>
+        </ul>
+    </div>
+    <div class="nx-detail">
+        <section class="structure-grid">
+            @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
+            {
+                <p class="structure @regionStructure.Structure.Name prime cybercard-small @(regionStructure.UpgradedAt.HasValue? "working" : string.Empty)") data-item-id="@regionStructure.Structure.Id" @(regionStructure.UpgradedAt.HasValue ? "data-item-nextlevelat=" + 0@* structure.NextLevelAtUnix *@ + " data-item-nextlevelfrom=" + 0@* structure.NextLevelFromUnix *@ : string.Empty)> 
+                    <span>@regionStructure.Structure.Name</span>
+                    <small>@regionStructure.Level</small>
+                    <span class="buildprogress"></span>
+                </p>
+            }
+        </section>
+    </div>
+</div>
 
-        <style>
+    <style>
         main.content > div.detail div.nx-header li.data-panel div.deck { background-image: url(/images/@Model.Region.GovernorCard.ImageUrl); }
     </style>
+
+    <script>
+        $('p.structure').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var params = Number($(this).closest('p').attr('data-item-id'));
+            var regionId = $('#region').attr('data-item-id');
+
+            nxDialogs.ajaxDialog('dlgstructure', '/regions/' + regionId + '/openstructuredialog', params, onOpenStructureDialog);
+        });
+
+        function onOpenStructureDialog() {
+
+            var mineActions = $('#dlgstructure div.structure-details div.mine-actions');
+            var countdownElement = '#dlgstructure div.mine-actions div.countdown';
+
+            if (mineActions.hasClass('working'))
+                countdown(mineActions.attr('data-item-nextlevelat'), countdownElement);
+
+            $('#dlgstructure div.actions a.main').on('click', function () {
+                var structureId = Number($('div.structure-info').attr('data-item-id'));
+
+                $.ajax({
+                    type: "POST",
+                    url: '/regions/' + regionId + '/upgradestructure',
+                    data: JSON.stringify(structureId),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }).done(function (data) {
+                    if (data.success) {
+                        mineActions.addClass('working');
+                        countdown(data.endsAt, countdownElement);
+                        var structureIcon = $('p.structure[data-item-id="' + structureId + '"]');
+                        structureIcon.addClass('working').attr('data-item-nextlevelat', data.endsAt).attr('data-item-nextlevelfrom', Math.floor(Date.now() / 1000));
+                        updateProgressBar();
+                    } else {
+                        alert(data.message);
+                    }
+                }).fail(function (XMLHttpRequest, textStatus) {
+                    alert('fail');
+                }).always(function () {
+                });
+            });
+        }
+    </script>
