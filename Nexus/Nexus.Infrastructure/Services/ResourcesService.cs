@@ -107,7 +107,7 @@ namespace Nexus.Infrastructure.Services
             return totalGain;
         }
 
-        private int CalculateGain(RegionStructure regionStructure, double hoursElapsed, int level, Card? governor)
+        public int CalculateMineGainPerHour(RegionStructure regionStructure, int level, Card? governor)
         {
             var mine = regionStructure.Structure.Mine;
             var gainPerHour = mine.GainMultiplier * level * Math.Pow(1.1, level);
@@ -124,7 +124,12 @@ namespace Nexus.Infrastructure.Services
                 }
             }
 
-            return (int)(gainPerHour * hoursElapsed);
+            return (int)gainPerHour;
+        }
+
+        private int CalculateGain(RegionStructure regionStructure, double hoursElapsed, int level, Card? governor)
+        {
+            return (int)(CalculateMineGainPerHour(regionStructure, level, governor) * hoursElapsed);
         }
     }
 }

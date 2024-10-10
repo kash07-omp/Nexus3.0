@@ -50,14 +50,7 @@ public class StructureUpgradeService : IStructureUpgradeService
         if (!isNewStructure && !regionStructure.Structure.CanLevelUp)
             return false;
 
-        var requiredResources = new List<RegionResource>
-        {
-            new RegionResource { ResourceId = (int)EResource.MINERALS, Quantity = regionStructure.RequiredUpgradeMinerals },
-            new RegionResource { ResourceId = (int)EResource.MICROCHIPS, Quantity = regionStructure.RequiredUpgradeChips },
-            new RegionResource { ResourceId = (int)EResource.HYDROGEN, Quantity = regionStructure.RequiredUpgradeHydrogen },
-            //new RegionResource { ResourceId = (int)EResource.CREDITS, Quantity = regionStructure.RequiredUpgradeCredits },
-            //new RegionResource { ResourceId = (int)EResource.ENERGY, Quantity = regionStructure.RequiredUpgradeEnergy }
-        };
+        var requiredResources = regionStructure.GetUpgradeCosts();
 
         bool canSpendResources = await _resourceService.SpendResourcesAsync(regionId, requiredResources);
         if (!canSpendResources)

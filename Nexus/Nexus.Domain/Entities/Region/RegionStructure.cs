@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Nexus.Domain.Entities.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nexus.Domain.Entities
 {
@@ -11,21 +12,21 @@ namespace Nexus.Domain.Entities
 
         #region Upgrade Costs
         [NotMapped]
-        public int RequiredUpgradeMinerals => GetUpgradeCoste(Structure.BaseMinerales);
+        public int RequiredUpgradeMinerals => GetUpgradeCost(Structure.BaseMinerales);
         [NotMapped]
-        public int RequiredUpgradeChips => GetUpgradeCoste(Structure.BaseChips);
+        public int RequiredUpgradeChips => GetUpgradeCost(Structure.BaseChips);
         [NotMapped]
-        public int RequiredUpgradeHydrogen => GetUpgradeCoste(Structure.BaseHydrogen);
+        public int RequiredUpgradeHydrogen => GetUpgradeCost(Structure.BaseHydrogen);
         [NotMapped]
-        public int RequiredUpgradeCredits => GetUpgradeCoste(Structure.BaseCredits);
+        public int RequiredUpgradeCredits => GetUpgradeCost(Structure.BaseCredits);
         [NotMapped]
-        public int RequiredUpgradeEnergy => GetUpgradeCoste(Structure.BaseEnergy);
+        public int RequiredUpgradeEnergy => GetUpgradeCost(Structure.BaseEnergy);
         #endregion
 
         public virtual Structure Structure { get; set; }
         public virtual Region Region { get; set; }
 
-        public int GetUpgradeCoste(int baseCost)
+        public int GetUpgradeCost(int baseCost)
         {
             if (Level == 0)
                 return baseCost;
@@ -34,28 +35,16 @@ namespace Nexus.Domain.Entities
             return (int)Math.Round(baseCost * Math.Pow(1.5, Level + 1));
         }
 
-        public string UpgradeTimeText()
+        public List<RegionResource> GetUpgradeCosts()
         {
-            TimeSpan timeSpan = TimeSpan.FromMilliseconds(UpgradeTime());
-
-            int days = timeSpan.Days;
-            int hours = timeSpan.Hours;
-            int minutes = timeSpan.Minutes;
-            int seconds = timeSpan.Seconds;
-
-            if (days > 0)
-                return string.Format("{0} días, {1} horas, {2} minutos y {3} segundos", days, hours, minutes, seconds);
-            return string.Format("{0} horas, {1} minutos y {2} segundos", hours, minutes, seconds);
-        }
-
-        internal int UpgradeTime()
-        {
-            int creditsMiliseconds = Structure.BaseCredits * 4;
-            int primeMiliseconds = Structure.BaseMinerales * 3;
-            int chipsMiliseconds = Structure.BaseChips * 2;
-
-            double totalTime = (creditsMiliseconds + primeMiliseconds + chipsMiliseconds + Structure.BaseCredits) * 1.25;
-            return (int)Math.Round(totalTime);
+            return new List<RegionResource>
+            {
+                new RegionResource { ResourceId = (int)EResource.MINERALS, Quantity = RequiredUpgradeMinerals },
+                new RegionResource { ResourceId = (int)EResource.MICROCHIPS, Quantity = RequiredUpgradeChips },
+                new RegionResource { ResourceId = (int)EResource.HYDROGEN, Quantity = RequiredUpgradeHydrogen },
+                //new RegionResource { ResourceId = (int)EResource.CREDITS, Quantity = regionStructure.RequiredUpgradeCredits },
+                //new RegionResource { ResourceId = (int)EResource.ENERGY, Quantity = regionStructure.RequiredUpgradeEnergy }
+            };
         }
     }
 }

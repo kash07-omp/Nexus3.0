@@ -10,13 +10,13 @@
     @if (Model.RegionStructure.Structure.MineId.HasValue)
     {
         <div class="resource-gain">
-            @* <h3 class="cyber-h">Ganancia de recursos</h3>
+            <h3 class="cyber-h">Ganancia de recursos</h3>
             <ul>
-                <li>Ganancia por minuto: <span>@((Model.Structure.Structure.Mine. * 60).ToString("N2"))</span></li>
-                <li>Ganancia por hora: <span>@((Model.Structure.ResourceGain() * 120).ToString("N2"))</span></li>
-                <li>Ganancia por día: <span>@((Model.Structure.ResourceGain() * 120 * 24).ToString("N2"))</span></li>
-                <li>Ganancia por semana: <span>@((Model.Structure.ResourceGain() * 120 * 24 * 7).ToString("N2"))</span></li>
-            </ul> *@
+                <li>Ganancia por minuto: <span>@((Model.ResourceGainPerMinute).ToString("N2"))</span></li>
+                <li>Ganancia por hora: <span>@((Model.ResourceGainPerHour).ToString("N2"))</span></li>
+                <li>Ganancia por día: <span>@((Model.ResourceGainPerDay).ToString("N2"))</span></li>
+                <li>Ganancia por semana: <span>@((Model.ResourceGainPerWeek).ToString("N2"))</span></li>
+            </ul>
         </div>
         
     }
@@ -44,7 +44,7 @@
                 <li><i class="resource litle resource-5"></i> <span>@Model.RegionStructure.Structure.BaseEnergy.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
         </ul>
-        <p>La actualización tardará: @Model.RegionStructure.UpgradeTimeText()</p>
+        <p>La actualización tardará: @Model.UpgradeTimeText</p>
 
     </div>
     <div class="mine-actions@(Model.RegionStructure.UpgradedAt.HasValue? " working" : string.Empty)")>

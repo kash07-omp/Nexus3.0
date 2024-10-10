@@ -11,8 +11,6 @@ namespace Nexus.Infrastructure.Services
             { EResource.MINERALS, 1.0 },
             { EResource.MICROCHIPS, 1.2 },
             { EResource.HYDROGEN, 1.5 },
-            { EResource.FOOD, 0.5 },
-            { EResource.POPULATION, 1.0 },
             { EResource.CREDITS, 0.8 },
             { EResource.ENERGY, 1.0 }
         };

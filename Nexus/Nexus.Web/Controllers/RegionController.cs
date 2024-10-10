@@ -7,6 +7,7 @@ using Nexus.Web.Models;
 using Nexus.Infrastructure.Services.Interfaces;
 using System.Drawing;
 using System.Linq.Expressions;
+using Nexus.Infrastructure.Services;
 
 namespace Nexus.Web.Controllers
 {
@@ -17,19 +18,22 @@ namespace Nexus.Web.Controllers
         private readonly IResourceService _resourcesService;
         private readonly IStructureUpgradeService _structureUpgradeService;
         private readonly ICardService _cardService;
+        private readonly IResourceCostCalculator _resourceCostCalculatorService;
 
         public RegionController(
             ApplicationDbContext context, 
             UserManager<User> userManager, 
             IResourceService resourcesService, 
             IStructureUpgradeService structureUpgradeService,
-            ICardService cardService)
+            ICardService cardService,
+            IResourceCostCalculator resourceCostCalculatorService)
         {
             _context = context;
             _userManager = userManager;
             _resourcesService = resourcesService;
             _structureUpgradeService = structureUpgradeService;
             _cardService = cardService;
+            _resourceCostCalculatorService = resourceCostCalculatorService;
         }
         public async Task<IActionResult> Index()
         {
@@ -106,34 +110,63 @@ namespace Nexus.Web.Controllers
         [Route("regions/{id:int}/openstructuredialog")]
         public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)
         {
-            try
+            var region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == id);
+
+            if (region == null)
+                return NotFound();
+
+            var regionStructure = await _context.RegionStructures
+                .Include(rs => rs.Structure)
+                    .ThenInclude(s => s.Mine)
+                .FirstOrDefaultAsync(rs => rs.StructureId == structureId && rs.RegionId == id);
+            if (regionStructure == null)
             {
-                RegionStructureDialog vm = new()
+                regionStructure = new RegionStructure
                 {
-                    Region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == id),
-                    RegionStructure = await _context.RegionStructures.FirstOrDefaultAsync(s => s.StructureId == structureId && s.RegionId == id)
+                    StructureId = structureId,
+                    Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
+                    Region = region,
+                    RegionId = id,
+                    Level = 0
                 };
-
-                if (vm.RegionStructure == null)
-                {
-                    vm.RegionStructure = new RegionStructure
-                    {
-                        StructureId = structureId,
-                        Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
-                        Region = vm.Region,
-                        RegionId = id,
-                        Level = 0
-                    };
-                }
-                return PartialView("~/Views/Region/RegionStructurePartialView.cshtml", vm);
             }
-            catch (Exception ex)
+
+            int gainPerHour = 0;
+            if (regionStructure.Structure.Mine != null)
+                gainPerHour = _resourcesService.CalculateMineGainPerHour(regionStructure, regionStructure.Level, region.GovernorCard);
+            int gainPerMinute = gainPerHour / 60;
+            int gainPerSecond = gainPerMinute * 60;
+            int gainPerDay = gainPerHour * 24;
+            int gainPerWeek = gainPerDay * 7;
+
+            int totalCost = _resourceCostCalculatorService.GetTotalCost(regionStructure.GetUpgradeCosts());
+            int upgradeSeconds = await _structureUpgradeService.GetUpgradeSeconds(regionStructure, totalCost);
+            TimeSpan upgradeTime = TimeSpan.FromSeconds(upgradeSeconds);
+
+            string upgradeTimeText;
+            if (upgradeTime.TotalDays >= 1)
             {
-
+                int days = (int)upgradeTime.TotalDays;
+                upgradeTimeText = $"{days} días, {upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
+            }
+            else
+            {
+                upgradeTimeText = $"{upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
             }
 
-            return NotFound();
-
+            RegionStructureDialog vm = new()
+            {
+                Region = region,
+                RegionStructure = regionStructure,
+                ResourceGainPerSecond = gainPerSecond,
+                ResourceGainPerMinute = gainPerMinute,
+                ResourceGainPerHour = gainPerHour,
+                ResourceGainPerDay = gainPerDay,
+                ResourceGainPerWeek = gainPerWeek,
+                UpgradeTimeText = upgradeTimeText,
+            };
+               
+            return PartialView("~/Views/Region/_RegionStructurePartialView.cshtml", vm);
         }
 
 
