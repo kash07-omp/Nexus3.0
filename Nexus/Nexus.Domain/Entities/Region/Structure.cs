@@ -1,4 +1,6 @@
-﻿namespace Nexus.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Nexus.Domain.Entities
 {
     public class Structure
     {
@@ -15,6 +17,9 @@
         public int BaseCredits { get; set; }
         // TODO: Terminar de definir esto. La idea es que cada structure suba de nivel con la formula Coste = CosteBase * CostMultiplier^Level
         //public int CostMultiplier { get; set; }
+
+        [NotMapped]
+        public string SimplifiedName => Name.ToLower().Replace(' ', '-');
 
         public virtual Mine Mine { get; set; }
     }

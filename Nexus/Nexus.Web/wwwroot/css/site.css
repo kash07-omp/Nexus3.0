@@ -102,10 +102,10 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
                 main.content > div.detail div.nx-header ul.nx-menu li.info-box div ul li { display: flex; align-items: center; gap: 10px; }
     main.content > div.detail div.nx-header li.data-panel { width: 30% !important; min-width: 300px; font-family: Orbitron; display: block; position: relative; }
         main.content > div.detail div.nx-header li.data-panel div.detail { width: 100%; height: 100%; padding: 0 20px; border-top-right-radius: 20px; cursor: auto; background: var(--nx-bg-light) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAG0lEQVQYV2P8//+/FCMj4zMGJMCIzIGxKRQEAJgPBAbJqUVTAAAAAElFTkSuQmCC) repeat; }
-            main.content > div.detail div.nx-header li.data-panel div.detail h1 { font-size: 20px; color: var(--nx-accent); }
+            main.content > div.detail div.nx-header li.data-panel div.detail h1 { font-size: 20px; color: var(--nx-accent); text-align:right; }
             main.content > div.detail div.nx-header li.data-panel div.detail ul { list-style: none; font-size: 16px; text-align: right; color: var(--nx-text); }
                 main.content > div.detail div.nx-header li.data-panel div.detail ul strong { list-style: none; font-size: 16px; text-align: right; color: var(--nx-accent-second); }
-        main.content > div.detail div.nx-header li.data-panel div.deck { background-image: url(/images/avatar.png); border-top-right-radius: 20px; cursor: pointer; opacity: 0.8; background-size: cover; width: 100px; height: 100px; position: absolute; bottom: 0; left: 0; }
+        main.content > div.detail div.nx-header li.data-panel div.deck { border-top-right-radius: 20px; cursor: pointer; opacity: 0.8; background-size: cover; width: 125px; height: 100%; position: absolute; bottom: 0; left: 0; }
             main.content > div.detail div.nx-header li.data-panel div.deck:hover { opacity: 1; transition-duration: 0.2s; }
 
 /* Region */
@@ -114,17 +114,18 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
 #region section.structure-grid { display: flex; flex-wrap: wrap; justify-content: center; gap:30px; border-radius: 20px; padding:20px }
     #region section.structure-grid p.structure { position: relative; opacity: 0.9; padding: 10px; margin:0px; width: 200px; height: 250px; background-size: cover; border-radius: 10px; cursor: pointer; }
     #region section.structure-grid p.structure:hover { opacity: 1; }
-    #region section.structure-grid p.structure.prime { background-image: url(/images/prime.jpg); }
-    #region section.structure-grid p.structure.lithium { background-image: url(/images/lithium.jpg); }
-    #region section.structure-grid p.structure.hydrogen { background-image: url(/images/hydrogen.jpg); }
-    #region section.structure-grid p.structure.reactor { background-image: url(/images/reactor.jpg); }
-    #region section.structure-grid p.structure.barraks { background-image: url(/images/barraks.jpg); }
-    #region section.structure-grid p.structure.farm { background-image: url(/images/farm.jpg); }
-    #region section.structure-grid p.structure.city { background-image: url(/images/city.jpg); }
+    #region section.structure-grid p.structure.raw-material-mine { background-image: url(/images/prime.jpg); }
+    #region section.structure-grid p.structure.microchip-factory { background-image: url(/images/lithium.jpg); }
+        #region section.structure-grid p.structure.hydrogen-mine { background-image: url(/images/hydrogen.jpg); }
+    #region section.structure-grid p.structure.energy-generator { background-image: url(/images/reactor.jpg); }
+    #region section.structure-grid p.structure.nuclear-reactor { background-image: url(/images/reactor.jpg); }
+    #region section.structure-grid p.structure.barracks { background-image: url(/images/barraks.jpg); }
+    #region section.structure-grid p.structure.farmland { background-image: url(/images/farm.jpg); }
+    #region section.structure-grid p.structure.residential-area { background-image: url(/images/city.jpg); }
     #region section.structure-grid p.structure.spaceport { background-image: url(/images/spaceport.jpg); }
-    #region section.structure-grid p.structure.academy { background-image: url(/images/academy.jpg); }
+    #region section.structure-grid p.structure.research-center { background-image: url(/images/academy.jpg); }
     #region section.structure-grid p.structure.armory { background-image: url(/images/armory.jpg); }
-    #region section.structure-grid p.structure.command { background-image: url(/images/command.jpg); }
+    #region section.structure-grid p.structure.city-hall { background-image: url(/images/command.jpg); }
         #region section.structure-grid p.structure span { font-size: 25px; text-shadow: 1px 1px 4px rgba(0,0,0,1); color: var(--nx-accent); }
         #region section.structure-grid p.structure span.buildprogress { display: none; }
         #region section.structure-grid p.structure.working span.buildprogress { position: absolute; top: 100%; left: 0; display: block; width: 100%; height: 100%; background-color: green; opacity: 0.6; }

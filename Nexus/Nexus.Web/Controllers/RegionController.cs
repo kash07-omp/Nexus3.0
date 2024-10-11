@@ -66,6 +66,10 @@ namespace Nexus.Web.Controllers
             var allResources = await _context.Resources.ToListAsync();
             foreach (var resource in allResources)
             {
+                // Skip energy for the general resource list. TODO: Use enum
+                if (resource.Id == 7)
+                    continue;
+
                 if (!region.RegionResources.Any(rr => rr.ResourceId == resource.Id))
                 {
                     region.RegionResources.Add(new RegionResource
