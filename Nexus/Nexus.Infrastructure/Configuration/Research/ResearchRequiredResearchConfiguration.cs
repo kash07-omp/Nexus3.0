@@ -9,15 +9,18 @@ namespace Nexus.Infrastructure.Configuration
         public void Configure(EntityTypeBuilder<ResearchRequiredResearch> builder)
         {
             builder.HasKey(rrr => new { rrr.ResearchId, rrr.RequiredResearchId });
+
             builder.HasOne(rrr => rrr.Research)
-                .WithMany()
+                .WithMany(r => r.ResearchRequiredResearchs)
                 .HasForeignKey(rrr => rrr.ResearchId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired();
 
             builder.HasOne(rrr => rrr.RequiredResearch)
-                .WithMany()
+                .WithMany() 
                 .HasForeignKey(rrr => rrr.RequiredResearchId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
         }
     }
 }
