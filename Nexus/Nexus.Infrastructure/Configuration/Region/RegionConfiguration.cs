@@ -15,6 +15,16 @@ namespace Nexus.Infrastructure.Configuration
             builder.Property(r => r.IsColonized)
                    .IsRequired();
 
+            // Configuración de la propiedad TotalEnergy
+            builder.Property(r => r.TotalEnergy)
+                   .HasDefaultValue(0)
+                   .IsRequired();
+
+            // Configuración de la propiedad AvailableEnergy
+            builder.Property(r => r.AvailableEnergy)
+                   .HasDefaultValue(0)
+                   .IsRequired();
+
             // Configuración de la relación opcional con Planet
             builder.HasOne(r => r.Planet)
                    .WithMany(p => p.Regions)

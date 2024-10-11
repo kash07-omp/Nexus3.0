@@ -16,6 +16,8 @@ namespace Nexus.Infrastructure.Services
 
         public async Task UpdateRegionResourcesAsync(int regionId)
         {
+            const int EnergyResourceId = 7;
+
             var region = await _context.Regions
                 .Include(r => r.GovernorCard)
                     .ThenInclude(c => c.Bonuses)
@@ -26,39 +28,73 @@ namespace Nexus.Infrastructure.Services
                 .FirstOrDefaultAsync(r => r.Id == regionId);
 
             if (region == null)
-                throw new Exception("Region not found");
+                throw new KeyNotFoundException($"Region with ID {regionId} not found.");
 
             var now = DateTime.UtcNow;
             var hoursElapsed = (now - region.UpdatedAt).TotalHours;
 
+            int totalEnergyProduction = 0;
+            int totalEnergyConsumption = 0;
+
+            // Primera pasada: calcular producción y consumo de energía
             foreach (var regionStructure in region.RegionStructures)
             {
-                if (regionStructure.Structure.Mine != null)
+                var mine = regionStructure.Structure.Mine;
+                if (mine == null)
+                    continue;
+
+                if (mine.ResourceId == EnergyResourceId)
                 {
-                    var resourceGain = CalculateResourceGain(regionStructure, region.UpdatedAt, now, region.GovernorCard);
+                    // Mina de energía
+                    totalEnergyProduction += regionStructure.Level * mine.GainMultiplier;
+                }
+                else
+                {
+                    // Mina normal
+                    totalEnergyConsumption += regionStructure.Level * regionStructure.Structure.BaseEnergy;
+                }
+            }
 
-                    var regionResource = region.RegionResources
-                        .FirstOrDefault(rr => rr.ResourceId == regionStructure.Structure.Mine.ResourceId);
+            int availableEnergy = totalEnergyProduction - totalEnergyConsumption;
+            region.AvailableEnergy = availableEnergy;
+            region.TotalEnergy = totalEnergyProduction;
 
-                    if (regionResource != null)
+            // Crear un diccionario para acceso rápido a los recursos de la región
+            var regionResourceDict = region.RegionResources.ToDictionary(rr => rr.ResourceId);
+
+            // Segunda pasada: calcular ganancias de recursos
+            foreach (var regionStructure in region.RegionStructures)
+            {
+                var mine = regionStructure.Structure.Mine;
+                if (mine == null || mine.ResourceId == EnergyResourceId)
+                    continue;
+
+                var resourceGain = CalculateResourceGain(regionStructure, region.UpdatedAt, now, region.GovernorCard, availableEnergy);
+
+                if (resourceGain <= 0)
+                    continue;
+
+                if (regionResourceDict.TryGetValue(mine.ResourceId, out var regionResource))
+                {
+                    regionResource.Quantity += resourceGain;
+                }
+                else
+                {
+                    var newResource = new RegionResource
                     {
-                        regionResource.Quantity += resourceGain;
-                    }
-                    else
-                    {
-                        _context.RegionResources.Add(new RegionResource
-                        {
-                            RegionId = region.Id,
-                            ResourceId = regionStructure.Structure.Mine.ResourceId,
-                            Quantity = resourceGain
-                        });
-                    }
+                        RegionId = region.Id,
+                        ResourceId = mine.ResourceId,
+                        Quantity = resourceGain
+                    };
+                    region.RegionResources.Add(newResource);
+                    regionResourceDict[mine.ResourceId] = newResource;
                 }
             }
 
             region.UpdatedAt = now;
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<bool> SpendResourcesAsync(int regionId, List<RegionResource> requiredResources)
         {
@@ -85,7 +121,7 @@ namespace Nexus.Infrastructure.Services
             return true;
         }
 
-        private int CalculateResourceGain(RegionStructure regionStructure, DateTime fromTime, DateTime toTime, Card? governor)
+        private int CalculateResourceGain(RegionStructure regionStructure, DateTime fromTime, DateTime toTime, Card? governor, int availableEnergy)
         {
             var totalGain = 0;
             var upgradedAt = regionStructure.UpgradedAt;
@@ -102,6 +138,22 @@ namespace Nexus.Infrastructure.Services
             {
                 var hoursElapsed = (toTime - fromTime).TotalHours;
                 totalGain += CalculateGain(regionStructure, hoursElapsed, regionStructure.Level, governor);
+            }
+            
+            switch (availableEnergy) 
+            {
+                case < 5:
+                    totalGain -= totalGain - (int)(totalGain * 0.2);
+                    break;
+                case < 10:
+                    totalGain -= totalGain - (int)(totalGain * 0.5);
+                    break;
+                case < 15:
+                    totalGain -= totalGain - (int)(totalGain * 0.8);
+                    break;
+                case < 20:
+                    totalGain = 0;
+                    break;
             }
 
             return totalGain;

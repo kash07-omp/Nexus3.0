@@ -9,6 +9,9 @@
         public int? GovernorCardId { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public int TotalEnergy { get; set; }
+        public int AvailableEnergy { get; set; }
+
         public virtual Planet Planet { get; set; }
         public virtual User? User { get; set; }
         public virtual Card? GovernorCard { get; set; }
