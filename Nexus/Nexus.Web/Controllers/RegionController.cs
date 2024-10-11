@@ -110,8 +110,10 @@ namespace Nexus.Web.Controllers
         [Route("regions/{id:int}/openstructuredialog")]
         public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)
         {
-            var region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == id);
+            if (id <= 0 || structureId <= 0)
+                return BadRequest("El ID de la región y el ID de la estructura deben ser mayores que cero.");
 
+            var region = await _context.Regions.FindAsync(id);
             if (region == null)
                 return NotFound();
 
@@ -119,12 +121,17 @@ namespace Nexus.Web.Controllers
                 .Include(rs => rs.Structure)
                     .ThenInclude(s => s.Mine)
                 .FirstOrDefaultAsync(rs => rs.StructureId == structureId && rs.RegionId == id);
+
             if (regionStructure == null)
             {
+                var structure = await _context.Structures.Include(s => s.Mine).FirstOrDefaultAsync(s => s.Id == structureId);
+                if (structure == null)
+                    return NotFound();
+
                 regionStructure = new RegionStructure
                 {
                     StructureId = structureId,
-                    Structure = await _context.Structures.Include(s => s.Mine).FirstOrDefaultAsync(s => s.Id == structureId),
+                    Structure = structure,
                     Region = region,
                     RegionId = id,
                     Level = 0
@@ -133,9 +140,11 @@ namespace Nexus.Web.Controllers
 
             int gainPerHour = 0;
             if (regionStructure.Structure.Mine != null)
+            {
                 gainPerHour = _resourcesService.CalculateMineGainPerHour(regionStructure, regionStructure.Level, region.GovernorCard);
+            }
             int gainPerMinute = gainPerHour / 60;
-            int gainPerSecond = gainPerMinute * 60;
+            int gainPerSecond = gainPerHour / 3600;
             int gainPerDay = gainPerHour * 24;
             int gainPerWeek = gainPerDay * 7;
 
@@ -143,18 +152,9 @@ namespace Nexus.Web.Controllers
             int upgradeSeconds = await _structureUpgradeService.GetUpgradeSeconds(regionStructure, totalCost);
             TimeSpan upgradeTime = TimeSpan.FromSeconds(upgradeSeconds);
 
-            string upgradeTimeText;
-            if (upgradeTime.TotalDays >= 1)
-            {
-                int days = (int)upgradeTime.TotalDays;
-                upgradeTimeText = $"{days} días, {upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
-            }
-            else
-            {
-                upgradeTimeText = $"{upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
-            }
+            string upgradeTimeText = FormatUpgradeTime(upgradeTime);
 
-            RegionStructureDialog vm = new()
+            var vm = new RegionStructureDialog
             {
                 Region = region,
                 RegionStructure = regionStructure,
@@ -165,10 +165,9 @@ namespace Nexus.Web.Controllers
                 ResourceGainPerWeek = gainPerWeek,
                 UpgradeTimeText = upgradeTimeText,
             };
-               
+
             return PartialView("~/Views/Region/_RegionStructurePartialView.cshtml", vm);
         }
-
 
         public async Task<IActionResult> BuildOrUpgradeStructure(int regionId, int structureId)
         {
@@ -192,5 +191,17 @@ namespace Nexus.Web.Controllers
             return Json(new { success = false, message = result.ErrorMessage });
         }
 
+        private string FormatUpgradeTime(TimeSpan upgradeTime)
+        {
+            if (upgradeTime.TotalDays >= 1)
+            {
+                int days = (int)upgradeTime.TotalDays;
+                return $"{days} días, {upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
+            }
+            else
+            {
+                return $"{upgradeTime.Hours} horas, {upgradeTime.Minutes} minutos y {upgradeTime.Seconds} segundos";
+            }
+        }
     }
 }
