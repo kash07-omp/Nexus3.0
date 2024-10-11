@@ -19,6 +19,7 @@
                         {
                             <li><i class="resource resource-@resource.ResourceId"></i> @resource.Quantity.ToString("N0", new CultureInfo("es-ES"))</li>
                         }
+                        <li><i class="resource resource-7"></i> <span class="@(Model.Region.AvailableEnergy < 0 ? "wrong" : string.Empty)">@Model.Region.AvailableEnergy.ToString("N0", new CultureInfo("es-ES"))/@Model.Region.TotalEnergy.ToString("N0", new CultureInfo("es-ES"))</span></li>
                     </ul>
                 </div>
             </li>

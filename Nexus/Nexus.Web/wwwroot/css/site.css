@@ -2,6 +2,7 @@
 html, body { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #0f1a20; color: #d2d5db; }
 body div.layout { display: flex; height: 100vh; }
 
+
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
@@ -16,6 +17,8 @@ body div.layout { display: flex; height: 100vh; }
     --nx-bg-light-t: rgba(23,32,55,0.8); 
     --nx-bg-gradient: linear-gradient(0deg, rgba(08,17,30,1) 0%, rgba(60,28,49,0.8) 100%); 
     --nx-bg-gradient-accent: linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%); }
+
+span.wrong { color: var(--nx-accent-wrong) }
 
 /* ----- Topbar  ----- */
 body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
