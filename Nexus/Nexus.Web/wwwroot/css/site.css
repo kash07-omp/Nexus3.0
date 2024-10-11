@@ -11,7 +11,7 @@ body div.layout { display: flex; height: 100vh; }
     --nx-accent: yellowgreen; 
     --nx-accent-second: #D70466; 
     --nx-accent-wrong: #D70040; 
-    --nx-bg: rgba(08,17,30,1); 
+    --nx-bg: #001122DD;/*rgba(08,17,30,1);*/ 
     --nx-bg-t: rgba(08,17,30,0.8); 
     --nx-bg-light: rgba(23,32,55,1); 
     --nx-bg-light-t: rgba(23,32,55,0.8); 
