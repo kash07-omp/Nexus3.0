@@ -124,7 +124,7 @@ namespace Nexus.Web.Controllers
                 regionStructure = new RegionStructure
                 {
                     StructureId = structureId,
-                    Structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId),
+                    Structure = await _context.Structures.Include(s => s.Mine).FirstOrDefaultAsync(s => s.Id == structureId),
                     Region = region,
                     RegionId = id,
                     Level = 0
