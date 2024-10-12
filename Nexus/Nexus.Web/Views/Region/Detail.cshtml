@@ -48,8 +48,12 @@
         <section class="structure-grid">
             @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
             {
-                <p class="structure @regionStructure.Structure.SimplifiedName cybercard-small @(regionStructure.UpgradedAt.HasValue? "working" : string.Empty)" ) data-item-id="@regionStructure.Structure.Id" @(regionStructure.UpgradedAt.HasValue ? "data-item-nextlevelat=" + 0@* structure.NextLevelAtUnix *@ + " data-item-nextlevelfrom=" + 0@* structure.NextLevelFromUnix *@ : string.Empty)>
+                <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id">
                     <span>@regionStructure.Structure.Name</span>
+                    @if (regionStructure.UpgradedAt.HasValue)
+                    {
+                        <span>Upgrading</span>
+                    }
                     <small>@regionStructure.Level</small>
                     <span class="buildprogress"></span>
                 </p>

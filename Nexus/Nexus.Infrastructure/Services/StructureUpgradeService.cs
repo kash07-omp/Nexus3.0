@@ -22,20 +22,30 @@ public class StructureUpgradeService : IStructureUpgradeService
 
     public async Task<bool> BuildOrUpgradeStructureAsync(int regionId, int structureId)
     {
-        var regionStructure = await _context.RegionStructures
+        var regionStructures = await _context.RegionStructures
             .Include(rs => rs.Structure)
             .Include(rs => rs.Region)
-            .FirstOrDefaultAsync(rs => rs.RegionId == regionId && rs.StructureId == structureId);
+            .Where(rs => rs.RegionId == regionId)
+            .ToListAsync();
 
+        if (regionStructures.Any(rs => rs.UpgradedAt.HasValue))
+            return false; // TODO: Handle error: Solo se puede construir un edificio a la vez
+
+        var regionStructure = regionStructures.FirstOrDefault(rs => rs.RegionId == regionId && rs.StructureId == structureId);
         bool isNewStructure = regionStructure == null;
 
         if (isNewStructure)
         {
             var structure = await _context.Structures.FirstOrDefaultAsync(s => s.Id == structureId);
-            var region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == regionId);
+
+            Region region;
+            if (regionStructures != null && regionStructures.Count > 0)
+                region = regionStructures[0].Region;
+            else
+                region = await _context.Regions.FirstOrDefaultAsync(r => r.Id == regionId);
 
             if (structure == null || region == null)
-                return false; // TODO: Handle error
+                return false; // TODO: Handle error: No existe este edificio ni región (lanzar excepción)
 
             regionStructure = new RegionStructure
             {
@@ -54,7 +64,7 @@ public class StructureUpgradeService : IStructureUpgradeService
 
         bool canSpendResources = await _resourceService.SpendResourcesAsync(regionId, requiredResources);
         if (!canSpendResources)
-            return false;
+            return false; // TODO: Handle error: No hay suficientes recursos
 
         int totalCost = _resourceCostCalculator.GetTotalCost(requiredResources);
         int upgradeSeconds = await GetUpgradeSeconds(regionStructure, totalCost);

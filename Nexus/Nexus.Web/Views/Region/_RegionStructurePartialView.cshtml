@@ -47,11 +47,14 @@
         <p>La actualización tardará: @Model.UpgradeTimeText</p>
 
     </div>
-    <div class="mine-actions@(Model.RegionStructure.UpgradedAt.HasValue? " working" : string.Empty)")>
+    <div class="mine-actions">
         <h3 class="cyber-h">Acciones</h3>
         <div class="actions">
-            <a class="nx-btn" style="margin-left:1px; margin-top:1px;"><span>Desmantelar</span><helper-1></helper-1><ripple></ripple></a>
-            <a class="nx-btn main" style="margin-left:1px; margin-top:1px;"><span>Subir de nivel</span><helper-1></helper-1><ripple></ripple></a>
+            <form asp-action="BuildOrUpgradeStructure" method="post">
+                <input type="hidden" name="regionId" value="@Model.Region.Id" />
+                <input type="hidden" name="structureId" value="@Model.RegionStructure.StructureId" />
+                <button type="submit" class="btn btn-secondary btn-sm">Upgrade</button>
+            </form>
         </div>
         <div class="countdown"></div>
     </div>
