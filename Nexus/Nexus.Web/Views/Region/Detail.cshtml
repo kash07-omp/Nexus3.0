@@ -48,7 +48,7 @@
         <section class="structure-grid">
             @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
             {
-                <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id">
+                <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id" data-item-upgradedat="@regionStructure.UpgradedAt">
                     <span>@regionStructure.Structure.Name</span>
                     @if (regionStructure.UpgradedAt.HasValue)
                     {
@@ -67,6 +67,65 @@
     </style>
 
     <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const structureElements = document.querySelectorAll("section.structure-grid p.structure[data-item-upgradedat]");
+
+        structureElements.forEach(structure => {
+            const upgradedAtValue = structure.getAttribute("data-item-upgradedat");
+            if (upgradedAtValue) {
+                // Convert the date string to a format JavaScript understands (YYYY-MM-DDTHH:mm:ssZ)
+                const [date, time] = upgradedAtValue.split(' ');
+                const [day, month, year] = date.split('/');
+                const isoFormattedDate = `${year}-${month}-${day}T${time}Z`;
+
+                // Parse the upgradedAtValue as a Date object
+                const upgradeEndDate = new Date(isoFormattedDate);
+
+                // Create the countdown element
+                const countdownDiv = document.createElement("div");
+                countdownDiv.className = "upgrade-countdown";
+                countdownDiv.style.position = "absolute";
+                countdownDiv.style.top = "0";
+                countdownDiv.style.left = "0";
+                countdownDiv.style.width = "100%";
+                countdownDiv.style.height = "100%";
+                countdownDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                countdownDiv.style.color = "#fff";
+                countdownDiv.style.display = "flex";
+                countdownDiv.style.alignItems = "center";
+                countdownDiv.style.justifyContent = "center";
+                countdownDiv.style.fontSize = "1.2em";
+                countdownDiv.style.zIndex = "10";
+
+                structure.style.position = "relative";  // Ensure parent has position for absolute child positioning
+
+                // Append countdownDiv to the structure element
+                structure.appendChild(countdownDiv);
+
+                // Function to update countdown
+                function updateCountdown() {
+                    const now = new Date();
+                    const timeRemaining = upgradeEndDate - now;
+
+                    if (timeRemaining <= 0) {
+                        countdownDiv.innerText = "Upgrade complete!";
+                        // Optionally, you could remove the countdownDiv after completion
+                        setTimeout(() => countdownDiv.remove(), 2000);
+                    } else {
+                        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                        countdownDiv.innerText = `Upgrading: ${hours}h ${minutes}m ${seconds}s`;
+                    }
+                }
+
+                // Initial countdown update and set interval to update every second
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            }
+        });
+    });
+
         $('p.structure').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
