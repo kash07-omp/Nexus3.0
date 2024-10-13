@@ -173,6 +173,7 @@ namespace Nexus.Web.Controllers
             return PartialView("~/Views/Region/_RegionStructurePartialView.cshtml", vm);
         }
 
+        [HttpPost]
         public async Task<IActionResult> BuildOrUpgradeStructure(int regionId, int structureId)
         {
             var success = await _structureUpgradeService.BuildOrUpgradeStructureAsync(regionId, structureId);

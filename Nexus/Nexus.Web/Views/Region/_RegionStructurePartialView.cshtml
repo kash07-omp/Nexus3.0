@@ -25,23 +25,23 @@
         <ul>
             @if (Model.RegionStructure.Structure.BaseChips > 0)
             {
-                <li><i class="resource litle resource-1"></i><span class="notenough">@Model.RegionStructure.Structure.BaseChips.ToString("N0", new CultureInfo("es-ES"))</span></li>
+                <li><i class="resource litle resource-1"></i><span>@Model.RegionStructure.RequiredUpgradeMinerals.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
             @if (Model.RegionStructure.Structure.BaseChips > 0)
             {
-                <li><i class="resource litle resource-2"></i> <span>@Model.RegionStructure.Structure.BaseChips.ToString("N0", new CultureInfo("es-ES"))</span></li>
+                <li><i class="resource litle resource-2"></i> <span>@Model.RegionStructure.RequiredUpgradeChips.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
             @if (Model.RegionStructure.Structure.BaseHydrogen > 0)
             {
-                <li><i class="resource litle resource-3"></i> <span>@Model.RegionStructure.Structure.BaseHydrogen.ToString("N0", new CultureInfo("es-ES"))</span></li>
+                <li><i class="resource litle resource-3"></i> <span>@Model.RegionStructure.RequiredUpgradeHydrogen.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
             @if (Model.RegionStructure.Structure.BaseCredits > 0)
             {
-                <li><i class="resource litle resource-7"></i> <span>@Model.RegionStructure.Structure.BaseCredits.ToString("N0", new CultureInfo("es-ES"))</span></li>
+                <li><i class="resource litle resource-7"></i> <span>@Model.RegionStructure.RequiredUpgradeCredits.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
             @if (Model.RegionStructure.Structure.BaseEnergy > 0)
             {
-                <li><i class="resource litle resource-5"></i> <span>@Model.RegionStructure.Structure.BaseEnergy.ToString("N0", new CultureInfo("es-ES"))</span></li>
+                <li><i class="resource litle resource-5"></i> <span>@Model.RegionStructure.RequiredUpgradeEnergy.ToString("N0", new CultureInfo("es-ES"))</span></li>
             }
         </ul>
         <p>La actualización tardará: @Model.UpgradeTimeText</p>
@@ -53,7 +53,7 @@
             <form asp-action="BuildOrUpgradeStructure" method="post">
                 <input type="hidden" name="regionId" value="@Model.Region.Id" />
                 <input type="hidden" name="structureId" value="@Model.RegionStructure.StructureId" />
-                <button type="submit" class="btn btn-secondary btn-sm">Upgrade</button>
+                <button type="submit">Upgrade</button>
             </form>
         </div>
         <div class="countdown"></div>
