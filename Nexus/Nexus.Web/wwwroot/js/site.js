@@ -143,3 +143,25 @@ function nxDialogsClass() {
 	};
 }
 var nxDialogs = new nxDialogsClass();
+
+/* -------------- NX UTILS --------------- */
+
+// Convert the date string from DateTime to a format JavaScript understands (YYYY-MM-DDTHH:mm:ssZ)
+function convertToJsDate(sourceUtcDate) {
+	console.log('sourceUtcDate: ' + sourceUtcDate);
+
+	// Dividir componentes de fecha y hora
+	const [date, time] = sourceUtcDate.split(' ');
+	const [day, month, year] = date.split('/');
+	const [hours, minutes, seconds] = time.split(':');
+
+	// Crear una marca de tiempo en UTC
+	const utcTimestamp = Date.UTC(year, month - 1, day, hours, minutes, seconds);
+
+	// Crear un objeto Date usando la marca de tiempo UTC
+	const utcDate = new Date(utcTimestamp);
+
+	return utcDate;
+}
+
+

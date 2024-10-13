@@ -73,33 +73,12 @@
         structureElements.forEach(structure => {
             const upgradedAtValue = structure.getAttribute("data-item-upgradedat");
             if (upgradedAtValue) {
-                // Convert the date string to a format JavaScript understands (YYYY-MM-DDTHH:mm:ssZ)
-                const [date, time] = upgradedAtValue.split(' ');
-                const [day, month, year] = date.split('/');
-                const isoFormattedDate = `${year}-${month}-${day}T${time}Z`;
-
                 // Parse the upgradedAtValue as a Date object
-                const upgradeEndDate = new Date(isoFormattedDate);
+                const upgradeEndDate = convertToJsDate(upgradedAtValue);
 
                 // Create the countdown element
                 const countdownDiv = document.createElement("div");
-                countdownDiv.className = "upgrade-countdown";
-                countdownDiv.style.position = "absolute";
-                countdownDiv.style.top = "0";
-                countdownDiv.style.left = "0";
-                countdownDiv.style.width = "100%";
-                countdownDiv.style.height = "100%";
-                countdownDiv.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-                countdownDiv.style.color = "#fff";
-                countdownDiv.style.display = "flex";
-                countdownDiv.style.alignItems = "center";
-                countdownDiv.style.justifyContent = "center";
-                countdownDiv.style.fontSize = "1.2em";
-                countdownDiv.style.zIndex = "10";
-
-                structure.style.position = "relative";  // Ensure parent has position for absolute child positioning
-
-                // Append countdownDiv to the structure element
+                countdownDiv.className = "upgrade-structure-countdown";
                 structure.appendChild(countdownDiv);
 
                 // Function to update countdown
