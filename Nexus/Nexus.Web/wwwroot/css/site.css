@@ -131,7 +131,7 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
         #region section.structure-grid p.structure.working span.buildprogress { position: absolute; top: 100%; left: 0; display: block; width: 100%; height: 100%; background-color: green; opacity: 0.6; }
         #region section.structure-grid p.structure small { position: absolute; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; border-radius: 10px 0 0 0; font-size: 25px; color: var(--nx-accent-second); background: var(--nx-bg-gradient); }
 
-        #region div.upgrade-structure-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
+        div.upgrade-structure-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
 
 
 

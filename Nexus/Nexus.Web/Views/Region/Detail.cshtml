@@ -113,102 +113,87 @@
             });
         }
 
+        function modalUpgradeOverlay() {
+            const structureInfo = document.querySelector('#dlgstructure div.structure-info');
+            const structureId = Number(structureInfo.getAttribute('data-item-id'));
+            const structureElement = document.querySelector(`section.structure-grid p.structure[data-item-id="${structureId}"]`);
+
+            // Verificar si el elemento tiene 'data-item-upgradedat' con valor
+            const upgradedAtValue = structureElement.getAttribute('data-item-upgradedat');
+            if (upgradedAtValue) {
+                const detailsElement = document.querySelector('#dlgstructure div.structure-details');
+
+                // Iniciar la cuenta regresiva en el modal
+                startUpgradeCountdown(detailsElement, upgradedAtValue);
+
+                // Limpiar el intervalo cuando se cierra el modal
+                const dlgstructure = document.getElementById('dlgstructure');
+                dlgstructure.addEventListener('hidden.bs.modal', function () {
+                    if (detailsElement._countdownInterval) {
+                        clearInterval(detailsElement._countdownInterval);
+                        detailsElement._countdownInterval = null;
+                    }
+                });
+            }
+        }
+
+
         function structureUpgradeOverlay() {
-            document.addEventListener("DOMContentLoaded", function () {
-                const structureElements = document.querySelectorAll("section.structure-grid p.structure[data-item-upgradedat]");
+            document.addEventListener('DOMContentLoaded', function () {
+                const structureElements = document.querySelectorAll('section.structure-grid p.structure[data-item-upgradedat]');
 
                 structureElements.forEach(structure => {
-                    const upgradedAtValue = structure.getAttribute("data-item-upgradedat");
+                    const upgradedAtValue = structure.getAttribute('data-item-upgradedat');
                     if (upgradedAtValue) {
-                        // Parse the upgradedAtValue as a Date object
-                        const upgradeEndDate = convertToJsDate(upgradedAtValue);
-
-                        // Create the countdown element
-                        const countdownDiv = document.createElement("div");
-                        countdownDiv.className = "upgrade-structure-countdown";
-                        structure.appendChild(countdownDiv);
-
-                        // Function to update countdown
-                        function updateCountdown() {
-                            const now = new Date();
-                            const timeRemaining = upgradeEndDate - now;
-
-                            if (timeRemaining <= 0) {
-                                countdownDiv.innerText = "Upgrade complete!";
-                                // Optionally, you could remove the countdownDiv after completion
-                                setTimeout(() => countdownDiv.remove(), 2000);
-                            } else {
-                                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                                countdownDiv.innerText = `Upgrading: ${hours}h ${minutes}m ${seconds}s`;
-                            }
-                        }
-
-                        // Initial countdown update and set interval to update every second
-                        updateCountdown();
-                        setInterval(updateCountdown, 1000);
+                        startUpgradeCountdown(structure, upgradedAtValue);
                     }
                 });
             });
-    }
-
-        function modalUpgradeOverlay(){
-            var structureInfo = $('#dlgstructure div.structure-info');
-            var structureId = Number(structureInfo.attr('data-item-id'));
-            var structureElement = $('section.structure-grid p.structure[data-item-id="' + structureId + '"]');
-
-            // Verificar si el elemento tiene 'data-item-upgradedat' con valor
-            var upgradedAtValue = structureElement.attr('data-item-upgradedat');
-            if (upgradedAtValue) {
-                // Crear el overlay
-                var overlay = $('<div class="overlay-countdown"></div>');
-                overlay.css({
-                    'position': 'absolute',
-                    'top': '0',
-                    'left': '0',
-                    'width': '100%',
-                    'height': '100%',
-                    'background-color': 'rgba(0, 0, 0, 0.5)',
-                    'display': 'flex',
-                    'align-items': 'center',
-                    'justify-content': 'center',
-                    'color': '#fff',
-                    'font-size': '24px',
-                    'z-index': '1000'
-                });
-
-                // Agregar el overlay a 'div.structure-details'
-                $('#dlgstructure div.structure-details').css('position', 'relative').append(overlay);
-
-                // Parsear 'upgradedAtValue' a una fecha
-                var upgradeEndDate = convertToJsDate(upgradedAtValue);
-
-                // Función para actualizar la cuenta regresiva
-                function updateOverlayCountdown() {
-                    var now = new Date();
-                    var timeRemaining = upgradeEndDate - now;
-
-                    if (timeRemaining <= 0) {
-                        overlay.text('¡Actualización completada!');
-                        // Opcionalmente, puedes eliminar el overlay después de un tiempo
-                        setTimeout(() => overlay.remove(), 2000);
-                    } else {
-                        var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                        overlay.text(`Actualizando: ${hours}h ${minutes}m ${seconds}s`);
-                    }
-                }
-
-                // Actualizar la cuenta regresiva inicialmente y cada segundo
-                updateOverlayCountdown();
-                var countdownInterval = setInterval(updateOverlayCountdown, 1000);
-
-                // Limpiar el intervalo cuando se cierra el modal
-                $('#dlgstructure').on('hidden.bs.modal', function () {
-                    clearInterval(countdownInterval);
-                });
         }
-    }
+
+
+        function startUpgradeCountdown(element, upgradedAtValue) {
+            // Parsear 'upgradedAtValue' a un objeto Date
+            const upgradeEndDate = convertToJsDate(upgradedAtValue);
+
+            // Crear el elemento de cuenta regresiva si no existe
+            let countdownDiv = element.querySelector('.upgrade-structure-countdown');
+            if (!countdownDiv) {
+                countdownDiv = document.createElement('div');
+                countdownDiv.className = 'upgrade-structure-countdown';
+                element.appendChild(countdownDiv);
+            }
+
+            // Asegurar que el elemento padre tiene posición relativa
+            if (window.getComputedStyle(element).position === 'static') {
+                element.style.position = 'relative';
+            }
+
+            // Función para actualizar la cuenta regresiva
+            function updateCountdown() {
+                const now = new Date();
+                const timeRemaining = upgradeEndDate - now;
+
+                if (timeRemaining <= 0) {
+                    countdownDiv.innerText = '¡Actualización completada!';
+                    // Opcionalmente, eliminar el elemento después de un tiempo
+                    setTimeout(() => countdownDiv.remove(), 2000);
+                    clearInterval(countdownInterval);
+                    element._countdownInterval = null;
+                } else {
+                    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);
+                    const seconds = Math.floor((timeRemaining / 1000) % 60);
+                    countdownDiv.innerText = `Actualizando: ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }
+
+            // Iniciar la cuenta regresiva
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 1000);
+
+            // Almacenar el identificador del intervalo en el elemento
+            element._countdownInterval = countdownInterval;
+        }
+
     </script>
