@@ -196,10 +196,8 @@ namespace Nexus.Web.Controllers
             return PartialView("_RegionDetailBarracksPartialView", viewModel);
         }
 
-
-
         [HttpPost]
-        [Route("regions/{id:int}/openstructuredialog")]
+        [Route("region/{id:int}/openstructuredialog")]
         public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)
         {
             if (id <= 0 || structureId <= 0)

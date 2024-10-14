@@ -53,209 +53,168 @@
         main.content > div.detail div.nx-header li.data-panel div.deck { background-image: url(/images/@Model.Region.GovernorCard.ImageUrl); }
     </style>
 
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
         structureUpgradeOverlay();
         initMenu();
+    });
 
-        $('p.structure').on('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+    function onOpenStructureDialog() {
+        modalUpgradeOverlay();
+    }
 
-            var params = Number($(this).closest('p').attr('data-item-id'));
-            var regionId = $('#region').attr('data-item-id');
+    function modalUpgradeOverlay() {
+        const structureInfo = document.querySelector('#dlgstructure div.structure-info');
+        const structureId = Number(structureInfo.getAttribute('data-item-id'));
+        const structureElement = document.querySelector(`section.structure-grid p.structure[data-item-id="${structureId}"]`);
 
-            nxDialogs.ajaxDialog('dlgstructure', '/regions/' + regionId + '/openstructuredialog', params, onOpenStructureDialog);
-        });
+        // Verificar si el elemento tiene 'data-item-upgradedat' con valor
+        const upgradedAtValue = structureElement.getAttribute('data-item-upgradedat');
+        if (upgradedAtValue) {
+            const detailsElement = document.querySelector('#dlgstructure div.structure-details');
 
-        function onOpenStructureDialog() {
-            modalUpgradeOverlay();
-            var mineActions = $('#dlgstructure div.structure-details div.mine-actions');
-            var countdownElement = '#dlgstructure div.mine-actions div.countdown';
+            // Iniciar la cuenta regresiva en el modal
+            startUpgradeCountdown(detailsElement, upgradedAtValue);
 
-            if (mineActions.hasClass('working'))
-                countdown(mineActions.attr('data-item-nextlevelat'), countdownElement);
-
-            $('#dlgstructure div.actions a.main').on('click', function () {
-                var structureId = Number($('div.structure-info').attr('data-item-id'));
-
-                $.ajax({
-                    type: "POST",
-                    url: '/regions/' + regionId + '/upgradestructure',
-                    data: JSON.stringify(structureId),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json"
-                }).done(function (data) {
-                    if (data.success) {
-                        mineActions.addClass('working');
-                        countdown(data.endsAt, countdownElement);
-                        var structureIcon = $('p.structure[data-item-id="' + structureId + '"]');
-                        structureIcon.addClass('working').attr('data-item-nextlevelat', data.endsAt).attr('data-item-nextlevelfrom', Math.floor(Date.now() / 1000));
-                        updateProgressBar();
-                    } else {
-                        alert(data.message);
-                    }
-                }).fail(function (XMLHttpRequest, textStatus) {
-                    alert('fail');
-                }).always(function () {
-                });
+            // Limpiar el intervalo cuando se cierra el modal
+            const dlgstructure = document.getElementById('dlgstructure');
+            dlgstructure.addEventListener('hidden.bs.modal', function () {
+                if (detailsElement._countdownInterval) {
+                    clearInterval(detailsElement._countdownInterval);
+                    detailsElement._countdownInterval = null;
+                }
             });
         }
+    }
 
-        function modalUpgradeOverlay() {
-            const structureInfo = document.querySelector('#dlgstructure div.structure-info');
-            const structureId = Number(structureInfo.getAttribute('data-item-id'));
-            const structureElement = document.querySelector(`section.structure-grid p.structure[data-item-id="${structureId}"]`);
+    function structureUpgradeOverlay() {
+        const structureElements = document.querySelectorAll('section.structure-grid p.structure[data-item-upgradedat]');
 
-            // Verificar si el elemento tiene 'data-item-upgradedat' con valor
-            const upgradedAtValue = structureElement.getAttribute('data-item-upgradedat');
+        structureElements.forEach(structure => {
+            const upgradedAtValue = structure.getAttribute('data-item-upgradedat');
             if (upgradedAtValue) {
-                const detailsElement = document.querySelector('#dlgstructure div.structure-details');
+                startUpgradeCountdown(structure, upgradedAtValue);
+            }
+        });
+    }
 
-                // Iniciar la cuenta regresiva en el modal
-                startUpgradeCountdown(detailsElement, upgradedAtValue);
+    function startUpgradeCountdown(element, upgradedAtValue) {
+        // Parsear 'upgradedAtValue' a un objeto Date
+        const upgradeEndDate = convertToJsDate(upgradedAtValue);
 
-                // Limpiar el intervalo cuando se cierra el modal
-                const dlgstructure = document.getElementById('dlgstructure');
-                dlgstructure.addEventListener('hidden.bs.modal', function () {
-                    if (detailsElement._countdownInterval) {
-                        clearInterval(detailsElement._countdownInterval);
-                        detailsElement._countdownInterval = null;
+        // Crear el elemento de cuenta regresiva si no existe
+        let countdownDiv = element.querySelector('.upgrade-structure-countdown');
+        if (!countdownDiv) {
+            countdownDiv = document.createElement('div');
+            countdownDiv.className = 'upgrade-structure-countdown';
+            element.appendChild(countdownDiv);
+        }
+
+        // Asegurar que el elemento padre tiene posición relativa
+        if (window.getComputedStyle(element).position === 'static') {
+            element.style.position = 'relative';
+        }
+
+        // Función para actualizar la cuenta regresiva
+        function updateCountdown() {
+            const now = new Date();
+            const timeRemaining = upgradeEndDate - now;
+
+            if (timeRemaining <= 0) {
+                countdownDiv.innerText = '¡Actualización completada!';
+                // Opcionalmente, eliminar el elemento después de un tiempo
+                setTimeout(() => countdownDiv.remove(), 2000);
+                clearInterval(countdownInterval);
+                element._countdownInterval = null;
+            } else {
+                const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);
+                const seconds = Math.floor((timeRemaining / 1000) % 60);
+                countdownDiv.innerText = `${hours}h ${minutes}m ${seconds}s`;
+            }
+        }
+
+        // Iniciar la cuenta regresiva
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Almacenar el identificador del intervalo en el elemento
+        element._countdownInterval = countdownInterval;
+    }
+
+    function initMenu() {
+            // Función para manejar los clics en el submenú
+            const submenuLinks = document.querySelectorAll('.nx-submenu a[data-view]');
+            submenuLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Remover la clase 'active' de todos los enlaces y agregarla al enlace clicado
+                    submenuLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const view = this.getAttribute('data-view');
+                    const regionId = document.getElementById('region').getAttribute('data-item-id');
+                    let url = '';
+
+                    switch (view) {
+                        case 'city':
+                            url = `/Region/GetCityPartialView?regionId=${regionId}`;
+                            break;
+                        case 'barracks':
+                            url = `/Region/GetBarracksPartialView?regionId=${regionId}`;
+                            break;
+                        case 'spaceport':
+                            url = `/Region/GetSpaceportPartialView?regionId=${regionId}`;
+                            break;
+                        default:
+                            return;
                     }
-                });
-            }
-        }
 
-        function structureUpgradeOverlay() {
-            document.addEventListener('DOMContentLoaded', function () {
-                const structureElements = document.querySelectorAll('section.structure-grid p.structure[data-item-upgradedat]');
+                    // Cargar la vista parcial mediante fetch
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error al cargar la vista parcial');
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            // Reemplazar el contenido de div.nx-detail
+                            const nxDetail = document.querySelector('.nx-detail');
+                            nxDetail.innerHTML = html;
 
-                structureElements.forEach(structure => {
-                    const upgradedAtValue = structure.getAttribute('data-item-upgradedat');
-                    if (upgradedAtValue) {
-                        startUpgradeCountdown(structure, upgradedAtValue);
-                    }
-                });
-            });
-        }
-
-        function startUpgradeCountdown(element, upgradedAtValue) {
-            // Parsear 'upgradedAtValue' a un objeto Date
-            const upgradeEndDate = convertToJsDate(upgradedAtValue);
-
-            // Crear el elemento de cuenta regresiva si no existe
-            let countdownDiv = element.querySelector('.upgrade-structure-countdown');
-            if (!countdownDiv) {
-                countdownDiv = document.createElement('div');
-                countdownDiv.className = 'upgrade-structure-countdown';
-                element.appendChild(countdownDiv);
-            }
-
-            // Asegurar que el elemento padre tiene posición relativa
-            if (window.getComputedStyle(element).position === 'static') {
-                element.style.position = 'relative';
-            }
-
-            // Función para actualizar la cuenta regresiva
-            function updateCountdown() {
-                const now = new Date();
-                const timeRemaining = upgradeEndDate - now;
-
-                if (timeRemaining <= 0) {
-                    countdownDiv.innerText = '¡Actualización completada!';
-                    // Opcionalmente, eliminar el elemento después de un tiempo
-                    setTimeout(() => countdownDiv.remove(), 2000);
-                    clearInterval(countdownInterval);
-                    element._countdownInterval = null;
-                } else {
-                    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
-                    const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);
-                    const seconds = Math.floor((timeRemaining / 1000) % 60);
-                    countdownDiv.innerText = `${hours}h ${minutes}m ${seconds}s`;
-                }
-            }
-
-            // Iniciar la cuenta regresiva
-            updateCountdown();
-            const countdownInterval = setInterval(updateCountdown, 1000);
-
-            // Almacenar el identificador del intervalo en el elemento
-            element._countdownInterval = countdownInterval;
-        }
-
-        function initMenu() {
-            document.addEventListener('DOMContentLoaded', function () {
-                // Función para manejar los clics en el submenú
-                const submenuLinks = document.querySelectorAll('.nx-submenu a[data-view]');
-                submenuLinks.forEach(link => {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-
-                        // Remover la clase 'active' de todos los enlaces y agregarla al enlace clicado
-                        submenuLinks.forEach(l => l.classList.remove('active'));
-                        this.classList.add('active');
-
-                        const view = this.getAttribute('data-view');
-                        const regionId = document.getElementById('region').getAttribute('data-item-id');
-                        let url = '';
-
-                        switch (view) {
-                            case 'city':
-                                url = `/Region/GetCityPartialView?regionId=${regionId}`;
-                                break;
-                            case 'barracks':
-                                url = `/Region/GetBarracksPartialView?regionId=${regionId}`;
-                                break;
-                            case 'spaceport':
-                                url = `/Region/GetSpaceportPartialView?regionId=${regionId}`;
-                                break;
-                            default:
-                                return;
-                        }
-
-                        // Cargar la vista parcial mediante fetch
-                        fetch(url)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Error al cargar la vista parcial');
-                                }
-                                return response.text();
-                            })
-                            .then(html => {
-                                // Reemplazar el contenido de div.nx-detail
-                                const nxDetail = document.querySelector('.nx-detail');
-                                nxDetail.innerHTML = html;
-
-                                // Re-inicializar eventos y funciones si es necesario
-                                if (view === 'city') {
-                                    structureUpgradeOverlay();
-                                    bindStructureClickEvents();
-                                }
-                                // Puedes agregar más condiciones para otras vistas
-                            })
-                            .catch(error => {
-                                console.error('Error al cargar la vista parcial:', error);
-                            });
-                    });
-                });
-
-                // Función para vincular los eventos de clic a las estructuras
-                function bindStructureClickEvents() {
-                    const structureElements = document.querySelectorAll('p.structure');
-                    structureElements.forEach(structure => {
-                        structure.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            const params = Number(this.getAttribute('data-item-id'));
-                            const regionId = document.getElementById('region').getAttribute('data-item-id');
-
-                            nxDialogs.ajaxDialog('dlgstructure', '/regions/' + regionId + '/openstructuredialog', params, onOpenStructureDialog);
+                            // Re-inicializar eventos y funciones si es necesario
+                            if (view === 'city') {
+                                structureUpgradeOverlay();
+                                bindStructureClickEvents();
+                            }
+                            // Puedes agregar más condiciones para otras vistas
+                        })
+                        .catch(error => {
+                            console.error('Error al cargar la vista parcial:', error);
                         });
-                    });
-                }
 
-                // Inicializar eventos al cargar la página
-                bindStructureClickEvents();
+                });
             });
-        }
+
+            // Función para vincular los eventos de clic a las estructuras
+            function bindStructureClickEvents() {
+                const structureElements = document.querySelectorAll('p.structure');
+                structureElements.forEach(structure => {
+                    structure.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const params = Number(this.getAttribute('data-item-id'));
+                        const regionId = document.getElementById('region').getAttribute('data-item-id');
+
+                        nxDialogs.ajaxDialog('dlgstructure', '/Region/' + regionId + '/openstructuredialog', params, onOpenStructureDialog);
+                    });
+                });
+            }
+
+            // Inicializar eventos al cargar la página
+            bindStructureClickEvents();
+    }
     </script>
