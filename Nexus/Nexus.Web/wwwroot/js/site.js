@@ -5,143 +5,190 @@
 
 /* -------------- NX DIALOGS --------------- */
 function nxDialogsClass() {
-	var me = this;
-	var dialogList = [];
-	var dlgBg = null;
+    var me = this;
+    var dialogList = [];
+    var dlgBg = null;
 
-	me.isDialogActive = function () {
-		return dlgBg != null && dlgBg.is(":visible");
-	}
+    // Función auxiliar para verificar si un elemento es visible
+    function isElementVisible(elem) {
+        return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+    }
 
-	//#region Default functions
-	me.showDialog = function (id, title) {
-		me.createMask();
+    me.isDialogActive = function () {
+        return dlgBg != null && isElementVisible(dlgBg);
+    };
 
-		if (!$('#' + id + '.initialized').exists()) {
-			me.buildDialog(id, title, false);
-		}
-		else {
-			var currentContent = $('#' + id);
-			currentContent.show();
-			currentContent.closest('div.dlg-view').addClass('current').show();
-		}
+    //#region Funciones por defecto
+    me.showDialog = function (id, title) {
+        me.createMask();
 
-		dlgBg.show();
-		//$('body').css('overflow', 'hidden').css('padding-right', '17px');
-	};
+        if (!document.querySelector('#' + id + '.initialized')) {
+            me.buildDialog(id, title, false);
+        } else {
+            var currentContent = document.getElementById(id);
+            currentContent.style.display = '';
+            var dlgView = currentContent.closest('div.dlg-view');
+            if (dlgView) {
+                dlgView.classList.add('current');
+                dlgView.style.display = '';
+            }
+        }
 
-	me.ajaxDialog = function (id, url, params, onLoad, onError) {
-		me.createMask();
-		me.loading();
-		dlgBg.show();
-		//$('body').css('overflow', 'hidden').css('padding-right', '17px');
+        dlgBg.style.display = '';
+        // document.body.style.overflow = 'hidden';
+        // document.body.style.paddingRight = '17px';
+    };
 
-		var paramsJson = JSON.stringify(params);
-		$.ajax({
-			type: "POST",
-			url: url,
-			data: paramsJson,
-			contentType: "application/json",
-		}).done(function (data, textStatus) {
-			if (data) {
-				var newContent = jQuery('<div/>', {
-					id: id
-				}).html(data).appendTo('body');
-				if (typeof (onLoad) != 'undefined')
-					onLoad(newContent);
-				me.buildDialog(id, 'test', true);
-				me.loaded();
-			}
-			else {
-				me.popDialog();
-				if (typeof (onError) != 'undefined')
-					onError(data.error);
-			}
-		}).fail(function () {
-			me.popDialog();
-			//TODO: Show error
-		}).always(function (XMLHttpRequest, textStatus) {
-		});
-	};
+    me.ajaxDialog = function (id, url, params, onLoad, onError) {
+        me.createMask();
+        me.loading();
+        dlgBg.style.display = '';
+        // document.body.style.overflow = 'hidden';
+        // document.body.style.paddingRight = '17px';
 
-	me.loading = function () {
-		if (dlgBg != null) {
-			dlgBg.addClass('loading');
-		}
-	};
+        var paramsJson = JSON.stringify(params);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: paramsJson
+        })
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (data) {
+                if (data) {
+                    var newContent = document.createElement('div');
+                    newContent.id = id;
+                    newContent.innerHTML = data;
+                    document.body.appendChild(newContent);
 
-	me.loaded = function () {
-		if (dlgBg != null) {
-			dlgBg.removeClass('loading');
-		}
-	};
+                    if (typeof onLoad !== 'undefined')
+                        onLoad(newContent);
 
-	me.createMask = function () {
-		if (dlgBg == null) {
-			dlgBg = jQuery('<div/>', {
-				id: 'dlgmask'
-			}).appendTo('body');
-			dlgBg.on('click', function (e) {
-				e.stopPropagation();
-				me.popDialog();
-			});
-			$(window).keyup(function (event) {
-				if (event.keyCode == 27) { //esc
-					me.popDialog();
-				}
-			});
-		}
-	};
+                    me.buildDialog(id, 'test', true);
+                    me.loaded();
+                } else {
+                    me.popDialog();
+                    if (typeof onError !== 'undefined')
+                        onError(data.error);
+                }
+            })
+            .catch(function (error) {
+                me.popDialog();
+                console.error('Error al cargar el diálogo:', error);
+                if (typeof onError !== 'undefined')
+                    onError(error);
+            });
+    };
 
-	me.buildDialog = function (id, title, ajax) {
-		var dlgView = jQuery('<div/>', {
-			'class': 'dlg-view current cybercard ' + id,
-			'style': 'opacity:0;'
-		}).appendTo('#dlgmask');
-		dlgView.on('click', function (e) {
-			e.stopPropagation();
-		});
-		if (ajax)
-			dlgView.addClass('ajax');
-		var closeButton = jQuery('<button/>', {
-			'class': 'close'
-		}).append('<i class="material-icons-outlined">close</i>').on('click', function (e) {
-			e.preventDefault();
-			me.popDialog();
-		});
-		var header = jQuery('<div/>', {
-			'class': 'dlg-header'
-		}).append(closeButton).append('<span>' + title + '</span>');
-		var contentWrapper = jQuery('<div/>', {
-			'class': 'dlg-content'
-		});
-		var content = $('#' + id).detach();
-		content.find('button.cancel').on('click', function (e) {
-			e.preventDefault();
-			me.popDialog();
-		});
-		content.addClass('initialized dlg-content');
-		//contentWrapper.append(content);
-		dlgView.append(content);
-		content.show();
-		//dlgView.append(contentWrapper);
-		setTimeout(function () {
-			dlgView.css("margin-top", Math.max(50, ($(window).height() - dlgView.outerHeight()) / 2) + "px");
-			dlgView.css('opacity', 1);
-		}, 10);
+    me.loading = function () {
+        if (dlgBg != null) {
+            dlgBg.classList.add('loading');
+        }
+    };
 
-	};
+    me.loaded = function () {
+        if (dlgBg != null) {
+            dlgBg.classList.remove('loading');
+        }
+    };
 
-	me.popDialog = function () {
-		dlgBg.hide();
-		$('body').css('overflow', 'auto').css('padding-right', '0');
-		var currentDialog = dlgBg.find('div.dlg-view.current');
-		currentDialog.removeClass('current');
-		currentDialog.hide();
-		if (currentDialog.hasClass('ajax'))
-			currentDialog.remove();
-	};
+    me.createMask = function () {
+        if (dlgBg == null) {
+            dlgBg = document.createElement('div');
+            dlgBg.id = 'dlgmask';
+            document.body.appendChild(dlgBg);
+
+            dlgBg.addEventListener('click', function (e) {
+                e.stopPropagation();
+                me.popDialog();
+            });
+
+            window.addEventListener('keyup', function (event) {
+                if (event.keyCode === 27) { // Esc
+                    me.popDialog();
+                }
+            });
+        }
+    };
+
+    me.buildDialog = function (id, title, ajax) {
+        var dlgView = document.createElement('div');
+        dlgView.className = 'dlg-view current cybercard ' + id;
+        dlgView.style.opacity = '0';
+        document.getElementById('dlgmask').appendChild(dlgView);
+
+        dlgView.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+
+        if (ajax)
+            dlgView.classList.add('ajax');
+
+        //var closeButton = document.createElement('button');
+        //closeButton.className = 'close';
+        //closeButton.innerHTML = '<i class="material-icons-outlined">close</i>';
+        //closeButton.addEventListener('click', function (e) {
+        //    e.preventDefault();
+        //    me.popDialog();
+        //});
+
+        //var header = document.createElement('div');
+        //header.className = 'dlg-header';
+        //header.appendChild(closeButton);
+
+        //var spanTitle = document.createElement('span');
+        //spanTitle.textContent = title;
+        //header.appendChild(spanTitle);
+
+        //dlgView.appendChild(header);
+
+        var content = document.getElementById(id);
+        if (content) {
+            content.parentNode.removeChild(content); // Detach
+        }
+
+        // Vincular eventos a botones con clase 'cancel'
+        var cancelButtons = content.querySelectorAll('button.cancel');
+        cancelButtons.forEach(function (button) {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                me.popDialog();
+            });
+        });
+
+        content.classList.add('initialized', 'dlg-content');
+
+        dlgView.appendChild(content);
+        content.style.display = '';
+
+        // Posicionar y mostrar el diálogo
+        setTimeout(function () {
+            var marginTop = Math.max(50, (window.innerHeight - dlgView.offsetHeight) / 2) + 'px';
+            dlgView.style.marginTop = marginTop;
+            dlgView.style.opacity = '1';
+        }, 10);
+    };
+
+    me.popDialog = function () {
+        if (dlgBg != null) {
+            dlgBg.style.display = 'none';
+        }
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+
+        var currentDialog = dlgBg.querySelector('div.dlg-view.current');
+        if (currentDialog) {
+            currentDialog.classList.remove('current');
+            currentDialog.style.display = 'none';
+            if (currentDialog.classList.contains('ajax'))
+                currentDialog.parentNode.removeChild(currentDialog);
+        }
+    };
 }
+
 var nxDialogs = new nxDialogsClass();
 
 /* -------------- NX UTILS --------------- */
