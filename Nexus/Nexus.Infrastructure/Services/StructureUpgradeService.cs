@@ -97,14 +97,14 @@ public class StructureUpgradeService : IStructureUpgradeService
 
     public async Task<int> GetUpgradeSeconds(RegionStructure regionStructure, int totalCost)
     {
-        int timeDivider = 3500;
-        int upgradeHours = totalCost / timeDivider;
+        double timeDivider = 3500;
+        double upgradeHours = totalCost / timeDivider;
 
         // TODO: Replace with cards
         if (regionStructure.Region != null)
             upgradeHours -= (int)Math.Round(upgradeHours * 0.25);
 
-        return upgradeHours * 60 * 60;
+        return (int)(upgradeHours * 60 * 60);
     }
 }
 

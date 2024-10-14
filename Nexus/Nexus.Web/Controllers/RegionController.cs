@@ -110,6 +110,94 @@ namespace Nexus.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCityPartialView(int regionId)
+        {
+            await _resourcesService.UpdateRegionResourcesAsync(regionId);
+            await _structureUpgradeService.ProcessCompletedUpgradesAsync(regionId);
+
+            var region = await _context.Regions
+                .Include(r => r.Planet)
+                .Include(r => r.RegionStructures)
+                    .ThenInclude(rs => rs.Structure)
+                .Include(r => r.RegionResources)
+                    .ThenInclude(rr => rr.Resource)
+                .FirstOrDefaultAsync(r => r.Id == regionId);
+
+            if (region == null)
+                return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Asegurarnos de que todas las estructuras y recursos estén presentes en la región
+            var allResources = await _context.Resources.ToListAsync();
+            foreach (var resource in allResources)
+            {
+                if (!region.RegionResources.Any(rr => rr.ResourceId == resource.Id))
+                {
+                    region.RegionResources.Add(new RegionResource
+                    {
+                        ResourceId = resource.Id,
+                        Quantity = 0,
+                        Resource = resource
+                    });
+                }
+            }
+
+            var allStructures = await _context.Structures.ToListAsync();
+            foreach (var structure in allStructures)
+            {
+                if (!region.RegionStructures.Any(rs => rs.StructureId == structure.Id))
+                {
+                    region.RegionStructures.Add(new RegionStructure
+                    {
+                        StructureId = structure.Id,
+                        Level = 0,
+                        Structure = structure
+                    });
+                }
+            }
+
+            var governorCards = await _context.Cards
+                .Where(c => c.Users.Any(u => u.Id == user.Id) && c.CardType == ECardType.Governor)
+                .ToListAsync();
+
+            var viewModel = new RegionViewModel
+            {
+                Region = region,
+                Structures = allStructures,
+                RegionStructures = region.RegionStructures.ToList(),
+                GovernorCards = governorCards
+            };
+
+            return PartialView("_RegionDetailCityPartialView", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBarracksPartialView(int regionId)
+        {
+            var region = await _context.Regions
+                .Include(r => r.Planet)
+                .FirstOrDefaultAsync(r => r.Id == regionId);
+
+            if (region == null)
+                return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Si en el futuro necesitas más datos, puedes agregarlos aquí
+
+            var viewModel = new RegionViewModel
+            {
+                Region = region
+                // Puedes agregar más propiedades si es necesario
+            };
+
+            return PartialView("_RegionDetailBarracksPartialView", viewModel);
+        }
+
+
+
         [HttpPost]
         [Route("regions/{id:int}/openstructuredialog")]
         public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)

@@ -53,7 +53,7 @@
             <form asp-action="BuildOrUpgradeStructure" method="post">
                 <input type="hidden" name="regionId" value="@Model.Region.Id" />
                 <input type="hidden" name="structureId" value="@Model.RegionStructure.StructureId" />
-                <button type="submit">Upgrade</button>
+                <button type="submit" @(Model.RegionStructure.UpgradedAt.HasValue ? "disabled" : string.Empty)> Upgrade</button>
             </form>
         </div>
         <div class="countdown"></div>

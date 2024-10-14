@@ -38,27 +38,14 @@
             </li>
         </ul>
         <ul class="nx-submenu">
-            <li><a href="/armies/new" class="new">Renombrar ciudad</a></li>
-            <li><a href="/armies/new" class="new">Transporte de recursos</a></li>
-            <li><a href="/armies/new" class="new">Estadísticas</a></li>
+            <li><a href="#" data-view="city" class="new active">Ciudad</a></li>
+            <li><a href="#" data-view="barracks" class="new">Barracones</a></li>
+            <li><a href="#" data-view="spaceport" class="new">Espaciopuerto</a></li>
             <li><a href="/solarsystem/detail/@Model.Region.Planet.SolarSystemId" class="new">Sistema solar</a></li>
         </ul>
     </div>
     <div class="nx-detail">
-        <section class="structure-grid">
-            @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
-            {
-                <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id" data-item-upgradedat="@regionStructure.UpgradedAt">
-                    <span>@regionStructure.Structure.Name</span>
-                    @if (regionStructure.UpgradedAt.HasValue)
-                    {
-                        <span>Upgrading</span>
-                    }
-                    <small>@regionStructure.Level</small>
-                    <span class="buildprogress"></span>
-                </p>
-            }
-        </section>
+        @await Html.PartialAsync("_RegionDetailCityPartialView", Model)
     </div>
 </div>
 
@@ -68,6 +55,7 @@
 
     <script>
         structureUpgradeOverlay();
+        initMenu();
 
         $('p.structure').on('click', function (e) {
             e.preventDefault();
@@ -137,7 +125,6 @@
             }
         }
 
-
         function structureUpgradeOverlay() {
             document.addEventListener('DOMContentLoaded', function () {
                 const structureElements = document.querySelectorAll('section.structure-grid p.structure[data-item-upgradedat]');
@@ -150,7 +137,6 @@
                 });
             });
         }
-
 
         function startUpgradeCountdown(element, upgradedAtValue) {
             // Parsear 'upgradedAtValue' a un objeto Date
@@ -184,7 +170,7 @@
                     const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
                     const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);
                     const seconds = Math.floor((timeRemaining / 1000) % 60);
-                    countdownDiv.innerText = `Actualizando: ${hours}h ${minutes}m ${seconds}s`;
+                    countdownDiv.innerText = `${hours}h ${minutes}m ${seconds}s`;
                 }
             }
 
@@ -196,4 +182,80 @@
             element._countdownInterval = countdownInterval;
         }
 
+        function initMenu() {
+            document.addEventListener('DOMContentLoaded', function () {
+                // Función para manejar los clics en el submenú
+                const submenuLinks = document.querySelectorAll('.nx-submenu a[data-view]');
+                submenuLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Remover la clase 'active' de todos los enlaces y agregarla al enlace clicado
+                        submenuLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const view = this.getAttribute('data-view');
+                        const regionId = document.getElementById('region').getAttribute('data-item-id');
+                        let url = '';
+
+                        switch (view) {
+                            case 'city':
+                                url = `/Region/GetCityPartialView?regionId=${regionId}`;
+                                break;
+                            case 'barracks':
+                                url = `/Region/GetBarracksPartialView?regionId=${regionId}`;
+                                break;
+                            case 'spaceport':
+                                url = `/Region/GetSpaceportPartialView?regionId=${regionId}`;
+                                break;
+                            default:
+                                return;
+                        }
+
+                        // Cargar la vista parcial mediante fetch
+                        fetch(url)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Error al cargar la vista parcial');
+                                }
+                                return response.text();
+                            })
+                            .then(html => {
+                                // Reemplazar el contenido de div.nx-detail
+                                const nxDetail = document.querySelector('.nx-detail');
+                                nxDetail.innerHTML = html;
+
+                                // Re-inicializar eventos y funciones si es necesario
+                                if (view === 'city') {
+                                    structureUpgradeOverlay();
+                                    bindStructureClickEvents();
+                                }
+                                // Puedes agregar más condiciones para otras vistas
+                            })
+                            .catch(error => {
+                                console.error('Error al cargar la vista parcial:', error);
+                            });
+                    });
+                });
+
+                // Función para vincular los eventos de clic a las estructuras
+                function bindStructureClickEvents() {
+                    const structureElements = document.querySelectorAll('p.structure');
+                    structureElements.forEach(structure => {
+                        structure.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const params = Number(this.getAttribute('data-item-id'));
+                            const regionId = document.getElementById('region').getAttribute('data-item-id');
+
+                            nxDialogs.ajaxDialog('dlgstructure', '/regions/' + regionId + '/openstructuredialog', params, onOpenStructureDialog);
+                        });
+                    });
+                }
+
+                // Inicializar eventos al cargar la página
+                bindStructureClickEvents();
+            });
+        }
     </script>

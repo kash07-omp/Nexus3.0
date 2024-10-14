@@ -1,0 +1,18 @@
+﻿@using Nexus.Domain.Entities
+@using System.Globalization
+@model Nexus.Web.Models.RegionViewModel
+
+<section class="structure-grid">
+    @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
+    {
+        <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id" data-item-upgradedat="@regionStructure.UpgradedAt">
+            <span>@regionStructure.Structure.Name</span>
+            @if (regionStructure.UpgradedAt.HasValue)
+            {
+                <span>Upgrading</span>
+            }
+            <small>@regionStructure.Level</small>
+            <span class="buildprogress"></span>
+        </p>
+    }
+</section>
