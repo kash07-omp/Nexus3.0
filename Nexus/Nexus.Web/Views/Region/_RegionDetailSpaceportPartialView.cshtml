@@ -13,12 +13,12 @@
     else
     {
         <!-- Mostrar las naves de la flota seleccionada -->
-        <section class="structure-grid">
+        <section class="card-grid">
             @foreach (var ship in Model.Ships)
             {
                 var quantity = Model.SelectedFleet?.FleetShips.FirstOrDefault(fs => fs.ShipId == ship.Id)?.Quantity ?? 0;
                 var simplifiedName = ship.Name.Replace(" ", "").ToLower(); // Puedes ajustar esto según tus necesidades
-                <p class="structure @simplifiedName" data-item-id="@ship.Id" style="background-image: url('/images/@ship.Img')">
+                <p class="card ship @simplifiedName" data-item-id="@ship.Id" style="background-image: url('/images/@ship.Img')">
                     <span>@ship.Name</span>
                     <small>@quantity</small>
                 </p>

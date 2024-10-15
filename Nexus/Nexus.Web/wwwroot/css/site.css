@@ -20,49 +20,20 @@ body div.layout { display: flex; height: 100vh; }
 
 span.wrong { color: var(--nx-accent-wrong) }
 
-/* ----- Topbar  ----- */
-body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
-    body div.topbar div.topbar-left .logo { font-size: 1.5em; font-weight: bold; color: #79a04e; }
-    body div.topbar div.topbar-left { padding-left: 15px; }
-    body div.topbar div.topbar-right { display: flex; padding-right: 15px; align-items: center; }
-        body div.topbar div.topbar-right div.icon-container { display: flex; gap: 15px; align-items: center; }
-            body div.topbar div.topbar-right div.icon-container a.icon-link { color: #ffffff; font-size: 1.2em; padding: 5px; }
-            body div.topbar div.topbar-right div.icon-container a.icon-link:hover { color: #79a04e; }
-        body div.topbar div.topbar-right div.user-avatar { position: relative; margin-left: 20px; }
-            body div.topbar div.topbar-right div.user-avatar img.avatar-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid #79a04e; }
+/* ===================================================================*/
+/* ===================         CONTROLS            ===================*/
+/* ===================================================================*/
 
-/* Dropdown for User Menu */
-body div.topbar div.topbar-right div.user-avatar:hover div.user-menu-dropdown { display: block; }
-    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown { display: none; position: absolute; top: 50px; right: 0; background-color: #1a2b34; padding: 10px; border-radius: 5px; z-index: 1000; }
-    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button { background-color: transparent; color: #ffffff; border: none; cursor: pointer; padding: 10px 20px; text-align: left; }
-    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button:hover { background-color: #79a04e; }
-            body div.topbar div.topbar-right div.user-avatar div.user-menu a { margin-left: 10px; color: #ffffff; }
+/* NX - CARDS */
+section.card-grid { display: flex; flex-wrap: wrap; justify-content: center; gap:30px; border-radius: 20px; padding:20px }
+    section.card-grid p.card { position: relative; opacity: 0.9; padding: 10px; margin:0px; width: 200px; height: 250px; background-size: cover; border-radius: 10px; cursor: pointer; }
+    section.card-grid p.card:hover { opacity: 1; }
+        section.card-grid p.card span { font-size: 25px; text-shadow: 1px 1px 4px rgba(0,0,0,1); color: var(--nx-accent); }
+        section.card-grid p.card span.buildprogress { display: none; }
+        section.card-grid p.card.working span.buildprogress { position: absolute; top: 100%; left: 0; display: block; width: 100%; height: 100%; background-color: green; opacity: 0.6; }
+        section.card-grid p.card small { position: absolute; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; border-radius: 10px 0 0 0; font-size: 25px; color: var(--nx-accent-second); background: var(--nx-bg-gradient); }
 
-/* Sidebar */
-body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding-top: 60px; position: fixed; bottom: 0; top: 50px; overflow-y: auto; }
-    body div.layout aside.sidebar nav.sidebar-nav ul { list-style-type: none; padding: 0; }
-        body div.layout aside.sidebar nav.sidebar-nav ul li a { display: block; padding: 15px; color: #d2d5db; text-decoration: none; font-size: 1.1em; }
-        body div.layout aside.sidebar nav.sidebar-nav ul li a:hover { background-color: #26343f; color: #79a04e; }
-    body div.layout aside.sidebar div.sidebar-footer { position: absolute; bottom: 0; width: 100%; padding: 10px; text-align: center; background-color: #15232d; }
-
-/* Main Content */
-    body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; background-image: url('https://i.pinimg.com/originals/1a/ba/73/1aba73d7d0cf7299158082fab3d8bfa3.jpg'); background-size: cover; background-attachment: fixed; }
-
-    /* SOLAR SYSTEM */
-#solarsystem { display: flex; flex-direction:column; justify-content: center; align-items: center; }
-.solar-system-cell { height: 100px; width: 100px; border: 1px solid #ffffff30; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.6); text-align: center; color: white; flex-direction: column; }
-    .solar-system-cell:hover { background-color: rgba(0, 0, 0, 0.2); }
-    .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
-    .solar-system-cell.planet-own { color: green; font-weight: bold; }
-    .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
-    .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
-    .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
-
-/* Estilos para flotas */
-.fleet-own { color: green; }
-.fleet-enemy { color: red; }
-
-/*DIALOGS*/
+/* NX - DIALOGS*/
 #dlgmask { position: fixed; top: 0; left: 0; bottom: 0; right: 0; height: auto; overflow-x: hidden; background-color: rgba(0, 0, 0, 0.5); z-index: 2000; }
     /*#dlgmask.loading { background-image: url(/images/loader.gif); background-position: center; background-repeat: no-repeat; }*/
     #dlgmask div.dlg-view { max-width: 40%; height: 35%; min-height: 500px; min-width: 700px; margin: 0 auto 50px auto; background: var(--nx-bg-light); border-radius: 10px; overflow: hidden; }
@@ -80,6 +51,39 @@ i.resource-4 { background-image: url(/images/resources/food.svg); }
 i.resource-5 { background-image: url(/images/resources/population.svg); }
 i.resource-6 { background-image: url(/images/resources/credits.svg); }
 i.resource-7 { background-image: url(/images/resources/energy.svg); }
+
+/* ===================================================================*/
+/* ===================            BASE             ===================*/
+/* ===================================================================*/
+
+
+/* Topbar  */
+body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
+    body div.topbar div.topbar-left .logo { font-size: 1.5em; font-weight: bold; color: #79a04e; }
+    body div.topbar div.topbar-left { padding-left: 15px; }
+    body div.topbar div.topbar-right { display: flex; padding-right: 15px; align-items: center; }
+        body div.topbar div.topbar-right div.icon-container { display: flex; gap: 15px; align-items: center; }
+            body div.topbar div.topbar-right div.icon-container a.icon-link { color: #ffffff; font-size: 1.2em; padding: 5px; }
+                body div.topbar div.topbar-right div.icon-container a.icon-link:hover { color: #79a04e; }
+        body div.topbar div.topbar-right div.user-avatar { position: relative; margin-left: 20px; }
+            body div.topbar div.topbar-right div.user-avatar img.avatar-img { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid #79a04e; }
+
+            /* Dropdown for User Menu */
+            body div.topbar div.topbar-right div.user-avatar:hover div.user-menu-dropdown { display: block; }
+            body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown { display: none; position: absolute; top: 50px; right: 0; background-color: #1a2b34; padding: 10px; border-radius: 5px; z-index: 1000; }
+                body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button { background-color: transparent; color: #ffffff; border: none; cursor: pointer; padding: 10px 20px; text-align: left; }
+                    body div.topbar div.topbar-right div.user-avatar div.user-menu-dropdown button:hover { background-color: #79a04e; }
+            body div.topbar div.topbar-right div.user-avatar div.user-menu a { margin-left: 10px; color: #ffffff; }
+
+/* Sidebar */
+body div.layout aside.sidebar { background-color: #1a2b34; width: 250px; padding-top: 60px; position: fixed; bottom: 0; top: 50px; overflow-y: auto; }
+    body div.layout aside.sidebar nav.sidebar-nav ul { list-style-type: none; padding: 0; }
+        body div.layout aside.sidebar nav.sidebar-nav ul li a { display: block; padding: 15px; color: #d2d5db; text-decoration: none; font-size: 1.1em; }
+            body div.layout aside.sidebar nav.sidebar-nav ul li a:hover { background-color: #26343f; color: #79a04e; }
+    body div.layout aside.sidebar div.sidebar-footer { position: absolute; bottom: 0; width: 100%; padding: 10px; text-align: center; background-color: #15232d; }
+
+/* Main Content */
+body div.layout main.content { margin-left: 250px; padding: 20px; width: calc(100% - 250px); background-color: #0f1a20; color: #ffffff; margin-top: 60px; background-image: url('https://i.pinimg.com/originals/1a/ba/73/1aba73d7d0cf7299158082fab3d8bfa3.jpg'); background-size: cover; background-attachment: fixed; }
 
 /* BASE PAGE */
 main.content > div.detail { border-radius: 20px; height: 100%; }
@@ -109,32 +113,27 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
         main.content > div.detail div.nx-header li.data-panel div.deck { border-top-right-radius: 20px; cursor: pointer; opacity: 0.8; background-size: cover; width: 125px; height: 100%; position: absolute; bottom: 0; left: 0; }
             main.content > div.detail div.nx-header li.data-panel div.deck:hover { opacity: 1; transition-duration: 0.2s; }
 
+/* ===================================================================*/
+/* ===================           VIEWS             ===================*/
+/* ===================================================================*/
+
 /* Region */
 #region { background: var(--nx-bg); }
 #region h2 { margin-left: 30px; display: block; width: 100%; }
-#region section.structure-grid { display: flex; flex-wrap: wrap; justify-content: center; gap:30px; border-radius: 20px; padding:20px }
-    #region section.structure-grid p.structure { position: relative; opacity: 0.9; padding: 10px; margin:0px; width: 200px; height: 250px; background-size: cover; border-radius: 10px; cursor: pointer; }
-    #region section.structure-grid p.structure:hover { opacity: 1; }
-    #region section.structure-grid p.structure.raw-material-mine { background-image: url(/images/prime.jpg); }
-    #region section.structure-grid p.structure.microchip-factory { background-image: url(/images/lithium.jpg); }
-        #region section.structure-grid p.structure.hydrogen-mine { background-image: url(/images/hydrogen.jpg); }
-    #region section.structure-grid p.structure.energy-generator { background-image: url(/images/reactor.jpg); }
-    #region section.structure-grid p.structure.nuclear-reactor { background-image: url(/images/reactor.jpg); }
-    #region section.structure-grid p.structure.barracks { background-image: url(/images/barraks.jpg); }
-    #region section.structure-grid p.structure.farmland { background-image: url(/images/farm.jpg); }
-    #region section.structure-grid p.structure.residential-area { background-image: url(/images/city.jpg); }
-    #region section.structure-grid p.structure.spaceport { background-image: url(/images/spaceport.jpg); }
-    #region section.structure-grid p.structure.research-center { background-image: url(/images/academy.jpg); }
-    #region section.structure-grid p.structure.armory { background-image: url(/images/armory.jpg); }
-    #region section.structure-grid p.structure.city-hall { background-image: url(/images/command.jpg); }
-        #region section.structure-grid p.structure span { font-size: 25px; text-shadow: 1px 1px 4px rgba(0,0,0,1); color: var(--nx-accent); }
-        #region section.structure-grid p.structure span.buildprogress { display: none; }
-        #region section.structure-grid p.structure.working span.buildprogress { position: absolute; top: 100%; left: 0; display: block; width: 100%; height: 100%; background-color: green; opacity: 0.6; }
-        #region section.structure-grid p.structure small { position: absolute; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; bottom: 0; right: 0; border-radius: 10px 0 0 0; font-size: 25px; color: var(--nx-accent-second); background: var(--nx-bg-gradient); }
+    #region section.card-grid p.card.structure.raw-material-mine { background-image: url(/images/prime.jpg); }
+    #region section.card-grid p.card.structure.microchip-factory { background-image: url(/images/lithium.jpg); }
+    #region section.card-grid p.card.structure.hydrogen-mine { background-image: url(/images/hydrogen.jpg); }
+    #region section.card-grid p.card.structure.energy-generator { background-image: url(/images/reactor.jpg); }
+    #region section.card-grid p.card.structure.nuclear-reactor { background-image: url(/images/reactor.jpg); }
+    #region section.card-grid p.card.structure.barracks { background-image: url(/images/barraks.jpg); }
+    #region section.card-grid p.card.structure.farmland { background-image: url(/images/farm.jpg); }
+    #region section.card-grid p.card.structure.residential-area { background-image: url(/images/city.jpg); }
+    #region section.card-grid p.card.structure.spaceport { background-image: url(/images/spaceport.jpg); }
+    #region section.card-grid p.card.structure.research-center { background-image: url(/images/academy.jpg); }
+    #region section.card-grid p.card.structure.armory { background-image: url(/images/armory.jpg); }
+    #region section.card-grid p.card.structure.city-hall { background-image: url(/images/command.jpg); }
 
-        div.upgrade-structure-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
-
-
+div.upgrade-structure-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
 
 /* #### Structure Dialog */
 #dlgstructure { display: flex; width: 100%; color: var(--nx-text); }
@@ -154,3 +153,17 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
 
             #dlgstructure div.structure-details div.mine-actions.working div.countdown { display: block; }
             #dlgstructure div.structure-details div.mine-actions.working div.actions { display: none; }
+
+/* SOLAR SYSTEM */
+#solarsystem { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.solar-system-cell { height: 100px; width: 100px; border: 1px solid #ffffff30; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.6); text-align: center; color: white; flex-direction: column; }
+    .solar-system-cell:hover { background-color: rgba(0, 0, 0, 0.2); }
+    .solar-system-cell.planet { background-color: rgba(0, 123, 255, 0.3); }
+    .solar-system-cell.planet-own { color: green; font-weight: bold; }
+    .solar-system-cell.asteroidfield { background-color: rgba(128, 128, 128, 0.3); }
+    .solar-system-cell.jumppoint { background-color: rgba(255, 165, 0, 0.3); }
+    .solar-system-cell.estrella { background-color: rgba(255, 255, 0, 0.3); }
+
+/* Estilos para flotas */
+.fleet-own { color: green; }
+.fleet-enemy { color: red; }

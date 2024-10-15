@@ -67,7 +67,7 @@
     function modalUpgradeOverlay() {
         const structureInfo = document.querySelector('#dlgstructure div.structure-info');
         const structureId = Number(structureInfo.getAttribute('data-item-id'));
-        const structureElement = document.querySelector(`section.structure-grid p.structure[data-item-id="${structureId}"]`);
+        const structureElement = document.querySelector(`section.card-grid p.card.structure[data-item-id="${structureId}"]`);
 
         // Verificar si el elemento tiene 'data-item-upgradedat' con valor
         const upgradedAtValue = structureElement.getAttribute('data-item-upgradedat');
@@ -89,7 +89,7 @@
     }
 
     function structureUpgradeOverlay() {
-        const structureElements = document.querySelectorAll('section.structure-grid p.structure[data-item-upgradedat]');
+        const structureElements = document.querySelectorAll('section.card-grid p.card.structure[data-item-upgradedat]');
 
         structureElements.forEach(structure => {
             const upgradedAtValue = structure.getAttribute('data-item-upgradedat');

@@ -2,10 +2,10 @@
 @using System.Globalization
 @model Nexus.Web.Models.RegionViewModel
 
-<section class="structure-grid">
+<section class="card-grid">
     @foreach (RegionStructure regionStructure in Model.Region.RegionStructures)
     {
-        <p class="structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id" data-item-upgradedat="@regionStructure.UpgradedAt">
+        <p class="card structure @regionStructure.Structure.SimplifiedName" data-item-id="@regionStructure.Structure.Id" data-item-upgradedat="@regionStructure.UpgradedAt">
             <span>@regionStructure.Structure.Name</span>
             @if (regionStructure.UpgradedAt.HasValue)
             {
