@@ -1,0 +1,45 @@
+﻿@model Nexus.Web.Models.SpaceportViewModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+<div class="spaceport">
+    @if (!Model.Fleets.Any())
+    {
+        <!-- No hay flotas en la región -->
+        <div class="create-fleet">
+            <input type="text" id="newFleetName" placeholder="Nombre de la flota" />
+            <button id="createFleetButton">Crear flota</button>
+        </div>
+    }
+    else
+    {
+        <!-- Mostrar las naves de la flota seleccionada -->
+        <section class="ship-grid">
+            @foreach (var ship in Model.Ships)
+            {
+                var quantity = Model.SelectedFleet?.FleetShips.FirstOrDefault(fs => fs.ShipId == ship.Id)?.Quantity ?? 0;
+                <div class="ship-card" data-ship-id="@ship.Id">
+                    <div class="ship-image" style="background-image: url('/images/@ship.Img')"></div>
+                    <div class="ship-name">@ship.Name</div>
+                    <div class="ship-quantity">Cantidad: @quantity</div>
+                </div>
+            }
+        </section>
+
+        <!-- Menú de selección de flotas -->
+        <div class="fleet-menu">
+            @foreach (var fleet in Model.Fleets)
+            {
+                var isActive = fleet.Id == Model.SelectedFleet?.Id ? "active" : "";
+                <a href="#" class="fleet-link @isActive" data-fleet-id="@fleet.Id">@fleet.Name</a>
+            }
+            <!-- Botón Crear Flota -->
+            <a href="#" id="showCreateFleetForm">Crear Flota</a>
+        </div>
+
+        <!-- Formulario para crear una nueva flota -->
+        <div id="createFleetForm" style="display: none;">
+            <input type="text" id="newFleetName" placeholder="Nombre de la flota" />
+            <button id="saveFleetButton">Guardar</button>
+        </div>
+    }
+</div>

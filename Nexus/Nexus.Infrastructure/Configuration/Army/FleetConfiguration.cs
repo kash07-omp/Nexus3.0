@@ -41,11 +41,6 @@
             builder.HasMany(f => f.FleetShips)
                    .WithOne(fs => fs.Fleet)
                    .HasForeignKey(fs => fs.FleetId);
-
-            // Relación con FleetMovementPaths
-            builder.HasMany(f => f.FleetMovementPaths)
-                   .WithOne(fmp => fmp.Fleet)
-                   .HasForeignKey(fmp => fmp.FleetId);
         }
     }
 }

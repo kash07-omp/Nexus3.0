@@ -196,6 +196,94 @@ namespace Nexus.Web.Controllers
             return PartialView("_RegionDetailBarracksPartialView", viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetSpaceportPartialView(int regionId, int? fleetId = null)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            // Obtener la región y asegurarse de que pertenece al usuario actual
+            var region = await _context.Regions
+                .Include(r => r.Planet)
+                .FirstOrDefaultAsync(r => r.Id == regionId && r.UserId == userId);
+
+            if (region == null)
+                return NotFound();
+
+            // Obtener todas las flotas en esta región
+            var fleetsInRegion = await _context.Fleets
+                .Include(f => f.FleetShips)
+                    .ThenInclude(fs => fs.Ship)
+                .Where(f => f.UserId == userId
+                    && f.CoordinateX == region.Planet.CoordinateX
+                    && f.CoordinateY == region.Planet.CoordinateY)
+                .ToListAsync();
+
+            // Obtener todas las naves disponibles
+            var allShips = await _context.Ships.ToListAsync();
+
+            // Seleccionar la flota activa
+            Fleet selectedFleet = null;
+            if (fleetsInRegion.Any())
+            {
+                if (fleetId.HasValue)
+                {
+                    selectedFleet = fleetsInRegion.FirstOrDefault(f => f.Id == fleetId.Value);
+                }
+                else
+                {
+                    selectedFleet = fleetsInRegion.First(); // Seleccionar la primera flota por defecto
+                }
+            }
+
+            // Crear el modelo de vista
+            var viewModel = new SpaceportViewModel
+            {
+                Region = region,
+                Fleets = fleetsInRegion,
+                Ships = allShips,
+                SelectedFleet = selectedFleet
+            };
+
+            return PartialView("_RegionDetailSpaceportPartialView", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFleet([FromBody] CreateFleetRequest request)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var region = await _context.Regions
+                .Include(r => r.Planet)
+                .FirstOrDefaultAsync(r => r.Id == request.RegionId && r.UserId == userId);
+
+            if (region == null)
+                return Json(new { success = false, message = "Región no encontrada." });
+
+            var newFleet = new Fleet
+            {
+                Name = request.FleetName,
+                UserId = userId,
+                CoordinateX = region.Planet.CoordinateX,
+                CoordinateY = region.Planet.CoordinateY,
+                SolarSystemId = region.Planet.SolarSystemId
+            };
+
+            _context.Fleets.Add(newFleet);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        // Clase para recibir los datos del cliente
+        public class CreateFleetRequest
+        {
+            public int RegionId { get; set; }
+            public string FleetName { get; set; }
+        }
+
+
+
         [HttpPost]
         [Route("region/{id:int}/openstructuredialog")]
         public async Task<IActionResult> OpenStructureDialog(int id, [FromBody] int structureId)

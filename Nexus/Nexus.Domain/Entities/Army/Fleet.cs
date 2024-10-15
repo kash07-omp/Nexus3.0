@@ -17,6 +17,5 @@
         public virtual Card? AdmiralCard { get; set; }
 
         public virtual ICollection<FleetShip> FleetShips { get; set; } = new List<FleetShip>();
-        public virtual ICollection<FleetMovementPath> FleetMovementPaths { get; set; } = new List<FleetMovementPath>();
     }
 }

@@ -38,7 +38,6 @@ namespace Nexus.Web.Controllers
                 .Include(ss => ss.AsteroidFields)
                 .Include(ss => ss.JumpGates)
                 .Include(ss => ss.Fleets)
-                    .ThenInclude(f => f.FleetMovementPaths)
                 .FirstOrDefaultAsync(ss => ss.Id == id);
 
             if (solarSystem == null)
@@ -53,7 +52,6 @@ namespace Nexus.Web.Controllers
             {
                 SolarSystem = solarSystem,
                 CurrentUser = await _userManager.GetUserAsync(User),
-                FleetMovements = solarSystem.Fleets.SelectMany(f => f.FleetMovementPaths).ToList()
             };
 
             return View(viewModel);

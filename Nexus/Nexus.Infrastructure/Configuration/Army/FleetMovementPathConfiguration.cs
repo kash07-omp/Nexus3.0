@@ -18,12 +18,6 @@
             builder.Property(fmp => fmp.ToY).IsRequired();
             builder.Property(fmp => fmp.ArrivalTime).IsRequired();
             builder.Property(fmp => fmp.DepartureTime).IsRequired();
-
-            // Relación con Fleet
-            builder.HasOne(fmp => fmp.Fleet)
-                .WithMany(f => f.FleetMovementPaths)
-                .HasForeignKey(fmp => fmp.FleetId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

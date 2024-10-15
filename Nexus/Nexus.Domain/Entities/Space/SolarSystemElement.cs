@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int SolarSystemId { get; set; }
         public virtual SolarSystem SolarSystem { get; set; }
-        public double CoordinateX { get; set; }
-        public double CoordinateY { get; set; }
+        public int CoordinateX { get; set; }
+        public int CoordinateY { get; set; }
     }
 }
