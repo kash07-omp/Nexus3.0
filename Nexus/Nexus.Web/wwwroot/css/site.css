@@ -92,7 +92,8 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
             main.content > div.detail div.nx-header ul.nx-menu > li.city-resources { background-image: url(/images/city-landscape.jpg); }
             main.content > div.detail div.nx-header ul.nx-menu > li.city-administrative { background-image: url(/images/city_administrative.jpg); }
         main.content > div.detail div.nx-header ul.nx-submenu { list-style: none; display: flex; padding: 0; margin: 0; }
-            main.content > div.detail div.nx-header ul.nx-submenu li a { display: flex; align-items: center; text-decoration: none; height: 50px; background: transparent; outline: none; cursor: pointer; border: none; color: var(--nx-accent); opacity: 0.8; font-weight: 500; padding: 0 20px; background: var(--nx-bg-light); }
+            main.content > div.detail div.nx-header ul.nx-submenu li a { display: flex; align-items: center; text-decoration: none; height: 50px; background: transparent; outline: none; cursor: pointer; border: none; color: white; opacity: 0.8; font-weight: 500; padding: 0 20px; background: var(--nx-bg-light); }
+            main.content > div.detail div.nx-header ul.nx-submenu li a.active {color: var(--nx-accent); opacity: 1; }
             main.content > div.detail div.nx-header ul.nx-submenu li:last-child a { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
             main.content > div.detail div.nx-header ul.nx-submenu li a:hover { opacity: 1; }
 /*     BASE PAGE - DATA SECTION */
