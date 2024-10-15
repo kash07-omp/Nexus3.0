@@ -223,6 +223,16 @@
 
     function initSpaceportScripts() {
         bindShipClickEvents();
+
+        // Re-vincular eventos en los enlaces de flotas
+        fleetLinks = document.querySelectorAll('.fleet-link');
+        fleetLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var fleetId = this.getAttribute('data-fleet-id');
+                loadSpaceportView(regionId, fleetId);
+            });
+        });
         
         // Obtener el token antifalsificación
         var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
@@ -334,7 +344,67 @@
         }
 
         function onOpenShipDialog() {
-            // Si necesitas inicializar algo cuando se abra el diálogo, puedes hacerlo aquí
+            var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+            var token = tokenInput ? tokenInput.value : '';
+
+            var buildShipsForm = document.getElementById('buildShipsForm');
+            if (buildShipsForm) {
+                console.log('__subscribe to submit event in buildShipsForm');
+                buildShipsForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    console.log('__Clic on buildShipsForm submit button');
+
+                    var quantityInput = document.getElementById('quantity');
+                    var quantity = parseInt(quantityInput.value);
+                    var maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+                    if (isNaN(quantity) || quantity <= 0) {
+                        alert('Ingrese una cantidad válida.');
+                        return;
+                    }
+
+                    if (quantity > maxQuantity) {
+                        alert('La cantidad supera el máximo permitido.');
+                        return;
+                    }
+
+                    var shipInfo = document.querySelector('.ship-info');
+                    var shipId = parseInt(shipInfo.getAttribute('data-item-id'));
+                    var regionId = document.getElementById('region').getAttribute('data-item-id');
+                    var fleetId = document.querySelector('.fleet-link.active').getAttribute('data-fleet-id');
+
+                    buildShips(regionId, fleetId, shipId, quantity, token);
+                });
+            }
         }
+
+        function buildShips(regionId, fleetId, shipId, quantity, token) {
+            fetch('/Region/BuildShips', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify({ regionId: regionId, fleetId: fleetId, shipId: shipId, quantity: quantity })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cerrar el diálogo
+                        nxDialogs.popDialog();
+
+                        // Recargar la vista parcial del Espaciopuerto
+                        loadSpaceportView(regionId);
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message || 'Error al construir las naves.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
     }
     </script>

@@ -318,13 +318,99 @@ namespace Nexus.Web.Controllers
             return PartialView("_RegionShipPartialView", vm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BuildShips([FromBody] BuildShipsRequest request)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var region = await _context.Regions
+                .Include(r => r.RegionResources)
+                .ThenInclude(rr => rr.Resource)
+                .FirstOrDefaultAsync(r => r.Id == request.RegionId && r.UserId == userId);
+
+            if (region == null)
+                return Json(new { success = false, message = "Región no encontrada." });
+
+            var ship = await _context.Ships.FirstOrDefaultAsync(s => s.Id == request.ShipId);
+            if (ship == null)
+                return Json(new { success = false, message = "Nave no encontrada." });
+
+            if (request.Quantity <= 0)
+                return Json(new { success = false, message = "La cantidad debe ser mayor que cero." });
+
+            // Calcular el coste total
+            var totalMineralsCost = ship.MineralsCost * request.Quantity;
+            var totalMicrochipsCost = ship.MicrochipsCost * request.Quantity;
+            var totalHydrogenCost = ship.HydrogenCost * request.Quantity;
+            var totalCreditsCost = ship.CreditsCost * request.Quantity;
+
+            // Verificar si hay suficientes recursos
+            var minerals = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 1);
+            var microchips = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 2);
+            var hydrogen = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 3);
+            var credits = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 6);
+
+            if (minerals.Quantity < totalMineralsCost || microchips.Quantity < totalMicrochipsCost ||
+                hydrogen.Quantity < totalHydrogenCost || credits.Quantity < totalCreditsCost)
+            {
+                return Json(new { success = false, message = "No hay suficientes recursos para construir las naves." });
+            }
+
+            // Restar los recursos
+            minerals.Quantity -= totalMineralsCost;
+            microchips.Quantity -= totalMicrochipsCost;
+            hydrogen.Quantity -= totalHydrogenCost;
+            credits.Quantity -= totalCreditsCost;
+
+            // Obtener o crear la flota en la región
+            var fleet = await _context.Fleets
+                .Include(f => f.FleetShips)
+                .FirstOrDefaultAsync(f => f.Id == request.FleetId && f.UserId == userId);
+
+            if (fleet == null)
+            {
+                return Json(new { success = false, message = "Flota no encontrada." });
+            }
+
+            // Agregar las naves a la flota
+            var fleetShip = fleet.FleetShips.FirstOrDefault(fs => fs.ShipId == ship.Id);
+            if (fleetShip != null)
+            {
+                fleetShip.Quantity += request.Quantity;
+            }
+            else
+            {
+                fleet.FleetShips.Add(new FleetShip
+                {
+                    FleetId = fleet.Id,
+                    ShipId = ship.Id,
+                    Quantity = request.Quantity
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Naves construidas exitosamente." });
+        }
+
+        // Clase para recibir los datos del cliente
+        public class BuildShipsRequest
+        {
+            public int RegionId { get; set; }
+            public int FleetId { get; set; }
+            public int ShipId { get; set; }
+            public int Quantity { get; set; }
+        }
+
+
         private int CalculateMaxBuildableShips(Region region, Ship ship)
         {
             // Obtener los recursos disponibles en la región
             var minerals = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 1)?.Quantity ?? 0;
             var microchips = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 2)?.Quantity ?? 0;
             var hydrogen = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 3)?.Quantity ?? 0;
-            var credits = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 7)?.Quantity ?? 0;
+            var credits = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 6)?.Quantity ?? 0;
 
             // Calcular el máximo número de naves que se pueden construir con cada recurso
             int maxByMinerals = ship.MineralsCost > 0 ? (int)(minerals / ship.MineralsCost) : int.MaxValue;
