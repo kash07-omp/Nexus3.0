@@ -8,6 +8,7 @@ using Nexus.Infrastructure.Services.Interfaces;
 using System.Drawing;
 using System.Linq.Expressions;
 using Nexus.Infrastructure.Services;
+using Region = Nexus.Domain.Entities.Region;
 
 namespace Nexus.Web.Controllers
 {
@@ -196,6 +197,7 @@ namespace Nexus.Web.Controllers
             return PartialView("_RegionDetailBarracksPartialView", viewModel);
         }
 
+        #region Spaceport
         [HttpGet]
         public async Task<IActionResult> GetSpaceportPartialView(int regionId, int? fleetId = null)
         {
@@ -282,6 +284,60 @@ namespace Nexus.Web.Controllers
             public string FleetName { get; set; }
         }
 
+        [HttpPost]
+        [Route("region/{id:int}/openshipdialog")]
+        public async Task<IActionResult> OpenShipDialog(int id, [FromBody] int shipId)
+        {
+            if (id <= 0 || shipId <= 0)
+                return BadRequest("El ID de la región y el ID de la nave deben ser mayores que cero.");
+
+            var userId = _userManager.GetUserId(User);
+
+            var region = await _context.Regions
+                .Include(r => r.RegionResources)
+                .ThenInclude(rr => rr.Resource)
+                .FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId);
+
+            if (region == null)
+                return NotFound();
+
+            var ship = await _context.Ships.FirstOrDefaultAsync(s => s.Id == shipId);
+            if (ship == null)
+                return NotFound();
+
+            // Calcular el número máximo de naves que se pueden construir con los recursos disponibles
+            int maxBuildableShips = CalculateMaxBuildableShips(region, ship);
+
+            var vm = new RegionShipDialog
+            {
+                Region = region,
+                Ship = ship,
+                MaxBuildableShips = maxBuildableShips
+            };
+
+            return PartialView("_RegionShipPartialView", vm);
+        }
+
+        private int CalculateMaxBuildableShips(Region region, Ship ship)
+        {
+            // Obtener los recursos disponibles en la región
+            var minerals = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 1)?.Quantity ?? 0;
+            var microchips = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 2)?.Quantity ?? 0;
+            var hydrogen = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 3)?.Quantity ?? 0;
+            var credits = region.RegionResources.FirstOrDefault(rr => rr.ResourceId == 7)?.Quantity ?? 0;
+
+            // Calcular el máximo número de naves que se pueden construir con cada recurso
+            int maxByMinerals = ship.MineralsCost > 0 ? (int)(minerals / ship.MineralsCost) : int.MaxValue;
+            int maxByMicrochips = ship.MicrochipsCost > 0 ? (int)(microchips / ship.MicrochipsCost) : int.MaxValue;
+            int maxByHydrogen = ship.HydrogenCost > 0 ? (int)(hydrogen / ship.HydrogenCost) : int.MaxValue;
+            int maxByCredits = ship.CreditsCost > 0 ? (int)(credits / ship.CreditsCost) : int.MaxValue;
+
+            // Devolver el mínimo de todos
+            return Math.Min(Math.Min(maxByMinerals, maxByMicrochips), Math.Min(maxByHydrogen, maxByCredits));
+        }
+
+
+        #endregion
 
 
         [HttpPost]

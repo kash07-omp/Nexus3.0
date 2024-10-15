@@ -56,7 +56,6 @@ i.resource-7 { background-image: url(/images/resources/energy.svg); }
 /* ===================            BASE             ===================*/
 /* ===================================================================*/
 
-
 /* Topbar  */
 body div.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 0px; background-color: #15232d; color: #ffffff; width: 100%; position: fixed; top: 0; z-index: 10; }
     body div.topbar div.topbar-left .logo { font-size: 1.5em; font-weight: bold; color: #79a04e; }

@@ -222,9 +222,8 @@
     }
 
     function initSpaceportScripts() {
-        // Código JavaScript para manejar eventos y acciones en el Espaciopuerto
-        // ...
-
+        bindShipClickEvents();
+        
         // Obtener el token antifalsificación
         var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
         var token = tokenInput ? tokenInput.value : '';
@@ -318,5 +317,24 @@
                 loadSpaceportView(@Model.Region.Id, fleetId);
             });
         });
+
+        function bindShipClickEvents() {
+            const shipElements = document.querySelectorAll('p.card.ship');
+            shipElements.forEach(ship => {
+                ship.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const shipId = Number(this.getAttribute('data-item-id'));
+                    const regionId = document.getElementById('region').getAttribute('data-item-id');
+
+                    nxDialogs.ajaxDialog('dlgship', '/Region/' + regionId + '/openshipdialog', shipId, onOpenShipDialog);
+                });
+            });
+        }
+
+        function onOpenShipDialog() {
+            // Si necesitas inicializar algo cuando se abra el diálogo, puedes hacerlo aquí
+        }
     }
     </script>

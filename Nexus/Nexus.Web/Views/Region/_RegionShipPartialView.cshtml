@@ -1,0 +1,37 @@
+﻿@model Nexus.Web.Models.RegionShipDialog
+@using System.Globalization;
+
+<div class="ship-info" data-item-id="@Model.Ship.Id">
+    <h2>@Model.Ship.Name</h2>
+    <p>@Model.Ship.Description</p>
+    <div class="ship-stats">
+        <h3 class="cyber-h">Atributos</h3>
+        <ul>
+            <li>Fuerza: <span>@Model.Ship.Strenght</span></li>
+            <li>Escudos: <span>@Model.Ship.Shields</span></li>
+            <li>Salud: <span>@Model.Ship.Health</span></li>
+            <li>Maniobrabilidad: <span>@Model.Ship.Maniobrability</span></li>
+            <li>Habilidad: <span>@Model.Ship.Ability</span></li>
+            <li>Velocidad: <span>@Model.Ship.Speed</span></li>
+            <li>Capacidad de carga: <span>@Model.Ship.CargoCapacity</span></li>
+        </ul>
+    </div>
+    <div class="ship-cost">
+        <h3 class="cyber-h">Coste de construcción por nave</h3>
+        <ul>
+            <li><i class="resource litle resource-1"></i><span>@Model.Ship.MineralsCost.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            <li><i class="resource litle resource-2"></i><span>@Model.Ship.MicrochipsCost.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            <li><i class="resource litle resource-3"></i><span>@Model.Ship.HydrogenCost.ToString("N0", new CultureInfo("es-ES"))</span></li>
+            <li><i class="resource litle resource-7"></i><span>@Model.Ship.CreditsCost.ToString("N0", new CultureInfo("es-ES"))</span></li>
+        </ul>
+    </div>
+    <div class="ship-build">
+        <h3 class="cyber-h">Construir Naves</h3>
+        <form id="buildShipsForm">
+            <label for="quantity">Cantidad:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="@Model.MaxBuildableShips" value="1" />
+            <p>Máximo posible: @Model.MaxBuildableShips</p>
+            <button type="submit">Construir</button>
+        </form>
+    </div>
+</div>
