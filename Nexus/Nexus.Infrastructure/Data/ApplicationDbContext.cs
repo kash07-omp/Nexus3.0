@@ -23,6 +23,7 @@ namespace Nexus.Infrastructure.Data
         public DbSet<Ship> Ships { get; set; }
         public DbSet<FleetShip> FleetShips { get; set; }
         public DbSet<FleetMovementPath> FleetMovementPaths { get; set; }
+        public DbSet<ShipBuildQueue> ShipBuildQueues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +48,7 @@ namespace Nexus.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new ShipConfiguration());
             modelBuilder.ApplyConfiguration(new FleetConfiguration());
             modelBuilder.ApplyConfiguration(new FleetShipConfiguration());
+            modelBuilder.ApplyConfiguration(new ShipBuildQueueConfiguration());
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Cards)

@@ -8,5 +8,7 @@ namespace Nexus.Web.Models
         public List<Fleet> Fleets { get; set; }
         public List<Ship> Ships { get; set; }
         public Fleet SelectedFleet { get; set; }
+        public List<ShipBuildQueue> ShipBuildQueue { get; set; }
+
     }
 }

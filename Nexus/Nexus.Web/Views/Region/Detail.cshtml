@@ -104,10 +104,10 @@
         const upgradeEndDate = convertToJsDate(upgradedAtValue);
 
         // Crear el elemento de cuenta regresiva si no existe
-        let countdownDiv = element.querySelector('.upgrade-structure-countdown');
+        let countdownDiv = element.querySelector('.upgrade-countdown');
         if (!countdownDiv) {
             countdownDiv = document.createElement('div');
-            countdownDiv.className = 'upgrade-structure-countdown';
+            countdownDiv.className = 'upgrade-countdown';
             element.appendChild(countdownDiv);
         }
 
@@ -122,7 +122,7 @@
             const timeRemaining = upgradeEndDate - now;
 
             if (timeRemaining <= 0) {
-                countdownDiv.innerText = '¡Actualización completada!';
+                countdownDiv.innerText = '¡Listo!';
                 // Opcionalmente, eliminar el elemento después de un tiempo
                 setTimeout(() => countdownDiv.remove(), 2000);
                 clearInterval(countdownInterval);

@@ -57,6 +57,7 @@ builder.Services.AddScoped<IResourceService, ResourcesService>();
 builder.Services.AddScoped<IResourceCostCalculator, ResourceCostCalculator>();
 builder.Services.AddScoped<ICardService, CardService>();
 builder.Services.AddScoped<IFleetMovementService, FleetMovementService>();
+builder.Services.AddScoped<IShipConstructionService, ShipConstructionService>();
 
 var app = builder.Build();
 

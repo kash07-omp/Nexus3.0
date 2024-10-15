@@ -132,7 +132,7 @@ main.content > div.detail { border-radius: 20px; height: 100%; }
     #region section.card-grid p.card.structure.armory { background-image: url(/images/armory.jpg); }
     #region section.card-grid p.card.structure.city-hall { background-image: url(/images/command.jpg); }
 
-div.upgrade-structure-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
+div.upgrade-countdown { position: absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); color:var(--nx-accent); display:flex; align-items:center; justify-content:center; font-size:1.2em; z-index:1000; }
 
 /* #### Structure Dialog */
 div.dlg-content { display: flex; width: 100%; color: var(--nx-text); }

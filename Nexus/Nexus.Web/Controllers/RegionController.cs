@@ -20,6 +20,7 @@ namespace Nexus.Web.Controllers
         private readonly IStructureUpgradeService _structureUpgradeService;
         private readonly ICardService _cardService;
         private readonly IResourceCostCalculator _resourceCostCalculatorService;
+        private readonly IShipConstructionService _shipConstructionService;
 
         public RegionController(
             ApplicationDbContext context, 
@@ -27,14 +28,15 @@ namespace Nexus.Web.Controllers
             IResourceService resourcesService, 
             IStructureUpgradeService structureUpgradeService,
             ICardService cardService,
-            IResourceCostCalculator resourceCostCalculatorService)
+            IResourceCostCalculator resourceCostCalculatorService,
+            IShipConstructionService shipConstructionService)
         {
             _context = context;
             _userManager = userManager;
             _resourcesService = resourcesService;
             _structureUpgradeService = structureUpgradeService;
             _cardService = cardService;
-            _resourceCostCalculatorService = resourceCostCalculatorService;
+            _shipConstructionService = shipConstructionService;
         }
         public async Task<IActionResult> Index()
         {
@@ -50,6 +52,7 @@ namespace Nexus.Web.Controllers
         {
             await _resourcesService.UpdateRegionResourcesAsync(id);
             await _structureUpgradeService.ProcessCompletedUpgradesAsync(id);
+            await _shipConstructionService.ProcessCompletedShipConstructionsAsync(id);
 
             var region = await _context.Regions
                 .Include(r => r.Planet)
@@ -237,13 +240,19 @@ namespace Nexus.Web.Controllers
                 }
             }
 
+            var shipBuildQueue = await _context.ShipBuildQueues
+                .Include(sbq => sbq.Ship)
+                .Where(sbq => sbq.RegionId == region.Id)
+                .ToListAsync();
+
             // Crear el modelo de vista
             var viewModel = new SpaceportViewModel
             {
                 Region = region,
                 Fleets = fleetsInRegion,
                 Ships = allShips,
-                SelectedFleet = selectedFleet
+                SelectedFleet = selectedFleet,
+                ShipBuildQueue = shipBuildQueue
             };
 
             return PartialView("_RegionDetailSpaceportPartialView", viewModel);
@@ -326,7 +335,8 @@ namespace Nexus.Web.Controllers
 
             var region = await _context.Regions
                 .Include(r => r.RegionResources)
-                .ThenInclude(rr => rr.Resource)
+                    .ThenInclude(rr => rr.Resource)
+                .Include(r => r.Planet)
                 .FirstOrDefaultAsync(r => r.Id == request.RegionId && r.UserId == userId);
 
             if (region == null)
@@ -363,7 +373,7 @@ namespace Nexus.Web.Controllers
             hydrogen.Quantity -= totalHydrogenCost;
             credits.Quantity -= totalCreditsCost;
 
-            // Obtener o crear la flota en la región
+            // Obtener la flota en la región
             var fleet = await _context.Fleets
                 .Include(f => f.FleetShips)
                 .FirstOrDefaultAsync(f => f.Id == request.FleetId && f.UserId == userId);
@@ -373,26 +383,36 @@ namespace Nexus.Web.Controllers
                 return Json(new { success = false, message = "Flota no encontrada." });
             }
 
-            // Agregar las naves a la flota
-            var fleetShip = fleet.FleetShips.FirstOrDefault(fs => fs.ShipId == ship.Id);
-            if (fleetShip != null)
+            // Calcular el tiempo de construcción por nave
+            int buildTimePerShipInSeconds = CalculateShipBuildTimeInSeconds(ship, region);
+
+            var now = DateTime.UtcNow;
+            var shipBuildQueues = new List<ShipBuildQueue>();
+
+            for (int i = 0; i < request.Quantity; i++)
             {
-                fleetShip.Quantity += request.Quantity;
-            }
-            else
-            {
-                fleet.FleetShips.Add(new FleetShip
+                var completionTime = now.AddSeconds(buildTimePerShipInSeconds * (i + 1));
+
+                shipBuildQueues.Add(new ShipBuildQueue
                 {
+                    RegionId = region.Id,
                     FleetId = fleet.Id,
                     ShipId = ship.Id,
-                    Quantity = request.Quantity
+                    CompletionTime = completionTime
                 });
             }
 
+            _context.ShipBuildQueues.AddRange(shipBuildQueues);
             await _context.SaveChangesAsync();
 
-            return Json(new { success = true, message = "Naves construidas exitosamente." });
+            return Json(new { success = true, message = "Construcción de naves iniciada." });
         }
+
+        private int CalculateShipBuildTimeInSeconds(Ship ship, Region region)
+        {
+            return 60;
+        }
+
 
         // Clase para recibir los datos del cliente
         public class BuildShipsRequest
