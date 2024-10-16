@@ -5,9 +5,6 @@ using Nexus.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Nexus.Web.Models;
 using Nexus.Infrastructure.Services.Interfaces;
-using System.Drawing;
-using System.Linq.Expressions;
-using Nexus.Infrastructure.Services;
 using Region = Nexus.Domain.Entities.Region;
 
 namespace Nexus.Web.Controllers
@@ -36,6 +33,7 @@ namespace Nexus.Web.Controllers
             _resourcesService = resourcesService;
             _structureUpgradeService = structureUpgradeService;
             _cardService = cardService;
+            _resourceCostCalculatorService = resourceCostCalculatorService;
             _shipConstructionService = shipConstructionService;
         }
         public async Task<IActionResult> Index()
